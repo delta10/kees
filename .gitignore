@@ -1,0 +1,6 @@
+.vscode/
+node_modules/
+kees/config.py
+db.sqlite3
+webpack-stats.json
+__pycache__

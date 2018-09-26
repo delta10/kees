@@ -1,0 +1,10 @@
+{% extends "_login_base.html" %}
+{% load i18n %}
+
+{% block content %}
+
+<p>Je bent succesvol uitgelogd.</p>
+
+<p><a href="{% url 'admin:index' %}" class="btn btn-primary">{% trans 'Log opnieuw in' %}</a></p>
+
+{% endblock %}
