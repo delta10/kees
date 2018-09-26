@@ -11,6 +11,12 @@ module.exports = {
         path: path.resolve('./assets/bundles/'),
         filename: 'app.js'
     },
+    resolve: {
+      alias: {
+          'vue$': 'vue/dist/vue.esm.js'
+      },
+      extensions: ['*', '.js', '.vue', '.json']
+    },
     module: {
       rules: [
         {
