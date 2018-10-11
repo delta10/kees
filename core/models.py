@@ -1,3 +1,5 @@
+from django.contrib.postgres.fields import JSONField
+from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
 from django.core.mail import send_mail
@@ -79,3 +81,88 @@ class User(AbstractBaseUser):
     def email_user(self, subject, message, from_email=None, **kwargs):
         send_mail(subject, message, from_email or settings.FROM_EMAIL, [
                   self.email], **kwargs)
+
+class Case(models.Model):
+    name = models.CharField(max_length=255)
+    case_type = models.ForeignKey('CaseType', on_delete=models.PROTECT)
+    created_at = models.DateTimeField(auto_now_add=True)
+    current_phase = models.ForeignKey('Phase', on_delete=models.PROTECT, null=True, blank=True)
+    assignee = models.ForeignKey('User', on_delete=models.PROTECT, null=True, blank=True)
+    data = JSONField(default=dict, blank=True)
+
+    class Meta:
+        ordering = ['-id']
+
+    def __str__(self):
+        return self.name
+
+class CaseType(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+class CaseLog(models.Model):
+    case = models.ForeignKey('Case', on_delete=models.PROTECT)
+    event = models.CharField(max_length=255)
+    performer = models.ForeignKey('User', on_delete=models.PROTECT)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+class Phase(models.Model):
+    case_type = models.ForeignKey('CaseType', on_delete=models.PROTECT, related_name='phases')
+    name = models.CharField(max_length=255)
+    order = models.PositiveIntegerField()
+
+    class Meta:
+        ordering = ['case_type', 'order']
+
+    def __str__(self):
+        return self.name
+
+class PhaseField(models.Model):
+    FIELD_TYPES = (
+        ('CharField', 'CharField'),
+        ('IntegerField', 'IntegerField'),
+        ('DateField', 'DateField'),
+        ('TimeField', 'TimeField'),
+        ('DateTimeField', 'DateTimeField'),
+        ('DurationField', 'DurationField'),
+        ('EmailField', 'EmailField'),
+        ('URLField', 'URLField'),
+        ('BooleanField', 'BooleanField'),
+        ('ChoiceField', 'ChoiceField'),
+        ('MultipleChoiceField', 'MultipleChoiceField'),
+        ('FloatField', 'FloatField'),
+        ('DecimalField', 'DecimalField'),
+    )
+
+    FIELD_WIDGETS = (
+        ('TextInput', 'TextInput'),
+        ('NumberInput', 'NumberInput'),
+        ('EmailInput', 'EmailInput'),
+        ('URLInput', 'URLInput'),
+        ('Textarea', 'Textarea'),
+        ('DateInput', 'DateInput'),
+        ('DateTimeInput', 'DateTimeInput'),
+        ('TimeInput', 'TimeInput'),
+        ('CheckboxInput', 'CheckboxInput'),
+        ('Select', 'Select'),
+        ('SelectMultiple', 'SelectMultiple'),
+        ('RadioSelect', 'RadioSelect'),
+        ('CheckboxSelectMultiple', 'CheckboxSelectMultiple'),
+    )
+
+    phase = models.ForeignKey('Phase', on_delete=models.PROTECT, related_name='fields')
+    key = models.SlugField(max_length=50)
+    label = models.CharField(max_length=255)
+    type = models.CharField(max_length=255, choices=FIELD_TYPES)
+    widget = models.CharField(max_length=255, choices=FIELD_WIDGETS, blank=True, null=True)
+    initial = models.CharField(max_length=255, blank=True, null=True)
+    args = JSONField(default=dict, blank=True)
+    order = models.PositiveIntegerField()
+
+    class Meta:
+        ordering = ['phase', 'order']
+
+    def __str__(self):
+        return self.label

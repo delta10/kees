@@ -6,6 +6,15 @@ DEBUG = False
 
 ALLOWED_HOSTS = []
 
+# Database
+# https://docs.djangoproject.com/en/2.1/ref/settings/#databases
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'kees',
+    }
+}
+
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = '1025'
 EMAIL_HOST_USER = None

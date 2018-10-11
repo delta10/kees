@@ -1,0 +1,7 @@
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <h2>#{{ case.id }}: {{ case.name }}</h2>
+    {{ case.data }}
+{% endblock %}

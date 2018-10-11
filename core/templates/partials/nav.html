@@ -2,7 +2,7 @@
 
 {% load active %}
 <nav class="navbar navbar-expand-md navbar-dark fixed-top">
-    <a class="navbar-brand" href="{% url 'home' %}">
+    <a class="navbar-brand" href="{% url 'overview' %}">
         <span>Kees</span>
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -11,8 +11,11 @@
 
     <div class="collapse navbar-collapse offcanvas-collapse" id="mainNav">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item {% active 'home' %}">
-                <a class="nav-link" href="{% url 'home' %}">Overzicht<span class="sr-only">(current)</span></a>
+            <li class="nav-item {% active 'overview' %}">
+                <a class="nav-link" href="{% url 'overview' %}">Overzicht</a>
+            </li>
+            <li class="nav-item {% active 'new_case' %}">
+                <a class="nav-link" href="{% url 'create_case' 1 %}">Nieuwe zaak</a>
             </li>
         </ul>
 
