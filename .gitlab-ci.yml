@@ -8,7 +8,7 @@ variables:
   DB_HOST: postgres
   DB_USER: postgres
   DB_PASSWORD: postgres
-  NAME: postgres
+  DB_NAME: postgres
 
 cache:
   paths:
@@ -18,7 +18,11 @@ before_script:
   - python -V
   - pip install -r requirements.txt
   - ls
-  - cp docker/config.py kees/config.py
+  - cp ./docker/config.py kees/config.py
+
+pep8:
+  script:
+  - pep8 wooify
 
 test:
   script:
