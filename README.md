@@ -1,6 +1,4 @@
 # Kees
-[![pipeline status](https://gitlab.com/delta10/kees/badges/master/pipeline.svg)](https://gitlab.com/delta10/kees/commits/master) [![coverage report](https://gitlab.com/delta10/kees/badges/master/coverage.svg)](https://gitlab.com/delta10/kees/commits/master)
-
 Kees is a minimalistic case management solution.
 
 ## Preparing
