@@ -1,4 +1,5 @@
 .vscode/
+.coverage
 node_modules/
 kees/config.py
 db.sqlite3
