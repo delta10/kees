@@ -3,4 +3,5 @@ Dockerfile
 .dockerignore
 .git
 .vscode
+.coverage
 kees/config.py
