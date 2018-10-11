@@ -1,38 +1,21 @@
-# Stage 1 - Compile needed Python dependencies
-FROM alpine
-RUN apk --no-cache add \
-    linux-headers \
-    build-base \
-    python3 \
-    python3-dev \
-    musl-dev \
-    pcre-dev \
-    jpeg-dev \
-    zlib-dev && \
-  pip3 install virtualenv && \
-  virtualenv /app/env
+FROM python:latest
 
+# Install app dependencies
+RUN mkdir /app
 WORKDIR /app
-COPY requirements.txt /app
-RUN /app/env/bin/pip install -r requirements.txt
+ADD requirements.txt /app
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Stage 2 - Build docker image suitable for execution and deployment
-FROM alpine
-RUN apk --no-cache add \
-    ca-certificates \
-    mailcap \
-    musl \
-    pcre \
-    zlib \
-    jpeg \
-    python3
+# Add app
+ADD . /app
 
-COPY . /app
-COPY --from=0 /app/env /app/env
+# Boot script
+ADD docker/config.py /app/flow/config.py
+ADD docker/start.sh /start.sh
+RUN chmod +x /start.sh
 
-COPY ./docker/start.sh /start.sh
-
-ENV PATH="/app/env/bin:${PATH}"
-WORKDIR /app
+# HTTP port
 EXPOSE 8000
+
+# Define run script
 CMD ["/start.sh"]
