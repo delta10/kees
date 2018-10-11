@@ -1,12 +1,13 @@
+import re
 from django.utils import timezone
 from django.http import HttpResponseRedirect
 from django.conf import settings
 from django.urls import reverse
 from .models import User
 
-EXEMPT_URLS = [compile(reverse(settings.LOGIN_URL).lstrip('/'))]
+EXEMPT_URLS = [re.compile(reverse(settings.LOGIN_URL).lstrip('/'))]
 if hasattr(settings, 'LOGIN_EXEMPT_URLS'):
-    EXEMPT_URLS += [compile(expr) for expr in settings.LOGIN_EXEMPT_URLS]
+    EXEMPT_URLS += [re.compile(expr) for expr in settings.LOGIN_EXEMPT_URLS]
 
 
 class LoginRequiredMiddleware:
