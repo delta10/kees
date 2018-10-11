@@ -20,9 +20,9 @@ before_script:
   - ls
   - cp ./docker/config.py kees/config.py
 
-pep8:
+pylint:
   script:
-  - pep8 wooify
+  - pylint kees core
 
 test:
   script:

@@ -1,4 +1,3 @@
-from re import compile
 from django.utils import timezone
 from django.http import HttpResponseRedirect
 from django.conf import settings
@@ -9,7 +8,8 @@ EXEMPT_URLS = [compile(reverse(settings.LOGIN_URL).lstrip('/'))]
 if hasattr(settings, 'LOGIN_EXEMPT_URLS'):
     EXEMPT_URLS += [compile(expr) for expr in settings.LOGIN_EXEMPT_URLS]
 
-class LoginRequiredMiddleware(object):
+
+class LoginRequiredMiddleware:
     """
     Middleware that requires a user to be authenticated to view any page other
     than LOGIN_URL. Exemptions to this requirement can optionally be specified
@@ -35,7 +35,8 @@ class LoginRequiredMiddleware(object):
                 return HttpResponseRedirect(reverse(settings.LOGIN_URL))
         return self.get_response(request)
 
-class SetLastVisitMiddleware(object):
+
+class SetLastVisitMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
 

@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
 from django.core.mail import send_mail
 
+
 class Manager(BaseUserManager):
     def create_user(self, username, name, password=None, external_id=None, is_active=True):
         if not username:
@@ -39,6 +40,7 @@ class Manager(BaseUserManager):
         user.save(using=self._db)
 
         return user
+
 
 class User(AbstractBaseUser):
     objects = Manager()
@@ -80,7 +82,9 @@ class User(AbstractBaseUser):
 
     def email_user(self, subject, message, from_email=None, **kwargs):
         send_mail(subject, message, from_email or settings.FROM_EMAIL, [
-                  self.email], **kwargs)
+            self.email
+        ], **kwargs)
+
 
 class Case(models.Model):
     name = models.CharField(max_length=255)
@@ -96,17 +100,20 @@ class Case(models.Model):
     def __str__(self):
         return self.name
 
+
 class CaseType(models.Model):
     name = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name
 
+
 class CaseLog(models.Model):
     case = models.ForeignKey('Case', on_delete=models.PROTECT)
     event = models.CharField(max_length=255)
     performer = models.ForeignKey('User', on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
+
 
 class Phase(models.Model):
     case_type = models.ForeignKey('CaseType', on_delete=models.PROTECT, related_name='phases')
@@ -118,6 +125,7 @@ class Phase(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class PhaseField(models.Model):
     FIELD_TYPES = (

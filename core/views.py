@@ -3,7 +3,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import CaseType, Case
 from .forms import PhaseForm
 
-def index(request):
+
+def overview(request):
     cases = Case.objects.all()
 
     paginator = Paginator(cases, 50)
@@ -22,6 +23,7 @@ def index(request):
         'page_range': page_range,
         'page': page
     })
+
 
 def create_case(request, case_type_id):
     case_type = get_object_or_404(CaseType, pk=case_type_id)
@@ -42,6 +44,7 @@ def create_case(request, case_type_id):
         'case_type': case_type,
         'form': form
     })
+
 
 def view_case(request, case_id):
     case = get_object_or_404(Case, pk=case_id)

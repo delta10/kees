@@ -1,5 +1,6 @@
 from django import forms
 
+
 class PhaseForm(forms.Form):
     def __init__(self, phase, *args, **kwargs):
         super(PhaseForm, self).__init__(*args, **kwargs)
@@ -10,4 +11,4 @@ class PhaseForm(forms.Form):
             if field.widget:
                 field_args['widget'] = getattr(forms, field.widget)
 
-            self.fields[field.key] =  getattr(forms, field.type)(label=field.label, initial=field.initial, **field_args)
+            self.fields[field.key] = getattr(forms, field.type)(label=field.label, initial=field.initial, **field_args)

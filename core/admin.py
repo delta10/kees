@@ -1,9 +1,10 @@
-from django.utils.translation import gettext, gettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib import admin
 from django.forms import ModelForm
 
 from .models import User, Case, CaseType, Phase, PhaseField, CaseLog
+
 
 class UserCreationForm(ModelForm):
     class Meta:
@@ -15,6 +16,7 @@ class UserCreationForm(ModelForm):
         if commit:
             user.save()
         return user
+
 
 class UserAdmin(BaseUserAdmin):
     add_form = UserCreationForm
@@ -40,8 +42,10 @@ class UserAdmin(BaseUserAdmin):
 
     actions = []
 
+
 class PhaseAdmin(admin.ModelAdmin):
     list_display = ('case_type', 'name', 'order')
+
 
 class PhaseFieldAdmin(admin.ModelAdmin):
     list_display = ('phase', 'label', 'order')
