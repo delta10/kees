@@ -17,6 +17,8 @@
 <body>
     {% include 'partials/nav.html' %}
 
+    {% block top %}{% endblock %}
+
     <main role="main" class="container">
         {% for message in messages %}
             {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
