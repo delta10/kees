@@ -1,5 +1,6 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404, redirect
+from django.utils.translation import gettext as _
 from .models import CaseType, Case
 from .forms import PhaseForm
 
@@ -32,11 +33,9 @@ def create_case(request, case_type_id):
     if request.method == 'POST':
         form = PhaseForm(phase, request.POST)
         if form.is_valid():
-            case = Case(name='Nieuwe zaak', case_type=case_type, data=form.cleaned_data)
+            case = Case(name=_('Nieuwe zaak'), case_type=case_type, data=form.cleaned_data)
             case.save()
-            redirect('overview')
-        else:
-            print(form.errors)
+            return redirect('view_case', case.id)
     else:
         form = PhaseForm(phase)
 

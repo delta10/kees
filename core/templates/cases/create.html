@@ -1,11 +1,12 @@
 {% extends '_base.html' %}
 {% load crispy_forms_tags %}
+{% load i18n %}
 
 {% block content %}
     <h2>Nieuwe zaak: {{ case_type.name }}</h2>
     <form method="POST" action=".">
         {% csrf_token %}
         {{ form|crispy }}
-        <button type="submit" class="btn btn-success">Maak aan</button>
+        <button type="submit" class="btn btn-success">{% trans 'Maak aan' %}</button>
     </form>
 {% endblock %}

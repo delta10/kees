@@ -1,6 +1,7 @@
 {% extends '_login_base.html' %}
+{% load i18n %}
 
-{% block title %}Login{% endblock %}
+{% block title %}{% trans 'Login' %}{% endblock %}
 
 {% block content %}
     <h2>Inloggen</h2>
@@ -18,13 +19,13 @@
         {% endfor %}
         {% endif %}
 
-        <p>Vul je inloggegevens in</p>
+        <p>{% trans 'Vul je inloggegevens in' %}</p>
         <div class="form-group">
-            <input type="text" name="username" class="form-control" id="username" placeholder="Gebruikersnaam">
-            <input type="password" name="password" class="form-control" id="password" placeholder="Wachtwoord">
+            <input type="text" name="username" class="form-control" id="username" placeholder="{% trans 'Gebruikersnaam' %}">
+            <input type="password" name="password" class="form-control" id="password" placeholder="{% trans 'Wachtwoord' %}">
         </div>
         <div class="btn-group">
-            <button type="submit" class="btn btn-primary">Inloggen</button>
+            <button type="submit" class="btn btn-primary">{% trans 'Inloggen' %}</button>
         </div>
     </form>
 {% endblock %}

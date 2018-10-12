@@ -1,18 +1,19 @@
 {% extends '_base.html' %}
+{% load i18n %}
 {% load url_replace %}
 
 {% block content %}
-    <h1>Alle zaken</h1>
+    <h1>{% trans 'Alle zaken' %}</h1>
 
     <div class="table-responsive">
         <table class="table table-hover">
             <thead>
                 <tr>
                     <th>Nr.</th>
-                    <th>Startdatum</th>
-                    <th>Naam</th>
-                    <th>Fase</th>
-                    <th>Type</th>
+                    <th>{% trans 'Startdatum' %}</th>
+                    <th>{% trans 'Naam' %}</th>
+                    <th>{% trans 'Fase' %}</th>
+                    <th>{% trans 'Type' %}</th>
                 </tr>
             </thead>
             <tbody>
