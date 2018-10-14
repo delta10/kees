@@ -1,3 +1,6 @@
+import os
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
 from django.contrib.postgres.fields import JSONField
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
@@ -92,6 +95,7 @@ class Case(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     current_phase = models.ForeignKey('Phase', on_delete=models.PROTECT, null=True, blank=True)
     assignee = models.ForeignKey('User', on_delete=models.PROTECT, null=True, blank=True)
+    attachments = GenericRelation('Attachment')
     data = JSONField(default=dict, blank=True)
 
     class Meta:
@@ -174,3 +178,13 @@ class PhaseField(models.Model):
 
     def __str__(self):
         return self.label
+
+
+class Attachment(models.Model):
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
+    file = models.FileField(upload_to='attachments/%Y/%m/%d/')
+
+    def filename(self):
+        return os.path.basename(self.file.name)
