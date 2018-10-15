@@ -1,7 +1,14 @@
 {% extends '_base.html' %}
 {% load crispy_forms_tags %}
 
+{% block top %}
+    <div class="jumbotron">
+        <div class="container">
+            <h2>#{{ case.id }}: {{ case.name }}</h2>
+        </div>
+    </div>
+{% endblock %}
+
 {% block content %}
-    <h2>#{{ case.id }}: {{ case.name }}</h2>
     {{ case.data }}
 {% endblock %}
