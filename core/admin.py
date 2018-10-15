@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib import admin
 from django.forms import ModelForm
 
-from .models import User, Case, CaseType, Phase, PhaseField, CaseLog, Attachment
+from .models import User, Case, CaseType, Phase, PhaseField, CaseLog
 
 
 class UserCreationForm(ModelForm):
