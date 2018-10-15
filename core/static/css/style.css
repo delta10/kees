@@ -6,10 +6,9 @@ body.login {
     background-color: #f3f3f3;
 }
 
-@media (min-width: 576px) {
-    .jumbotron {
-        padding: 2rem;
-    }
+.jumbotron {
+    padding-top: 2rem;
+    padding-bottom: 0;
 }
 
 .container[role="main"] {

@@ -5,6 +5,15 @@
     <div class="jumbotron">
         <div class="container">
             <h2>#{{ case.id }}: {{ case.name }}</h2>
+            <ul class="nav nav-tabs">
+                {% for phase in case.case_type.phases.all %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if phase == case.current_phase %}active{% endif %}" href="#">
+                            {{ phase.name }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
 {% endblock %}
