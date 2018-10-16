@@ -1,6 +1,7 @@
 .vscode/
 .coverage
 node_modules/
+static/
 kees/config.py
 db.sqlite3
 webpack-stats.json
