@@ -4,7 +4,23 @@
 {% block top %}
     <div class="jumbotron">
         <div class="container">
-            <h2>#{{ case.id }}: {{ case.name }}</h2>
+            <div class="d-flex flex-row justify-content-between">
+                <h2>#{{ case.id }}: {{ case.name }}</h2>
+                <div class="btn-group mt-auto mb-auto">
+                    <a href="#" class="btn btn-link mr-2">In behandeling nemen</a>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-dark btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Beheer
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#">Toewijzing wijzigen</a>
+                            <a class="dropdown-item" href="#">Fase wijzigen</a>
+                            <a class="dropdown-item" href="#">Verwijderen</a>
+                        </div>
+                    </div>
+                    <a href="#" class="btn btn-outline-dark btn-light">&#8250;</a>
+                </div>
+            </div>
             <ul class="nav nav-tabs">
                 {% for phase in case.case_type.phases.all %}
                     <li class="nav-item">
