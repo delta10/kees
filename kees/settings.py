@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     'constance.backends.database',
     'django_nose',
     'crispy_forms',
+    'django_filters',
 ]
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
@@ -156,7 +157,7 @@ WEBPACK_LOADER = {
 
 LOGIN_URL = 'login'
 
-LOGIN_REDIRECT_URL = 'overview'
+LOGIN_REDIRECT_URL = 'dashboard'
 
 LOGIN_EXEMPT_URLS = [
     '^media/(.+)$'

@@ -4,12 +4,15 @@ from django.utils.translation import gettext as _
 from django.contrib import messages
 from .models import CaseType, Case
 from .forms import PhaseForm
+from .filters import CaseFilter
 
+def startpage(request):
+    return redirect('dashboard')
 
-def overview(request):
-    cases = Case.objects.all()
+def dashboard(request):
+    my_cases = Case.objects.filter(assignee=request.user)
 
-    paginator = Paginator(cases, 50)
+    paginator = Paginator(my_cases, 50)
 
     try:
         page = paginator.page(request.GET.get('page'))
@@ -21,7 +24,28 @@ def overview(request):
     index = page.number - 1
     page_range = paginator.page_range[max(0, index - 5):(min(len(paginator.page_range), index + 5))]
 
-    return render(request, 'index.html', {
+    return render(request, 'dashboard.html', {
+        'page_range': page_range,
+        'page': page
+    })
+
+
+def overview(request):
+    cases = CaseFilter(request.GET, queryset=Case.objects.all())
+
+    paginator = Paginator(cases.qs, 50)
+
+    try:
+        page = paginator.page(request.GET.get('page'))
+    except PageNotAnInteger:
+        page = paginator.page(1)
+    except EmptyPage:
+        page = paginator.page(paginator.num_pages)
+
+    index = page.number - 1
+    page_range = paginator.page_range[max(0, index - 5):(min(len(paginator.page_range), index + 5))]
+
+    return render(request, 'overview.html', {
         'page_range': page_range,
         'page': page
     })
