@@ -17,6 +17,8 @@
 <body>
     {% include 'partials/nav.html' %}
 
+    {% block top %}{% endblock %}
+
     <div class="container-fluid">
         {% if show_sidebar %}
             <div class="row">
