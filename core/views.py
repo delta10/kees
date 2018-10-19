@@ -48,6 +48,8 @@ def overview(request):
     page_range = paginator.page_range[max(0, index - 5):(min(len(paginator.page_range), index + 5))]
 
     return render(request, 'overview.html', {
+        'show_sidebar': True,
+        'filter_form': cases.form,
         'page_range': page_range,
         'page': page
     })

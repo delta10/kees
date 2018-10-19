@@ -1,6 +1,14 @@
 {% extends '_base.html' %}
 {% load i18n %}
 {% load url_replace %}
+{% load crispy_forms_tags %}
+
+{% block sidebar %}
+    <form method="GET" action=".">
+        {{ filter_form|crispy }}
+        <button type="submit" class="btn btn-primary">Filteren</button>
+    </form>
+{% endblock %}
 
 {% block content %}
     <h1>{% trans 'Overzicht' %}</h1>

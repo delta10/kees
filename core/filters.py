@@ -7,4 +7,4 @@ class CaseFilter(django_filters.FilterSet):
 
     class Meta:
         model = Case
-        fields = ['name']
+        fields = ['name', 'case_type', 'current_phase', 'created_at', 'assignee']
