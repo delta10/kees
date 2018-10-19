@@ -1,6 +1,6 @@
 {% extends '_base.html' %}
-{% load i18n %}
 {% load crispy_forms_tags %}
+{% load i18n %}
 
 {% block top %}
     <div class="jumbotron">
@@ -8,14 +8,14 @@
             <div class="d-flex flex-row justify-content-between">
                 <h2>#{{ case.id }}: {{ case.name }}</h2>
                 <div class="btn-group mt-auto mb-auto">
-                    <div class="dropdown">
+                    <div class="dropdown mr-1">
                         <button class="btn btn-outline-dark btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Beheer
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="#">{% trans 'Toewijzing wijzigen' %}</a>
-                            <a class="dropdown-item" href="#">{% trans 'Fase wijzigen' %}</a>
-                            <a class="dropdown-item" href="#">{% trans 'Verwijderen' %}</a>
+                            <a class="dropdown-item" href="{% url 'change_assignee' case.id %}">{% trans 'Toewijzing wijzigen' %}</a>
+                            <a class="dropdown-item" href="{% url 'change_phase' case.id %}">{% trans 'Fase wijzigen' %}</a>
+                            <a class="dropdown-item" href="{% url 'delete_case' case.id %}">{% trans 'Verwijderen' %}</a>
                         </div>
                     </div>
                     <a href="#" class="btn btn-outline-dark btn-light">&#8250;</a>

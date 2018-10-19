@@ -5,7 +5,7 @@ from django.utils.translation import gettext as _
 from django.http import Http404
 from django.contrib import messages
 from .models import CaseType, Case, Phase
-from .forms import PhaseForm
+from .forms import PhaseForm, ChangeAssigneeForm, ChangePhaseForm
 from .filters import CaseFilter
 
 def startpage(request):
@@ -91,6 +91,18 @@ def view_case(request, case_id, phase_id=None):
         'form': PhaseForm(phase, initial=case.data) if phase else None
     })
 
+def delete_case(request, case_id):
+    case = get_object_or_404(Case, pk=case_id)
+
+    if request.method == 'POST':
+        case.delete()
+        messages.add_message(request, messages.INFO, _('De zaak is verwijderd.'))
+        return redirect('overview')
+
+    return render(request, 'cases/delete.html', {
+        'case': case,
+    })
+
 @require_http_methods(['POST'])
 def claim(request, case_id):
     case = get_object_or_404(Case, pk=case_id)
@@ -108,3 +120,41 @@ def claim(request, case_id):
 @require_http_methods(['POST'])
 def next_phase(request, case_id):
     pass
+
+def change_assignee(request, case_id):
+    case = get_object_or_404(Case, pk=case_id)
+
+    if request.method == 'POST':
+        form = ChangeAssigneeForm(case, instance=case, data=request.POST)
+        if form.is_valid():
+            case.assignee = form.cleaned_data['assignee']
+            case.save()
+
+            messages.add_message(request, messages.INFO, _('De behandelaar is gewijzigd.'))
+            return redirect('view_case', case.id)
+    else:
+        form = ChangeAssigneeForm(case, instance=case)
+
+    return render(request, 'cases/change_assignee.html', {
+        'case': case,
+        'form': form
+    })
+
+def change_phase(request, case_id):
+    case = get_object_or_404(Case, pk=case_id)
+
+    if request.method == 'POST':
+        form = ChangePhaseForm(case, instance=case, data=request.POST)
+        if form.is_valid():
+            case.current_phase = form.cleaned_data['current_phase']
+            case.save()
+
+            messages.add_message(request, messages.INFO, _('De fase is gewijzigd.'))
+            return redirect('view_case', case.id)
+    else:
+        form = ChangePhaseForm(case, instance=case)
+
+    return render(request, 'cases/change_phase.html', {
+        'case': case,
+        'form': form
+    })

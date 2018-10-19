@@ -1,0 +1,13 @@
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block content %}
+    <h2>#{{case.id}}: {{ case.name }} - {% trans 'Toewijzing wijzigen' %}</h2>
+    <form method="POST" action="{% url 'change_assignee' case.id %}">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <a href="{% url 'view_case' case.id %}" class="btn btn-secondary">{% trans 'Annuleren' %}</a>
+        <button type="submit" class="btn btn-primary">{% trans 'Wijzigen' %}</button>
+    </form>
+{% endblock %}
