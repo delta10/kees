@@ -119,7 +119,25 @@ def claim(request, case_id):
 
 @require_http_methods(['POST'])
 def next_phase(request, case_id):
-    pass
+    case = get_object_or_404(Case, pk=case_id)
+    phases = list(case.case_type.phases.all())
+
+    if not case.current_phase:
+        new_phase = phases[1]
+    else:
+        old_index = phases.index(case.current_phase)
+
+        try:
+            new_phase = phases[old_index + 1]
+        except IndexError:
+            messages.add_message(request, messages.ERROR, _('Kan de zaak niet doorzetten naar de volgende fase.'))
+            return redirect('view_case', case.id)
+
+    case.current_phase = new_phase
+    case.save()
+
+    messages.add_message(request, messages.INFO, _('De zaak is doorgezet naar de volgende fase.'))
+    return redirect('view_case', case.id)
 
 def change_assignee(request, case_id):
     case = get_object_or_404(Case, pk=case_id)

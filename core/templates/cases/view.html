@@ -18,7 +18,10 @@
                             <a class="dropdown-item" href="{% url 'delete_case' case.id %}">{% trans 'Verwijderen' %}</a>
                         </div>
                     </div>
-                    <a href="#" class="btn btn-outline-dark btn-light">&#8250;</a>
+                    <form method="POST" action="{% url 'next_phase' case.id %}">
+                        {% csrf_token %}
+                        <button class="btn btn-outline-dark btn-light" type="submit">&#8250;</button>
+                    </form>
                 </div>
             </div>
 
