@@ -98,6 +98,12 @@ class Case(models.Model):
     attachments = GenericRelation('Attachment')
     data = JSONField(default=dict, blank=True)
 
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.current_phase = self.case_type.phases.all()[1]
+
+        super(Case, self).save(*args, **kwargs)
+
     class Meta:
         ordering = ['-id']
 

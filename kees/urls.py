@@ -28,6 +28,9 @@ urlpatterns = [
     path('overview/', core.views.overview, name='overview'),
     path('cases/create/<int:case_type_id>/', core.views.create_case, name='create_case'),
     path('cases/view/<int:case_id>/', core.views.view_case, name='view_case'),
+    path('cases/view/<int:case_id>/phase/<int:phase_id>', core.views.view_case, name='view_case_phase'),
+    path('cases/view/<int:case_id>/claim', core.views.claim, name='claim_case'),
+    path('cases/view/<int:case_id>/next_phase', core.views.next_phase, name='next_phase'),
     path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
     path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('admin/', admin.site.urls)

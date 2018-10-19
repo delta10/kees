@@ -1,4 +1,5 @@
 {% extends '_base.html' %}
+{% load i18n %}
 {% load crispy_forms_tags %}
 
 {% block top %}
@@ -7,25 +8,36 @@
             <div class="d-flex flex-row justify-content-between">
                 <h2>#{{ case.id }}: {{ case.name }}</h2>
                 <div class="btn-group mt-auto mb-auto">
-                    <a href="#" class="btn btn-link mr-2">In behandeling nemen</a>
                     <div class="dropdown">
                         <button class="btn btn-outline-dark btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Beheer
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="#">Toewijzing wijzigen</a>
-                            <a class="dropdown-item" href="#">Fase wijzigen</a>
-                            <a class="dropdown-item" href="#">Verwijderen</a>
+                            <a class="dropdown-item" href="#">{% trans 'Toewijzing wijzigen' %}</a>
+                            <a class="dropdown-item" href="#">{% trans 'Fase wijzigen' %}</a>
+                            <a class="dropdown-item" href="#">{% trans 'Verwijderen' %}</a>
                         </div>
                     </div>
                     <a href="#" class="btn btn-outline-dark btn-light">&#8250;</a>
                 </div>
             </div>
+
+            <div class="d-flex flex-row justify-content-between mt-2 mb-4">
+                {% if case.assignee %}
+                    {% trans 'Behandelaar:' %} {{ case.assignee }}
+                {% else %}
+                    <form method="POST" action="{% url 'claim_case' case.id %}">
+                        {% csrf_token %}
+                        <button class="btn btn-link" type="submit">{% trans 'In behandeling nemen' %}</button>
+                    </form>
+                {% endif %}
+            </div>
+
             <ul class="nav nav-tabs">
                 {% for phase in case.case_type.phases.all %}
                     <li class="nav-item">
-                        <a class="nav-link {% if phase == case.current_phase %}active{% endif %}" href="#">
-                            {{ phase.name }}
+                        <a class="nav-link {% if phase == selected_phase %}active{% endif %}" href="{% url 'view_case_phase' case.id phase.id %}">
+                            {{ phase.name }} {% if phase == case.current_phase %}{% trans '(huidig)' %}{% endif %}
                         </a>
                     </li>
                 {% endfor %}
@@ -35,5 +47,13 @@
 {% endblock %}
 
 {% block content %}
-    {{ case.data }}
+    {% if selected_phase %}
+        <form method="POST" action=".">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button class="btn btn-primary" type="submit">{% trans 'Opslaan' %}</button>
+        </form>
+    {% else %}
+        {% trans 'Deze zaak heeft geen huidige fase.' %}
+    {% endif %}
 {% endblock %}

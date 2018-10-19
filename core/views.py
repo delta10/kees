@@ -1,8 +1,10 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.views.decorators.http import require_http_methods
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.translation import gettext as _
+from django.http import Http404
 from django.contrib import messages
-from .models import CaseType, Case
+from .models import CaseType, Case, Phase
 from .forms import PhaseForm
 from .filters import CaseFilter
 
@@ -72,9 +74,37 @@ def create_case(request, case_type_id):
     })
 
 
-def view_case(request, case_id):
+def view_case(request, case_id, phase_id=None):
     case = get_object_or_404(Case, pk=case_id)
 
+    if phase_id:
+        try:
+            phase = case.case_type.phases.get(pk=phase_id)
+        except Phase.DoesNotExist:
+            raise Http404('No Phase matches the given query.')
+    else:
+        phase = case.current_phase
+
     return render(request, 'cases/view.html', {
-        'case': case
+        'case': case,
+        'selected_phase': phase,
+        'form': PhaseForm(phase, initial=case.data) if phase else None
     })
+
+@require_http_methods(['POST'])
+def claim(request, case_id):
+    case = get_object_or_404(Case, pk=case_id)
+
+    if case.assignee:
+        messages.add_message(request, messages.ERROR, _('Deze zaak is reeds in behandeling genomen.'))
+        return redirect('view_case', case.id)
+
+    case.assignee = request.user
+    case.save()
+
+    messages.add_message(request, messages.INFO, _('Je bent nu behandelaar van deze zaak.'))
+    return redirect('view_case', case.id)
+
+@require_http_methods(['POST'])
+def next_phase(request, case_id):
+    pass
