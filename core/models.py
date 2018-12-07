@@ -187,9 +187,7 @@ class PhaseField(models.Model):
 
 
 class Attachment(models.Model):
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey('content_type', 'object_id')
+    case = models.ForeignKey('Case', on_delete=models.PROTECT)
     file = models.FileField(upload_to='attachments/%Y/%m/%d/')
 
     def filename(self):
