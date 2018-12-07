@@ -1,6 +1,5 @@
 import os
-from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
+from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.postgres.fields import JSONField
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
