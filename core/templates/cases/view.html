@@ -3,50 +3,7 @@
 {% load i18n %}
 
 {% block top %}
-    <div class="jumbotron">
-        <div class="container">
-            <div class="d-flex flex-row justify-content-between">
-                <h2>#{{ case.id }}: {{ case.name }}</h2>
-                <div class="btn-group mt-auto mb-auto">
-                    <div class="dropdown mr-1">
-                        <button class="btn btn-outline-dark btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Beheer
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="{% url 'change_assignee' case.id %}">{% trans 'Toewijzing wijzigen' %}</a>
-                            <a class="dropdown-item" href="{% url 'change_phase' case.id %}">{% trans 'Fase wijzigen' %}</a>
-                            <a class="dropdown-item" href="{% url 'delete_case' case.id %}">{% trans 'Verwijderen' %}</a>
-                        </div>
-                    </div>
-                    <form method="POST" action="{% url 'next_phase' case.id %}">
-                        {% csrf_token %}
-                        <button class="btn btn-outline-dark btn-light" type="submit">&#8250;</button>
-                    </form>
-                </div>
-            </div>
-
-            <div class="d-flex flex-row justify-content-between mt-2 mb-4">
-                {% if case.assignee %}
-                    {% trans 'Behandelaar:' %} {{ case.assignee }}
-                {% else %}
-                    <form method="POST" action="{% url 'claim_case' case.id %}">
-                        {% csrf_token %}
-                        <button class="btn btn-link" type="submit">{% trans 'In behandeling nemen' %}</button>
-                    </form>
-                {% endif %}
-            </div>
-
-            <ul class="nav nav-tabs">
-                {% for phase in case.case_type.phases.all %}
-                    <li class="nav-item">
-                        <a class="nav-link {% if phase == selected_phase %}active{% endif %}" href="{% url 'view_case_phase' case.id phase.id %}">
-                            {{ phase.name }} {% if phase == case.current_phase %}{% trans '(huidig)' %}{% endif %}
-                        </a>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
+    {% include 'partials/case_nav.html' %}
 {% endblock %}
 
 {% block content %}

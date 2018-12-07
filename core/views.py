@@ -178,3 +178,10 @@ def change_phase(request, case_id):
         'case': case,
         'form': form
     })
+
+def attachments(request, case_id):
+    case = get_object_or_404(Case, pk=case_id)
+
+    return render(request, 'cases/attachments.html', {
+        'case': case,
+    })
