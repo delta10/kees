@@ -107,7 +107,7 @@ class Case(models.Model):
         ordering = ['-id']
 
     def __str__(self):
-        return self.name
+        return '#{}: {}'.format(self.id, self.name)
 
 
 class CaseType(models.Model):
@@ -186,7 +186,7 @@ class PhaseField(models.Model):
 
 
 class Attachment(models.Model):
-    case = models.ForeignKey('Case', on_delete=models.PROTECT)
+    case = models.ForeignKey('Case', on_delete=models.PROTECT, related_name='attachments')
     file = models.FileField(upload_to='attachments/%Y/%m/%d/')
 
     def filename(self):

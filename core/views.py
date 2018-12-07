@@ -184,4 +184,5 @@ def attachments(request, case_id):
 
     return render(request, 'cases/attachments.html', {
         'case': case,
+        'in_attachments': True
     })

@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib import admin
 from django.forms import ModelForm
 
-from .models import User, Case, CaseType, Phase, PhaseField, CaseLog
+from .models import User, Case, CaseType, Phase, PhaseField, CaseLog, Attachment
 
 
 class UserCreationForm(ModelForm):
@@ -51,9 +51,14 @@ class PhaseFieldAdmin(admin.ModelAdmin):
     list_display = ('phase', 'label', 'order')
 
 
+class AttachmentAdmin(admin.ModelAdmin):
+    list_display = ('case', 'file')
+
+
 admin.site.register(User, UserAdmin)
 admin.site.register(Case)
 admin.site.register(CaseType)
 admin.site.register(Phase, PhaseAdmin)
 admin.site.register(PhaseField, PhaseFieldAdmin)
 admin.site.register(CaseLog)
+admin.site.register(Attachment, AttachmentAdmin)

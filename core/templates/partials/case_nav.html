@@ -42,7 +42,7 @@
                 </li>
             {% endfor %}
             <li class="nav-item">
-                <a class="nav-link " href="/cases/view/7/attachments">
+                <a class="nav-link {% if in_attachments %}active{% endif %}" href="{% url 'attachments' case.id %}">
                     Bijlagen
                 </a>
             </li>
