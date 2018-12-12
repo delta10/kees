@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.translation import gettext as _
 from django.http import Http404
 from django.contrib import messages
-from .models import CaseType, Case, Phase
+from .models import CaseType, Case, Phase, Attachment
 from .forms import PhaseForm, ChangeAssigneeForm, ChangePhaseForm
 from .filters import CaseFilter
 
@@ -185,4 +185,24 @@ def attachments(request, case_id):
     return render(request, 'cases/attachments.html', {
         'case': case,
         'in_attachments': True
+    })
+
+def create_attachment(request, case_id):
+    case = get_object_or_404(Case, pk=case_id)
+
+    return render(request, 'cases/create_attachment.html', {
+        'case': case,
+    })
+
+def delete_attachment(request, case_id, attachment_id):
+    case = get_object_or_404(Case, pk=case_id)
+    attachment = get_object_or_404(Attachment, pk=attachment_id)
+
+    if request.method == 'POST':
+        attachment.delete()
+        messages.add_message(request, messages.INFO, _('De bijlage is verwijderd.'))
+        return redirect('attachments', case.id)
+
+    return render(request, 'cases/delete_attachment.html', {
+        'case': case,
     })

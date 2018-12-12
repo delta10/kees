@@ -1,0 +1,13 @@
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block content %}
+    <h2>Bijlage verwijderen #{{case.id}}: {{ case.name }}</h2>
+    <form method="POST" action=".">
+        {% csrf_token %}
+        <p>Weet je zeker dat je de bijlage wil verwijderen?</p>
+        <a href="{% url 'attachments' case.id %}" class="btn btn-secondary">{% trans 'Annuleren' %}</a>
+        <button type="submit" class="btn btn-danger">{% trans 'Verwijderen' %}</button>
+    </form>
+{% endblock %}
