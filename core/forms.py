@@ -1,5 +1,5 @@
 from django import forms
-from .models import Case
+from .models import Case, Attachment
 
 
 class PhaseForm(forms.Form):
@@ -33,3 +33,8 @@ class ChangePhaseForm(forms.ModelForm):
     class Meta:
         model = Case
         fields = ['current_phase']
+
+class AttachmentForm(forms.ModelForm):
+    class Meta:
+        model = Attachment
+        fields = ['file']

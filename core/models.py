@@ -189,5 +189,8 @@ class Attachment(models.Model):
     case = models.ForeignKey('Case', on_delete=models.PROTECT, related_name='attachments')
     file = models.FileField(upload_to='attachments/%Y/%m/%d/')
 
+    class Meta:
+        ordering = ['-id']
+
     def filename(self):
         return os.path.basename(self.file.name)

@@ -5,7 +5,7 @@ from django.utils.translation import gettext as _
 from django.http import Http404
 from django.contrib import messages
 from .models import CaseType, Case, Phase, Attachment
-from .forms import PhaseForm, ChangeAssigneeForm, ChangePhaseForm
+from .forms import PhaseForm, ChangeAssigneeForm, ChangePhaseForm, AttachmentForm
 from .filters import CaseFilter
 
 def startpage(request):
@@ -190,8 +190,19 @@ def attachments(request, case_id):
 def create_attachment(request, case_id):
     case = get_object_or_404(Case, pk=case_id)
 
+    if request.method == 'POST':
+        form = AttachmentForm(request.POST, request.FILES)
+        if form.is_valid():
+            new_attachment = form.save(commit=False)
+            new_attachment.case = case
+            new_attachment.save()
+            return redirect('attachments', case.id)
+    else:
+        form = AttachmentForm()
+
     return render(request, 'cases/create_attachment.html', {
         'case': case,
+        'form': form,
     })
 
 def delete_attachment(request, case_id, attachment_id):

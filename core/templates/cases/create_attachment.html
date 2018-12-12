@@ -4,7 +4,7 @@
 
 {% block content %}
     <h2>Bijlage toevoegen #{{case.id}}: {{ case.name }}</h2>
-    <form method="POST" action=".">
+    <form method="POST" action="." enctype="multipart/form-data">
         {% csrf_token %}
         {{ form|crispy }}
         <button type="submit" class="btn btn-success">{% trans 'Upload bijlage' %}</button>
