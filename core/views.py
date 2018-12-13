@@ -217,3 +217,11 @@ def delete_attachment(request, case_id, attachment_id):
     return render(request, 'cases/delete_attachment.html', {
         'case': case,
     })
+
+def logs(request, case_id):
+    case = get_object_or_404(Case, pk=case_id)
+
+    return render(request, 'cases/logs.html', {
+        'case': case,
+        'in_logs': True
+    })

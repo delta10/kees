@@ -37,6 +37,7 @@ urlpatterns = [
     path('cases/view/<int:case_id>/attachments', core.views.attachments, name='attachments'),
     path('cases/view/<int:case_id>/attachments/create/', core.views.create_attachment, name='create_attachment'),
     path('cases/view/<int:case_id>/attachments/delete/<int:attachment_id>/', core.views.delete_attachment, name='delete_attachment'),
+    path('cases/view/<int:case_id>/logs', core.views.logs, name='logs'),
     path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
     path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('admin/', admin.site.urls),

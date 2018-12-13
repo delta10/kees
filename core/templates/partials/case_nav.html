@@ -46,6 +46,11 @@
                     Bijlagen
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link {% if in_logs %}active{% endif %}" href="{% url 'logs' case.id %}">
+                    Logs
+                </a>
+            </li>
         </ul>
     </div>
 </div>
