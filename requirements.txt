@@ -9,3 +9,4 @@ django-nose==1.4.6
 pylint==2.1.1
 coverage==4.5.1
 django-filter==2.0.0
+requests==2.21.0

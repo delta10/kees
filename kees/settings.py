@@ -6,6 +6,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 INSTALLED_APPS = [
     'core',
+    'contrib',
     'webpack_loader',
     'django.contrib.admin',
     'django.contrib.auth',

@@ -1,10 +1,13 @@
 import os
+from importlib import import_module
 from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.postgres.fields import JSONField
+from django.utils.functional import lazy
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
 from django.core.mail import send_mail
+from .lib import get_actions_from_apps
 
 
 class Manager(BaseUserManager):
@@ -103,6 +106,33 @@ class Case(models.Model):
 
         super(Case, self).save(*args, **kwargs)
 
+    def next_phase(self):
+        phases = list(self.case_type.phases.all())
+
+        if self.current_phase:
+            old_index = phases.index(self.current_phase)
+            new_phase = phases[old_index + 1]
+            self.execute_actions()
+        else:
+            new_phase = phases[1]
+
+        self.current_phase = new_phase
+
+        return self.save()
+
+    def execute_actions(self):
+        result = True
+
+        for action in self.current_phase.actions.all():
+            mod = import_module(action.key)
+            cls = getattr(mod, 'Action')
+            instance = cls()
+
+            if not instance.execute(self, action.args):
+                result = False
+
+        return result
+
     class Meta:
         ordering = ['-id']
 
@@ -118,10 +148,11 @@ class CaseType(models.Model):
 
 
 class CaseLog(models.Model):
-    case = models.ForeignKey('Case', on_delete=models.PROTECT)
+    case = models.ForeignKey('Case', on_delete=models.PROTECT, related_name='logs')
     event = models.CharField(max_length=255)
-    performer = models.ForeignKey('User', on_delete=models.PROTECT)
+    performer = models.ForeignKey('User', on_delete=models.PROTECT, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    description = models.TextField(null=True, blank=True)
 
 
 class Phase(models.Model):
@@ -183,6 +214,15 @@ class PhaseField(models.Model):
 
     def __str__(self):
         return self.label
+
+
+class Action(models.Model):
+    phase = models.ForeignKey('Phase', on_delete=models.PROTECT, related_name='actions')
+    key = models.CharField(max_length=255, choices=lazy(get_actions_from_apps, tuple)())
+    args = JSONField(default=dict, blank=True)
+
+    def __str__(self):
+        return self.key
 
 
 class Attachment(models.Model):
