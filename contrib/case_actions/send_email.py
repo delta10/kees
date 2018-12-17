@@ -6,35 +6,32 @@ from django.template import Template, Context
 class Action:
     name = 'Send email'
 
-    def render_template(self, argument):
+    def render_template(self, case, args, argument):
         context = Context({
-            'case': self.case,
-            'args': self.args
+            'case': case,
+            'args': args
         })
 
-        template = Template(self.args.get(argument, ''))
+        template = Template(args.get(argument, ''))
         return template.render(context)
 
     def execute(self, case, args):
-        self.case = case
-        self.args = args
-
-        subject = self.render_template('subject')
-        message = self.render_template('message')
+        subject = self.render_template(case, args, 'subject')
+        message = self.render_template(case, args, 'message')
 
         try:
-            result = send_mail(
+            send_mail(
                 subject,
                 message,
-                self.args.get('email_from', None),
-                self.args['email_to'],
+                args.get('email_from', None),
+                args['email_to'],
                 fail_silently=False
             )
 
             case.logs.create(
                 event='send_email',
                 description='Sucessfully sent email to {} with subject {} and message {}'.format(
-                    self.args['email_to'],
+                    args['email_to'],
                     subject,
                     message
                 )
