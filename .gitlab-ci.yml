@@ -22,7 +22,7 @@ before_script:
 
 pylint:
   script:
-  - pylint kees core
+  - pylint kees core contrib
 
 test:
   script:
