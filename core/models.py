@@ -1,6 +1,5 @@
 import os
 from importlib import import_module
-from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.postgres.fields import JSONField
 from django.utils.functional import lazy
 from django.conf import settings
@@ -97,7 +96,6 @@ class Case(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     current_phase = models.ForeignKey('Phase', on_delete=models.PROTECT, null=True, blank=True)
     assignee = models.ForeignKey('User', on_delete=models.PROTECT, null=True, blank=True)
-    attachments = GenericRelation('Attachment')
     data = JSONField(default=dict, blank=True)
 
     def save(self, *args, **kwargs):
