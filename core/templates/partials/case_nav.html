@@ -10,7 +10,7 @@
                         Beheer
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="{% url 'change_assignee' case.id %}">{% trans 'Toewijzing wijzigen' %}</a>
+                        <a class="dropdown-item" href="{% url 'change_assignee' case.id %}">{% trans 'Behandelaar wijzigen' %}</a>
                         <a class="dropdown-item" href="{% url 'change_phase' case.id %}">{% trans 'Fase wijzigen' %}</a>
                         <a class="dropdown-item" href="{% url 'delete_case' case.id %}">{% trans 'Verwijderen' %}</a>
                     </div>

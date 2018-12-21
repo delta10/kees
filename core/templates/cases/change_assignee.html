@@ -3,7 +3,7 @@
 {% load i18n %}
 
 {% block content %}
-    <h2>#{{case.id}}: {{ case.name }} - {% trans 'Toewijzing wijzigen' %}</h2>
+    <h2>#{{case.id}}: {{ case.name }} - {% trans 'Behandelaar wijzigen' %}</h2>
     <form method="POST" action="{% url 'change_assignee' case.id %}">
         {% csrf_token %}
         {{ form|crispy }}

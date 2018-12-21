@@ -65,6 +65,8 @@ def create_case(request, case_type_id):
             case = Case(name=_('Nieuwe zaak'), case_type=case_type, data=form.cleaned_data)
             case.save()
 
+            case.logs.create(event='create_case', performer=request.user)
+
             messages.add_message(request, messages.INFO, _('Nieuwe zaak is aangemaakt.'))
             return redirect('view_case', case.id)
     else:
@@ -98,6 +100,9 @@ def delete_case(request, case_id):
 
     if request.method == 'POST':
         case.delete()
+
+        case.logs.create(event='delete_case', performer=request.user)
+
         messages.add_message(request, messages.INFO, _('De zaak is verwijderd.'))
         return redirect('overview')
 
@@ -106,7 +111,7 @@ def delete_case(request, case_id):
     })
 
 @require_http_methods(['POST'])
-def claim(request, case_id):
+def claim_case(request, case_id):
     case = get_object_or_404(Case, pk=case_id)
 
     if case.assignee:
@@ -115,6 +120,8 @@ def claim(request, case_id):
 
     case.assignee = request.user
     case.save()
+
+    case.logs.create(event='claim_case', performer=request.user)
 
     messages.add_message(request, messages.INFO, _('Je bent nu behandelaar van deze zaak.'))
     return redirect('view_case', case.id)
@@ -125,6 +132,9 @@ def next_phase(request, case_id):
 
     try:
         case.next_phase()
+
+        case.logs.create(event='next_phase', performer=request.user)
+
         messages.add_message(request, messages.INFO, _('De zaak is doorgezet naar de volgende fase.'))
         return redirect('view_case', case.id)
 
@@ -141,6 +151,8 @@ def change_assignee(request, case_id):
         if form.is_valid():
             case.assignee = form.cleaned_data['assignee']
             case.save()
+
+            case.logs.create(event='change_assignee', performer=request.user)
 
             messages.add_message(request, messages.INFO, _('De behandelaar is gewijzigd.'))
             return redirect('view_case', case.id)
@@ -160,6 +172,8 @@ def change_phase(request, case_id):
         if form.is_valid():
             case.current_phase = form.cleaned_data['current_phase']
             case.save()
+
+            case.logs.create(event='change_phase', performer=request.user)
 
             messages.add_message(request, messages.INFO, _('De fase is gewijzigd.'))
             return redirect('view_case', case.id)
@@ -188,6 +202,9 @@ def create_attachment(request, case_id):
             new_attachment = form.save(commit=False)
             new_attachment.case = case
             new_attachment.save()
+
+            case.logs.create(event='create_attachment', performer=request.user)
+
             return redirect('attachments', case.id)
     else:
         form = AttachmentForm()
@@ -203,6 +220,9 @@ def delete_attachment(request, case_id, attachment_id):
 
     if request.method == 'POST':
         attachment.delete()
+
+        case.logs.create(event='delete_attachment', performer=request.user)
+
         messages.add_message(request, messages.INFO, _('De bijlage is verwijderd.'))
         return redirect('attachments', case.id)
 
@@ -213,7 +233,21 @@ def delete_attachment(request, case_id, attachment_id):
 def logs(request, case_id):
     case = get_object_or_404(Case, pk=case_id)
 
+    paginator = Paginator(case.logs.all(), 50)
+
+    try:
+        page = paginator.page(request.GET.get('page'))
+    except PageNotAnInteger:
+        page = paginator.page(1)
+    except EmptyPage:
+        page = paginator.page(paginator.num_pages)
+
+    index = page.number - 1
+    page_range = paginator.page_range[max(0, index - 5):(min(len(paginator.page_range), index + 5))]
+
     return render(request, 'cases/logs.html', {
         'case': case,
-        'in_logs': True
+        'in_logs': True,
+        'page_range': page_range,
+        'page': page,
     })

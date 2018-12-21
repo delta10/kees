@@ -1,7 +1,64 @@
 {% extends '_base.html' %}
 {% load crispy_forms_tags %}
 {% load i18n %}
+{% load url_replace %}
+
+{% block top %}
+    {% include 'partials/case_nav.html' %}
+{% endblock %}
 
 {% block content %}
-    <h2>Logs: {{ case_type.name }}</h2>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>{% trans 'Actie' %}</th>
+                    <th>{% trans 'Uitgevoerd door' %}</th>
+                    <th>{% trans 'Datum/tijd' %}</th>
+                    <th>{% trans 'Omschrijving' %}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in page %}
+                    <tr>
+                        <td>{{ log.event }}</td>
+                        <td>{{ log.performer }}</td>
+                        <td>{{ log.created_at }}</td>
+                        <td>{{ log.description|default_if_none:'-' }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <nav aria-label="Kies pagina">
+        <ul class="pagination justify-content-center">
+            {% if page.has_previous %}
+                <li class="page-item">
+                    <a href="?{% url_replace request 'page' page.previous_page_number %}" class="page-link">&laquo;</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">&laquo;</a>
+                </li>
+            {% endif %}
+
+            {% for i in page_range %}
+                <li class="page-item {% if page.number == i %}active{% endif %}">
+                    <a href="?{% url_replace request 'page' i %}"><div class="page-link">{{i}}</div></a>
+                </li>
+            {% endfor %}
+
+            {% if page.has_next %}
+                <li class="page-item">
+                    <a href="?{% url_replace request 'page' page.next_page_number %}" class="page-link">&raquo;</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a href="#" class="page-link" tabindex="-1">&raquo;</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
 {% endblock %}
