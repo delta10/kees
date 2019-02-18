@@ -25,8 +25,18 @@
                                 Fase aangepast van {{log.metadata.old_phase}} naar {{log.metadata.new_phase}}
                             {% elif log.event == 'next_phase' %}
                                 Doorgezet naar volgende fase
+                            {% elif log.event == 'create_attachment' %}
+                                Bijlage toegevoegd
+                            {% elif log.event == 'delete_attachment' %}
+                                Bijlage verwijderd
+                            {% elif log.event == 'change_assignee' %}
+                                Behandelaar gewijzigd
+                            {% elif log.event == 'claim_case' %}
+                                Zaak in behandeling genomen
+                            {% elif log.event == 'create_case' %}
+                                Zaak aangemaakt
                             {% else %}
-                                {{log.event}}
+                                {{ log.event }}
                             {% endif %}
                         </td>
                         <td>{{ log.performer }}</td>

@@ -101,8 +101,6 @@ def delete_case(request, case_id):
     if request.method == 'POST':
         case.delete()
 
-        case.logs.create(event='delete_case', performer=request.user)
-
         messages.add_message(request, messages.INFO, _('De zaak is verwijderd.'))
         return redirect('overview')
 
