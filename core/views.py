@@ -168,12 +168,15 @@ def change_phase(request, case_id):
     case = get_object_or_404(Case, pk=case_id)
 
     if request.method == 'POST':
+        old_phase = str(case.current_phase)
         form = ChangePhaseForm(case, instance=case, data=request.POST)
         if form.is_valid():
-            case.current_phase = form.cleaned_data['current_phase']
-            case.save()
+            form.save()
 
-            case.logs.create(event='change_phase', performer=request.user)
+            case.logs.create(event='change_phase', performer=request.user, metadata={
+                'old_phase': old_phase,
+                'new_phase': str(case.current_phase),
+            })
 
             messages.add_message(request, messages.INFO, _('De fase is gewijzigd.'))
             return redirect('view_case', case.id)

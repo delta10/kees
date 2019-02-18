@@ -15,16 +15,22 @@
                     <th>{% trans 'Actie' %}</th>
                     <th>{% trans 'Uitgevoerd door' %}</th>
                     <th>{% trans 'Datum/tijd' %}</th>
-                    <th>{% trans 'Omschrijving' %}</th>
                 </tr>
             </thead>
             <tbody>
                 {% for log in page %}
                     <tr>
-                        <td>{{ log.event }}</td>
+                        <td>
+                            {% if log.event == 'change_phase' %}
+                                Fase aangepast van {{log.metadata.old_phase}} naar {{log.metadata.new_phase}}
+                            {% elif log.event == 'next_phase' %}
+                                Doorgezet naar volgende fase
+                            {% else %}
+                                {{log.event}}
+                            {% endif %}
+                        </td>
                         <td>{{ log.performer }}</td>
                         <td>{{ log.created_at }}</td>
-                        <td>{{ log.description|default_if_none:'-' }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
