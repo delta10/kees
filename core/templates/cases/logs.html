@@ -24,13 +24,13 @@
                             {% if log.event == 'change_phase' %}
                                 Fase aangepast van {{log.metadata.old_phase}} naar {{log.metadata.new_phase}}
                             {% elif log.event == 'next_phase' %}
-                                Doorgezet naar volgende fase
+                                Fase doorgezet van {{log.metadata.old_phase}} naar {{log.metadata.new_phase}}
                             {% elif log.event == 'create_attachment' %}
-                                Bijlage toegevoegd
+                                Bijlage toegevoegd: {{log.metadata.name_attachment}}
                             {% elif log.event == 'delete_attachment' %}
-                                Bijlage verwijderd
+                                Bijlage verwijderd: {{log.metadata.name_attachment}}
                             {% elif log.event == 'change_assignee' %}
-                                Behandelaar gewijzigd
+                                Behandelaar gewijzigd naar {{log.metadata.name_assignee}}
                             {% elif log.event == 'claim_case' %}
                                 Zaak in behandeling genomen
                             {% elif log.event == 'create_case' %}

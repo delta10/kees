@@ -129,9 +129,13 @@ def next_phase(request, case_id):
     case = get_object_or_404(Case, pk=case_id)
 
     try:
+        old_phase = str(case.current_phase)
         case.next_phase()
 
-        case.logs.create(event='next_phase', performer=request.user)
+        case.logs.create(event='next_phase', performer=request.user, metadata={
+            'old_phase': old_phase,
+            'new_phase': str(case.current_phase),
+        })
 
         messages.add_message(request, messages.INFO, _('De zaak is doorgezet naar de volgende fase.'))
         return redirect('view_case', case.id)
@@ -150,7 +154,9 @@ def change_assignee(request, case_id):
             case.assignee = form.cleaned_data['assignee']
             case.save()
 
-            case.logs.create(event='change_assignee', performer=request.user)
+            case.logs.create(event='change_assignee', performer=request.user, metadata={
+                'name_assignee': str(case.assignee)
+            })
 
             messages.add_message(request, messages.INFO, _('De behandelaar is gewijzigd.'))
             return redirect('view_case', case.id)
@@ -204,7 +210,9 @@ def create_attachment(request, case_id):
             new_attachment.case = case
             new_attachment.save()
 
-            case.logs.create(event='create_attachment', performer=request.user)
+            case.logs.create(event='create_attachment', performer=request.user, metadata={
+                'name_attachment': str(new_attachment),
+            })
 
             return redirect('attachments', case.id)
     else:
@@ -222,7 +230,9 @@ def delete_attachment(request, case_id, attachment_id):
     if request.method == 'POST':
         attachment.delete()
 
-        case.logs.create(event='delete_attachment', performer=request.user)
+        case.logs.create(event='delete_attachment', performer=request.user, metadata={
+            'name_attachment': str(attachment),
+        })
 
         messages.add_message(request, messages.INFO, _('De bijlage is verwijderd.'))
         return redirect('attachments', case.id)
