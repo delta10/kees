@@ -150,7 +150,6 @@ class CaseLog(models.Model):
     event = models.CharField(max_length=255)
     performer = models.ForeignKey('User', on_delete=models.PROTECT, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    description = models.TextField(null=True, blank=True)
     metadata = JSONField(default=dict, blank=True)
 
 
