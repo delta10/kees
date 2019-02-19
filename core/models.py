@@ -53,6 +53,7 @@ class User(AbstractBaseUser):
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=100)
     is_active = models.BooleanField(default=True)
+    is_case_manager = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
     last_visit = models.DateTimeField(null=True)
 
