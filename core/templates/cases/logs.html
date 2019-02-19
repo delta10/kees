@@ -22,15 +22,19 @@
                     <tr>
                         <td>
                             {% if log.event == 'change_phase' %}
-                                Fase aangepast van {{ log.metadata.old_phase }} naar {{ log.metadata.new_phase }}
+                                Fase aangepast van {{ log.metadata.old_phase|default:'[Geen fase]' }} naar {{ log.metadata.new_phase|default:'[Geen fase]' }}
                             {% elif log.event == 'next_phase' %}
-                                Fase doorgezet van {{ log.metadata.old_phase }} naar {{ log.metadata.new_phase }}
+                                Fase doorgezet van {{ log.metadata.old_phase|default:'[Geen fase]' }} naar {{ log.metadata.new_phase|default:'[Geen fase]' }}
                             {% elif log.event == 'create_attachment' %}
                                 Bijlage toegevoegd: {{ log.metadata.attachment_name }}
                             {% elif log.event == 'delete_attachment' %}
                                 Bijlage verwijderd: {{ log.metadata.attachment_name }}
                             {% elif log.event == 'change_assignee' %}
-                                Behandelaar gewijzigd naar {{ log.metadata.assignee_name }}
+                                {% if log.metadata.assignee_name %}
+                                    Behandelaar gewijzigd naar {{ log.metadata.assignee_name }}
+                                {% else %}
+                                    Behandelaar verwijderd
+                                {% endif %}
                             {% elif log.event == 'claim_case' %}
                                 Zaak in behandeling genomen
                             {% elif log.event == 'create_case' %}

@@ -129,12 +129,12 @@ def next_phase(request, case_id):
     case = get_object_or_404(Case, pk=case_id)
 
     try:
-        old_phase = str(case.current_phase)
+        old_phase = str(case.current_phase) if case.current_phase else None
         case.next_phase()
 
         case.logs.create(event='next_phase', performer=request.user, metadata={
             'old_phase': old_phase,
-            'new_phase': str(case.current_phase),
+            'new_phase': str(case.current_phase) if case.current_phase else None,
         })
 
         messages.add_message(request, messages.INFO, _('De zaak is doorgezet naar de volgende fase.'))
@@ -155,7 +155,7 @@ def change_assignee(request, case_id):
             case.save()
 
             case.logs.create(event='change_assignee', performer=request.user, metadata={
-                'assignee_name': str(case.assignee)
+                'assignee_name': str(case.assignee) if case.assignee else None
             })
 
             messages.add_message(request, messages.INFO, _('De behandelaar is gewijzigd.'))
@@ -172,14 +172,14 @@ def change_phase(request, case_id):
     case = get_object_or_404(Case, pk=case_id)
 
     if request.method == 'POST':
-        old_phase = str(case.current_phase)
+        old_phase = str(case.current_phase) if case.current_phase else None
         form = ChangePhaseForm(case, instance=case, data=request.POST)
         if form.is_valid():
             form.save()
 
             case.logs.create(event='change_phase', performer=request.user, metadata={
                 'old_phase': old_phase,
-                'new_phase': str(case.current_phase),
+                'new_phase': str(case.current_phase) if case.current_phase else None,
             })
 
             messages.add_message(request, messages.INFO, _('De fase is gewijzigd.'))
