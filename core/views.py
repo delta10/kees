@@ -155,7 +155,7 @@ def change_assignee(request, case_id):
             case.save()
 
             case.logs.create(event='change_assignee', performer=request.user, metadata={
-                'name_assignee': str(case.assignee)
+                'assignee_name': str(case.assignee)
             })
 
             messages.add_message(request, messages.INFO, _('De behandelaar is gewijzigd.'))
@@ -211,7 +211,7 @@ def create_attachment(request, case_id):
             new_attachment.save()
 
             case.logs.create(event='create_attachment', performer=request.user, metadata={
-                'name_attachment': str(new_attachment),
+                'attachment_name': new_attachment.filename(),
             })
 
             return redirect('attachments', case.id)
@@ -231,7 +231,7 @@ def delete_attachment(request, case_id, attachment_id):
         attachment.delete()
 
         case.logs.create(event='delete_attachment', performer=request.user, metadata={
-            'name_attachment': str(attachment),
+            'attachment_name': attachment.filename(),
         })
 
         messages.add_message(request, messages.INFO, _('De bijlage is verwijderd.'))

@@ -152,6 +152,9 @@ class CaseLog(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     metadata = JSONField(default=dict, blank=True)
 
+    class Meta:
+        ordering = ['-id']
+
 
 class Phase(models.Model):
     case_type = models.ForeignKey('CaseType', on_delete=models.PROTECT, related_name='phases')
