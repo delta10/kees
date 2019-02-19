@@ -20,14 +20,18 @@ class Action:
             response.raise_for_status()
             case.logs.create(
                 event='http_request',
-                description='Sucessfully performed HTTP request to {}. Response {} data: {}'.format(args['url'], response.status_code, response.text)
+                metadata={
+                    'message': 'Sucessfully performed HTTP request to {}. Response {} data: {}'.format(args['url'], response.status_code, response.text)
+                }
             )
 
             return True
         except RequestException as e:
             case.logs.create(
                 event='http_request',
-                description='Could not complete request due to exception {}'.format(e)
+                metadata={
+                    'message': 'Could not complete request due to exception {}'.format(e)
+                }
             )
 
             return False

@@ -30,18 +30,22 @@ class Action:
 
             case.logs.create(
                 event='send_email',
-                description='Sucessfully sent email to {} with subject {} and message {}'.format(
-                    args['email_to'],
-                    subject,
-                    message
-                )
+                metadata={
+                    'message': 'Sucessfully sent email to {} with subject {} and message {}'.format(
+                        args['email_to'],
+                        subject,
+                        message
+                    )
+                }
             )
 
             return True
         except (SMTPException, ConnectionRefusedError) as e:
             case.logs.create(
                 event='send_email',
-                description='Could not send e-mail due to exception: {}'.format(e)
+                metadata={
+                    'message': 'Could not send e-mail due to exception: {}'.format(e)
+                }
             )
 
             return False
