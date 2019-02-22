@@ -10,3 +10,5 @@ pylint==2.1.1
 coverage==4.5.1
 django-filter==2.0.0
 requests==2.21.0
+sphinx==1.8.4
+sphinx-rtd-theme==0.4.3
