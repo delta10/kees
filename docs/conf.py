@@ -1,3 +1,5 @@
+from recommonmark.parser import CommonMarkParser
+
 # -*- coding: utf-8 -*-
 #
 # Configuration file for the Sphinx documentation builder.
@@ -20,8 +22,8 @@
 # -- Project information -----------------------------------------------------
 
 project = 'Kees'
-copyright = '2019, Delta10'
-author = 'Delta10'
+copyright = '2019, Stichting Delta10'
+author = 'Stichting Delta10'
 
 # The short X.Y version
 version = ''
@@ -49,7 +51,11 @@ templates_path = ['_templates']
 # You can specify multiple suffix as a list of string:
 #
 # source_suffix = ['.rst', '.md']
-source_suffix = '.rst'
+source_suffix = ['.rst', '.md']
+
+source_parsers = {
+    '.md': CommonMarkParser,
+}
 
 # The master toctree document.
 master_doc = 'index'

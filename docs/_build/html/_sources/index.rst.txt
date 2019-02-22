@@ -8,9 +8,28 @@ Welcome to Kees's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Getting started:
 
+   getting-started/installation
+   getting-started/quickstart
 
+.. toctree::
+   :maxdepth: 2
+   :caption: User documentation:
+
+   user-docs/intro
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Administrator documentation:
+
+   admin-docs/intro
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Developer documentation:
+
+   dev-docs/intro
 
 Indices and tables
 ==================
