@@ -34,7 +34,7 @@ def dashboard(request):
     })
 
 
-def cases(request):
+def case_list(request):
     cases = CaseFilter(request.GET, queryset=Case.objects.all())
 
     paginator = Paginator(cases.qs, 50)
