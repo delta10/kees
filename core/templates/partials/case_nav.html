@@ -5,7 +5,7 @@
         <div class="d-flex flex-row justify-content-between">
             <h2>#{{ case.id }}: {{ case.name }}</h2>
             <div class="btn-group mt-auto mb-auto">
-                {% if request.user.is_case_manager %}
+                {% if perms.core.can_manage_cases %}
                     <div class="dropdown mr-1">
                         <button class="btn btn-outline-dark btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Beheer

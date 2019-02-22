@@ -3,7 +3,7 @@ from importlib import import_module
 from django.contrib.postgres.fields import JSONField
 from django.utils.functional import lazy
 from django.conf import settings
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.core.mail import send_mail
 from .lib import get_actions_from_apps
@@ -39,22 +39,20 @@ class Manager(BaseUserManager):
             password=password
         )
 
-        user.is_admin = True
+        user.is_superuser = True
         user.is_active = True
         user.save(using=self._db)
 
         return user
 
 
-class User(AbstractBaseUser):
+class User(AbstractBaseUser, PermissionsMixin):
     objects = Manager()
 
     username = models.CharField(max_length=255, unique=True)
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=100)
     is_active = models.BooleanField(default=True)
-    is_case_manager = models.BooleanField(default=False)
-    is_admin = models.BooleanField(default=False)
     last_visit = models.DateTimeField(null=True)
 
     external_id = models.CharField(max_length=50, unique=True, blank=True, null=True)
@@ -65,19 +63,8 @@ class User(AbstractBaseUser):
     def __str__(self):
         return self.name
 
-    @property
     def is_staff(self):
-        return self.is_admin
-
-    @property
-    def is_superuser(self):
-        return self.is_admin
-
-    def has_perm(self, perm, obj=None):
-        return True
-
-    def has_module_perms(self, app_label):
-        return True
+        return self.is_superuser
 
     def get_full_name(self):
         return self.name
@@ -134,6 +121,10 @@ class Case(models.Model):
 
     class Meta:
         ordering = ['-id']
+
+        permissions = (
+            ('can_manage_cases', 'Can manage cases'),
+        )
 
     def __str__(self):
         return '#{}: {}'.format(self.id, self.name)

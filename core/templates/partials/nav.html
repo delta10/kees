@@ -11,8 +11,8 @@
             <li class="nav-item {% active 'dashboard' %}">
                 <a class="nav-link" href="{% url 'dashboard' %}">{% trans 'Mijn zaken' %}</a>
             </li>
-            <li class="nav-item {% active 'overview' %}">
-                <a class="nav-link" href="{% url 'overview' %}">{% trans 'Overzicht' %}</a>
+            <li class="nav-item {% active 'cases' %}">
+                <a class="nav-link" href="{% url 'cases' %}">{% trans 'Overzicht' %}</a>
             </li>
             <li class="nav-item {% active 'new_case' %}">
                 <a class="nav-link" href="{% url 'create_case' 1 %}">{% trans 'Nieuw' %}</a>
@@ -21,7 +21,7 @@
 
         <ul class="navbar-nav">
             <li class="nav-item">
-                <form class="form-inline" method="GET" action="{% url 'overview' %}">
+                <form class="form-inline" method="GET" action="{% url 'cases' %}">
                     <input class="form-control mr-sm-4" type="search" placeholder="{% trans 'Zoeken...' %}" name="name">
                 </form>
             </li>

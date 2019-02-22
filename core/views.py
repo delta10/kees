@@ -1,5 +1,6 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.http import require_http_methods
+from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.translation import gettext as _
 from django.http import Http404
@@ -12,6 +13,7 @@ def startpage(request):
     return redirect('dashboard')
 
 def dashboard(request):
+    print(request.user.has_perm('core.can_manage_cases'))
     my_cases = Case.objects.filter(assignee=request.user)
 
     paginator = Paginator(my_cases, 50)
@@ -32,7 +34,7 @@ def dashboard(request):
     })
 
 
-def overview(request):
+def cases(request):
     cases = CaseFilter(request.GET, queryset=Case.objects.all())
 
     paginator = Paginator(cases.qs, 50)
@@ -47,7 +49,7 @@ def overview(request):
     index = page.number - 1
     page_range = paginator.page_range[max(0, index - 5):(min(len(paginator.page_range), index + 5))]
 
-    return render(request, 'overview.html', {
+    return render(request, 'cases.html', {
         'show_sidebar': True,
         'filter_form': cases.form,
         'page_range': page_range,
@@ -95,6 +97,7 @@ def view_case(request, case_id, phase_id=None):
         'form': PhaseForm(phase, initial=case.data) if phase else None
     })
 
+@permission_required('core.can_manage_cases', raise_exception=True)
 def delete_case(request, case_id):
     case = get_object_or_404(Case, pk=case_id)
 
@@ -102,7 +105,7 @@ def delete_case(request, case_id):
         case.delete()
 
         messages.add_message(request, messages.INFO, _('De zaak is verwijderd.'))
-        return redirect('overview')
+        return redirect('cases')
 
     return render(request, 'cases/delete.html', {
         'case': case,
@@ -144,7 +147,7 @@ def next_phase(request, case_id):
         messages.add_message(request, messages.ERROR, _('Kan de zaak niet doorzetten naar de volgende fase.'))
         return redirect('view_case', case.id)
 
-
+@permission_required('core.can_manage_cases', raise_exception=True)
 def change_assignee(request, case_id):
     case = get_object_or_404(Case, pk=case_id)
 
@@ -168,6 +171,7 @@ def change_assignee(request, case_id):
         'form': form
     })
 
+@permission_required('core.can_manage_cases', raise_exception=True)
 def change_phase(request, case_id):
     case = get_object_or_404(Case, pk=case_id)
 

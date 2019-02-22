@@ -25,7 +25,7 @@ import core.views
 urlpatterns = [
     path('', core.views.startpage, name='startpage'),
     path('dashboard/', core.views.dashboard, name='dashboard'),
-    path('overview/', core.views.overview, name='overview'),
+    path('cases/', core.views.cases, name='cases'),
     path('cases/create/<int:case_type_id>/', core.views.create_case, name='create_case'),
     path('cases/view/<int:case_id>/', core.views.view_case, name='view_case'),
     path('cases/view/<int:case_id>/phase/<int:phase_id>', core.views.view_case, name='view_case_phase'),

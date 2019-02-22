@@ -21,7 +21,7 @@ class UserCreationForm(ModelForm):
 class UserAdmin(BaseUserAdmin):
     add_form = UserCreationForm
     list_display = ('name', 'username', 'email', 'last_visit')
-    list_filter = ('is_admin', )
+    list_filter = ('is_superuser', )
     ordering = ('name', )
     filter_horizontal = ()
 
@@ -30,7 +30,7 @@ class UserAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
         (_('Personal info'), {'fields': ('name', 'email', 'last_visit')}),
-        (_('Permissions'), {'fields': ('is_active', 'is_case_manager', 'is_admin')})
+        (_('Permissions'), {'fields': ('is_active', 'is_superuser', 'groups')})
     )
 
     add_fieldsets = (
