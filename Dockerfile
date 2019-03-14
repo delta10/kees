@@ -14,6 +14,9 @@ ADD docker/config.py /app/kees/config.py
 ADD docker/start.sh /start.sh
 RUN chmod +x /start.sh
 
+# Set permissions on /app/media
+RUN chown www-data:www-data /app/media
+
 # HTTP port
 EXPOSE 8000
 
