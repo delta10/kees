@@ -16,6 +16,14 @@ spec:
         - name: postgres
           image: postgres:11
           imagePullPolicy: {{.Values.imagePullPolicy}}
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-pv
+              subPath: postgres
+      volumes:
+        - name: postgres-pv
+          persistentVolumeClaim:
+            claimName: postgres-pv
       restartPolicy: Always
 ---
 apiVersion: v1
@@ -27,4 +35,16 @@ spec:
     - name: postgres
       protocol: TCP
       port: 5432
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: postgres-pv
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: standard
 {{ end }}

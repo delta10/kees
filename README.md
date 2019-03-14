@@ -22,3 +22,17 @@ And create a superuser with:
 Run a watch server with:
 
     python manage.py runserver
+
+## Building
+Build a Kees Docker container with:
+
+    npm run build
+    docker build -t registry.gitlab.com/delta10/kees:latest .
+    docker push registry.gitlab.com/delta10/kees:latest
+
+## Deploying
+
+
+You can easily deploy (or update) kees with:
+
+    helm upgrade --install kees ./helm --namespace kees
