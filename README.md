@@ -34,3 +34,4 @@ Build a Kees Docker container with:
 You can easily deploy (or update) kees with:
 
     helm upgrade --install kees ./helm --namespace kees
+
