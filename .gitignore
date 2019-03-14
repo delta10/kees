@@ -1,6 +1,7 @@
 .vscode/
 .coverage
 node_modules/
+assets/bundles/
 static/
 kees/config.py
 db.sqlite3
