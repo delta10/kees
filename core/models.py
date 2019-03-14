@@ -142,7 +142,7 @@ class CaseType(models.Model):
 
 
 class CaseLog(models.Model):
-    case = models.ForeignKey('Case', on_delete=models.PROTECT, related_name='logs')
+    case = models.ForeignKey('Case', on_delete=models.CASCADE, related_name='logs')
     event = models.CharField(max_length=255)
     performer = models.ForeignKey('User', on_delete=models.PROTECT, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -223,7 +223,7 @@ class Action(models.Model):
 
 
 class Attachment(models.Model):
-    case = models.ForeignKey('Case', on_delete=models.PROTECT, related_name='attachments')
+    case = models.ForeignKey('Case', on_delete=models.CASCADE, related_name='attachments')
     file = models.FileField(upload_to='attachments/%Y/%m/%d/')
 
     class Meta:
