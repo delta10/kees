@@ -91,6 +91,14 @@ def view_case(request, case_id, phase_id=None):
     else:
         phase = case.current_phase
 
+    if request.method == 'POST':
+        form = PhaseForm(phase, request.POST)
+        if form.is_valid():
+            case.data = {**case.data, **form.cleaned_data}
+            case.save()
+
+            messages.add_message(request, messages.INFO, _('De wijzigingen zijn opgeslagen.'))
+
     return render(request, 'cases/view.html', {
         'case': case,
         'selected_phase': phase,
