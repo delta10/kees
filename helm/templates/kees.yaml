@@ -1,0 +1,67 @@
+{{ with set . "component" "kees" }}
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata: {{ include "kees.common.metadata" . | nindent 2 }}
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels: {{ include "kees.common.metadata-labels" . | nindent 6 }}
+  template:
+    metadata:
+      labels: {{ include "kees.common.metadata-labels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: kees
+          image: {{.Values.image}}
+          imagePullPolicy: {{.Values.imagePullPolicy}}
+          env:
+            - name: DB_HOST
+              value: postgres
+            - name: DB_USER
+              value: postgres
+            - name: DB_PASSWORD
+              value: postgres
+            - name: DB_NAME
+              value: postgres
+            - name: SECRET_KEY
+              value: {{ randAlphaNum 20 }}
+            - name: ALLOWED_HOST
+              value: {{.Values.domain}}
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata: {{ include "kees.common.metadata" . | nindent 2 }}
+spec:
+  selector: {{ include "kees.common.metadata-labels" . | nindent 4 }}
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8000
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata: {{ include "kees.common.metadata" . | nindent 2 }}
+  annotations:
+    kubernetes.io/ingress.class: {{ .Values.ingressClass }}
+{{ if eq .Values.ingressClass "nginx" }}
+    certmanager.k8s.io/cluster-issuer: letsencrypt-prod
+{{ end }}
+spec:
+{{ if eq .Values.ingressClass "nginx" }}
+  tls:
+    - secretName: kees-tls
+      hosts:
+        - {{.Values.domain}}
+{{ end }}
+  rules:
+    - host: {{.Values.domain}}
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: kees
+              servicePort: http
+{{ end }}

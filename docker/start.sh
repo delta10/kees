@@ -1,4 +1,4 @@
-#!/bin/ash
+#!/bin/sh
 
 # Collect static files
 echo "Collect static files"
@@ -10,4 +10,4 @@ python manage.py migrate
 
 # Start server
 echo "Starting server"
-uwsgi --http :8000 --module kees.wsgi --static-map /static=/app/static --static-map /media=/app/media
+uwsgi --http :8000 --uid www-data --gid www-data --module kees.wsgi --static-map /static=/app/static --static-map /media=/app/media

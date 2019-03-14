@@ -1,0 +1,13 @@
+{{ define "kees.common.metadata" }}
+name: {{ .component }}
+namespace: {{ .Release.Namespace }}
+labels: {{- include "kees.common.metadata-labels" . | nindent 2 }}
+{{- end }}
+
+{{ define "kees.common.metadata-labels" }}
+heritage: {{ .Release.Service }}
+chart: "{{ .Chart.Name }}-{{ .Chart.Version}}"
+release: {{ .Release.Name }}
+app: {{ .Chart.Name }}
+component: {{ .component }}
+{{ end }}

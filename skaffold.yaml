@@ -1,0 +1,22 @@
+apiVersion: skaffold/v1beta4
+kind: Config
+build:
+  artifacts:
+  - image: registry.gitlab.com/delta10/kees
+    context: .
+    docker:
+      dockerfile: Dockerfile
+  tagPolicy:
+    sha256: {}
+  local:
+    push: false
+profiles:
+- name: minikube
+  deploy:
+    helm:
+      releases:
+      - name: kees
+        chartPath: helm
+        values:
+          image: registry.gitlab.com/delta10/kees
+        namespace: kees

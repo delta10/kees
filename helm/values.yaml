@@ -1,0 +1,4 @@
+ingressClass: traefik
+domain: kees.k8s.delta10.nl
+imagePullPolicy: IfNotPresent
+image: registry.gitlab.com/delta10/kees:latest

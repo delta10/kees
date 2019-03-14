@@ -1,4 +1,4 @@
-FROM python:latest
+FROM python:3
 
 # Install app dependencies
 RUN mkdir /app
@@ -10,7 +10,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 ADD . /app
 
 # Boot script
-ADD docker/config.py /app/flow/config.py
+ADD docker/config.py /app/kees/config.py
 ADD docker/start.sh /start.sh
 RUN chmod +x /start.sh
 
