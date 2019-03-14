@@ -151,16 +151,16 @@ def next_phase(request, case_id):
             })
 
             return redirect('view_case_phase', case.id, case.last_phase.id)
-        else:
-            case.next_phase()
-            messages.add_message(request, messages.INFO, _('De zaak is doorgezet naar de volgende fase.'))
 
-            case.logs.create(event='next_phase', performer=request.user, metadata={
-                'old_phase': old_phase,
-                'new_phase': str(case.current_phase) if case.current_phase else None,
-            })
+        case.next_phase()
+        messages.add_message(request, messages.INFO, _('De zaak is doorgezet naar de volgende fase.'))
 
-            return redirect('view_case', case.id)
+        case.logs.create(event='next_phase', performer=request.user, metadata={
+            'old_phase': old_phase,
+            'new_phase': str(case.current_phase) if case.current_phase else None,
+        })
+
+        return redirect('view_case', case.id)
 
     except IndexError:
         messages.add_message(request, messages.ERROR, _('Kan de zaak niet doorzetten naar de volgende fase.'))
