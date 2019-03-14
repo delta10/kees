@@ -6,6 +6,7 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.core.mail import send_mail
+from django.template import Template, Context
 from .lib import get_actions_from_apps
 
 
@@ -87,6 +88,8 @@ class Case(models.Model):
     data = JSONField(default=dict, blank=True)
 
     def save(self, *args, **kwargs):
+        self.name = Template(self.case_type.display_name).render(Context(self.data))
+
         if not self.id:
             self.current_phase = self.case_type.phases.all()[1]
 
@@ -132,6 +135,7 @@ class Case(models.Model):
 
 class CaseType(models.Model):
     name = models.CharField(max_length=255)
+    display_name = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name
