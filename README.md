@@ -31,8 +31,6 @@ Build a Kees Docker container with:
     docker push registry.gitlab.com/delta10/kees:latest
 
 ## Deploying
-
-
 You can easily deploy (or update) kees with:
 
     helm upgrade --install kees ./helm --namespace kees
