@@ -17,10 +17,12 @@
                         </div>
                     </div>
                 {% endif %}
-                <form method="POST" action="{% url 'next_phase' case.id %}">
-                    {% csrf_token %}
-                    <button class="btn btn-outline-dark btn-light" type="submit">&#8250;</button>
-                </form>
+                {% if case.current_phase %}
+                    <form method="POST" action="{% url 'next_phase' case.id %}">
+                        {% csrf_token %}
+                        <button class="btn btn-outline-dark btn-light" type="submit">&#8250;</button>
+                    </form>
+                {% endif %}
             </div>
         </div>
 

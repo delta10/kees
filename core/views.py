@@ -141,15 +141,26 @@ def next_phase(request, case_id):
 
     try:
         old_phase = str(case.current_phase) if case.current_phase else None
-        case.next_phase()
 
-        case.logs.create(event='next_phase', performer=request.user, metadata={
-            'old_phase': old_phase,
-            'new_phase': str(case.current_phase) if case.current_phase else None,
-        })
+        if case.current_phase == case.last_phase:
+            case.close()
+            messages.add_message(request, messages.INFO, _('De zaak is afgesloten.'))
 
-        messages.add_message(request, messages.INFO, _('De zaak is doorgezet naar de volgende fase.'))
-        return redirect('view_case', case.id)
+            case.logs.create(event='closed_case', performer=request.user, metadata={
+                'old_phase': old_phase,
+            })
+
+            return redirect('view_case_phase', case.id, case.last_phase.id)
+        else:
+            case.next_phase()
+            messages.add_message(request, messages.INFO, _('De zaak is doorgezet naar de volgende fase.'))
+
+            case.logs.create(event='next_phase', performer=request.user, metadata={
+                'old_phase': old_phase,
+                'new_phase': str(case.current_phase) if case.current_phase else None,
+            })
+
+            return redirect('view_case', case.id)
 
     except IndexError:
         messages.add_message(request, messages.ERROR, _('Kan de zaak niet doorzetten naar de volgende fase.'))

@@ -95,6 +95,10 @@ class Case(models.Model):
 
         super(Case, self).save(*args, **kwargs)
 
+    def close(self):
+        self.current_phase = None
+        return self.save()
+
     def next_phase(self):
         phases = list(self.case_type.phases.all())
 
@@ -108,6 +112,14 @@ class Case(models.Model):
         self.current_phase = new_phase
 
         return self.save()
+
+    @property
+    def first_phase(self):
+        return self.case_type.phases.first()
+
+    @property
+    def last_phase(self):
+        return self.case_type.phases.last()
 
     def execute_actions(self):
         result = True
