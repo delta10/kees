@@ -1,6 +1,8 @@
 # pylint: disable=wildcard-import,wrong-import-position,unused-wildcard-import
 import os
 
+from .config import *
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -8,6 +10,7 @@ INSTALLED_APPS = [
     'core',
     'contrib',
     'webpack_loader',
+    'ariadne.contrib.django',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -36,7 +39,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'core.middleware.LoginRequiredMiddleware',
+    # 'core.middleware.LoginRequiredMiddleware',
     'core.middleware.SetLastVisitMiddleware',
 ]
 
@@ -161,7 +164,6 @@ LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'dashboard'
 
 LOGIN_EXEMPT_URLS = [
+    '^graphql$',
     '^media/(.+)$'
 ]
-
-from .config import *
