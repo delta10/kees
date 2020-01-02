@@ -1,4 +1,5 @@
 import os
+import html
 from importlib import import_module
 from django.contrib.postgres.fields import JSONField
 from django.utils.functional import lazy
@@ -8,7 +9,6 @@ from django.db import models
 from django.core.mail import send_mail
 from django.template import Template, Context
 from .lib import get_actions_from_apps
-
 
 class Manager(BaseUserManager):
     def create_user(self, username, givenname, surname, password=None, external_id=None, is_active=True):
@@ -100,7 +100,7 @@ class Case(models.Model):
     data = JSONField(default=dict, blank=True)
 
     def save(self, *args, **kwargs):
-        self.name = Template(self.case_type.display_name).render(Context(self.data))
+        self.name = html.unescape(Template(self.case_type.display_name).render(Context(self.data)))
 
         if not self.id:
             self.current_phase = self.case_type.phases.all()[1]
