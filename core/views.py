@@ -13,7 +13,6 @@ def startpage(request):
     return redirect('dashboard')
 
 def dashboard(request):
-    print(request.user.has_perm('core.can_manage_cases'))
     my_cases = Case.objects.filter(assignee=request.user)
 
     paginator = Paginator(my_cases, 50)
