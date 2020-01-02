@@ -53,7 +53,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = Manager()
 
     username = models.CharField(max_length=255, unique=True)
-    email = models.EmailField(max_length=255, unique=True)
+    email = models.EmailField(max_length=255)
 
     initials = models.CharField(max_length=10, null=True)
     givenname = models.CharField(max_length=255, null=True)
