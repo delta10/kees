@@ -226,7 +226,7 @@
         <moz_doc_formaat>
           <moz_doc_formaat_string>{{ document.extension }}</moz_doc_formaat_string>
         </moz_doc_formaat>
-        <moz_dd_naam>{{ document.filename }}</moz_dd_naam>
+        <moz_dd_naam>{{ document.display_name }}</moz_dd_naam>
         <moz_dd_sorteerprio></moz_dd_sorteerprio>
         <moz_dd_indnoglezen></moz_dd_indnoglezen>
         <moz_dd_inddocumentversiebevriezen></moz_dd_inddocumentversiebevriezen>

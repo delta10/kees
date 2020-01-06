@@ -78,7 +78,7 @@ class Action:
     def get_documents(self, case):
         for attachment in case.attachments.all():
             yield {
-                'filename': attachment.filename,
+                'display_name': attachment.display_name,
                 'url': urljoin(config.URL, attachment.file.url),
                 'extension': attachment.extension.upper()
             }
