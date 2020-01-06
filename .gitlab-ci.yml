@@ -4,7 +4,7 @@ services:
   - postgres:latest
 
 variables:
-  SECRET_KEY: bg9kU6ckKXTLQeZxtovc
+  SECRET_KEY: somethingverysecret
   DB_HOST: postgres
   DB_USER: postgres
   DB_PASSWORD: postgres
