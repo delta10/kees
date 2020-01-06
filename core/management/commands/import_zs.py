@@ -43,9 +43,12 @@ class Command(BaseCommand):
                 pk=user.id,
                 defaults={
                     'username': user.subject.username,
-                    'name': user.subject.properties['displayname'],
+                    'initials': user.subject.properties['initials'][:10],
+                    'givenname': user.subject.properties['givenname'],
+                    'surname': user.subject.properties['sn'],
                     'password': user.password.replace('{SSHA}', 'ldap_salted_sha1$'),
                     'email': user.subject.properties['mail'],
+                    'phone': users.subject.properties['telephonenumber']
                 }
             )
 
