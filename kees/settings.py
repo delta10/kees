@@ -50,14 +50,24 @@ CONSTANCE_ADDITIONAL_FIELDS = {
 }
 
 CONSTANCE_CONFIG = {
+    'URL': ('http://localhost:8000', 'Full URL of this instance'),
     'COMPANY_NAME': ('Example', 'Company name'),
+    'COMPANY_ADDRESS': ('Example road', 'Company address'),
+    'COMPANY_HOUSE_NUMBER': ('1', 'Company house number'),
+    'COMPANY_ZIP': ('1234AB', 'Company zip code'),
+    'COMPANY_CITY': ('Example city', 'Company city'),
     'LOGO_IMAGE': ('default/logo.svg', 'Logo', 'image_field'),
     'FAVICON_IMAGE': ('default/favicon.png', 'Favicon', 'image_field'),
 }
 
 CONSTANCE_CONFIG_FIELDSETS = {
     'General Options': (
+        'URL',
         'COMPANY_NAME',
+        'COMPANY_ADDRESS',
+        'COMPANY_HOUSE_NUMBER',
+        'COMPANY_ZIP',
+        'COMPANY_CITY',
         'LOGO_IMAGE',
         'FAVICON_IMAGE',
     ),

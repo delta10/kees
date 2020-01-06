@@ -39,6 +39,12 @@
                                 Zaak in behandeling genomen
                             {% elif log.event == 'create_case' %}
                                 Zaak aangemaakt
+                            {% elif log.event == 'mozard_request' %}
+                                {% if log.metadata.success %}
+                                    Zaak aangemaakt in Mozard op {{ log.metadata.host }} onder nummer {{ log.metadata.mozard_case_id }}
+                                {% else %}
+                                    Kon zaak niet aanmaken in Mozard op {{ log.metadata.host }} vanwege {{ log.metadata.exception }}
+                                {% endif %}
                             {% else %}
                                 {{ log.event }}
                             {% endif %}

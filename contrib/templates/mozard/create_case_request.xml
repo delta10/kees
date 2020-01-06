@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<moz_koppelverzoek>
+  <moz_generiek>
+    <moz_koppelverzoekreferentie><![CDATA[referentie]]></moz_koppelverzoekreferentie>
+    <moz_koppelverzoekxxb>{{ xxb }}</moz_koppelverzoekxxb>
+    <moz_koppelverzoekxxc>{{ xxc }}</moz_koppelverzoekxxc>
+    <moz_koppelverzoekxxd>{{ xxd }}</moz_koppelverzoekxxd>
+    <moz_koppelverzoekxxe>{{ xxe }}</moz_koppelverzoekxxe>
+    <moz_indxmlcheck>N</moz_indxmlcheck>
+    <moz_inddirectstarten>J</moz_inddirectstarten>
+    <moz_urlresultaat>
+      <moz_urlresultaat_url><![CDATA[http://mozardpoc/mozard/]]></moz_urlresultaat_url>
+      <moz_urlresultaat_uid></moz_urlresultaat_uid>
+      <moz_urlresultaat_ww></moz_urlresultaat_ww>
+    </moz_urlresultaat>
+  </moz_generiek>
+  <moz_opdrachten>
+    <moz_opdracht>
+      <moz_opdrachtapi>1</moz_opdrachtapi>
+      <moz_opdrachtreferentie>Aanmaken nieuwe zaak</moz_opdrachtreferentie>
+      <moz_attributen>
+        <moz_dos_naam>39662</moz_dos_naam>
+        <moz_dos_omschrijving></moz_dos_omschrijving>
+        <moz_zk_zaaktype>
+          <moz_zk_zaaktype_waarde>888</moz_zk_zaaktype_waarde>
+          <moz_zk_zaaktype_string></moz_zk_zaaktype_string>
+        </moz_zk_zaaktype>
+        <moz_zk_gerelateerdezaak>
+          <moz_zk_gerelateerdezaak_volgnr></moz_zk_gerelateerdezaak_volgnr>
+          <moz_zk_gerelateerdezaak_indzojuistaangemaakt></moz_zk_gerelateerdezaak_indzojuistaangemaakt>
+          <moz_zk_gerelateerdezaak_indeerstaangemaakt></moz_zk_gerelateerdezaak_indeerstaangemaakt>
+        </moz_zk_gerelateerdezaak>
+        <moz_zk_zaaktypedeelvervolgzaaktype>
+          <moz_zk_zaaktypedeelvervolgzaaktype_waarde></moz_zk_zaaktypedeelvervolgzaaktype_waarde>
+          <moz_zk_zaaktypedeelvervolgzaaktype_string></moz_zk_zaaktypedeelvervolgzaaktype_string>
+        </moz_zk_zaaktypedeelvervolgzaaktype>
+        <moz_zk_datumgestart></moz_zk_datumgestart>
+        <moz_zk_kanaal>
+          <moz_zk_kanaal_waarde>2</moz_zk_kanaal_waarde>
+          <moz_zk_kanaal_string></moz_zk_kanaal_string>
+        </moz_zk_kanaal>
+        <moz_zk_kenmerkopaanvraag></moz_zk_kenmerkopaanvraag>
+        <moz_zk_datumopaanvraag></moz_zk_datumopaanvraag>
+        <moz_zk_referentiebo></moz_zk_referentiebo>
+        <moz_zk_sorteerprio></moz_zk_sorteerprio>
+        <moz_zk_aandachtspunten></moz_zk_aandachtspunten>
+        <moz_zk_indcorrespondentie>N</moz_zk_indcorrespondentie>
+      </moz_attributen>
+    </moz_opdracht>
+{% for assignment in assignments %}
+    <moz_opdracht>
+      <moz_opdrachtapi>11</moz_opdrachtapi>
+      <moz_opdrachtreferentie>Toevoegen kenmerk</moz_opdrachtreferentie>
+      <moz_attributen>
+        <moz_dd_dossier>
+          <moz_dd_dossier_waarde></moz_dd_dossier_waarde>
+          <moz_zk_volgnr_waarde></moz_zk_volgnr_waarde>
+          <moz_zk_volgnr_indzojuistaangemaakt>J</moz_zk_volgnr_indzojuistaangemaakt>
+          <moz_zk_volgnr_indeerstaangemaakt></moz_zk_volgnr_indeerstaangemaakt>
+          <moz_zk_volgnr_zaaktype_waarde></moz_zk_volgnr_zaaktype_waarde>
+          <moz_zk_volgnr_zaaktype_string></moz_zk_volgnr_zaaktype_string>
+          <moz_zk_volgnr_referentiebo></moz_zk_volgnr_referentiebo>
+          <moz_doc_document_volgnr></moz_doc_document_volgnr>
+          <moz_doc_document_volgnr_indzojuistaangemaakt></moz_doc_document_volgnr_indzojuistaangemaakt>
+          <moz_obj_volgnr_waarde></moz_obj_volgnr_waarde>
+          <moz_obj_volgnr_indzojuistaangemaakt></moz_obj_volgnr_indzojuistaangemaakt>
+          <moz_obj_volgnr_indeerstaangemaakt></moz_obj_volgnr_indeerstaangemaakt>
+          <moz_obj_volgnr_registratie_waarde></moz_obj_volgnr_registratie_waarde>
+          <moz_obj_volgnr_registratie_string></moz_obj_volgnr_registratie_string>
+          <moz_obj_volgnr_bronreferentie></moz_obj_volgnr_bronreferentie>
+          <moz_dd_dossier_string></moz_dd_dossier_string>
+        </moz_dd_dossier>
+        <moz_kenmerk>
+          <moz_km_type_waarde>{{ assignment.id }}</moz_km_type_waarde>
+          <moz_km_type_string></moz_km_type_string>
+          <moz_km_waarde>{{ assignment.value }}</moz_km_waarde>
+          <moz_huidigewaarde_waarde></moz_huidigewaarde_waarde>
+          <moz_huidigewaarde_string></moz_huidigewaarde_string>
+          <moz_indtoevoegen>J</moz_indtoevoegen>
+          <moz_indverwijderen></moz_indverwijderen>
+          <moz_indwijzigen></moz_indwijzigen>
+        </moz_kenmerk>
+      </moz_attributen>
+    </moz_opdracht>
+{% endfor %}
+    <moz_opdracht>
+      <moz_opdrachtapi>11</moz_opdrachtapi>
+      <moz_opdrachtreferentie>Toevoegen kenmerk</moz_opdrachtreferentie>
+      <moz_attributen>
+        <moz_dd_dossier>
+          <moz_dd_dossier_waarde></moz_dd_dossier_waarde>
+          <moz_zk_volgnr_waarde></moz_zk_volgnr_waarde>
+          <moz_zk_volgnr_indzojuistaangemaakt>J</moz_zk_volgnr_indzojuistaangemaakt>
+          <moz_zk_volgnr_indeerstaangemaakt></moz_zk_volgnr_indeerstaangemaakt>
+          <moz_zk_volgnr_zaaktype_waarde></moz_zk_volgnr_zaaktype_waarde>
+          <moz_zk_volgnr_zaaktype_string></moz_zk_volgnr_zaaktype_string>
+          <moz_zk_volgnr_referentiebo></moz_zk_volgnr_referentiebo>
+          <moz_doc_document_volgnr></moz_doc_document_volgnr>
+          <moz_doc_document_volgnr_indzojuistaangemaakt></moz_doc_document_volgnr_indzojuistaangemaakt>
+          <moz_obj_volgnr_waarde></moz_obj_volgnr_waarde>
+          <moz_obj_volgnr_indzojuistaangemaakt></moz_obj_volgnr_indzojuistaangemaakt>
+          <moz_obj_volgnr_indeerstaangemaakt></moz_obj_volgnr_indeerstaangemaakt>
+          <moz_obj_volgnr_registratie_waarde></moz_obj_volgnr_registratie_waarde>
+          <moz_obj_volgnr_registratie_string></moz_obj_volgnr_registratie_string>
+          <moz_obj_volgnr_bronreferentie></moz_obj_volgnr_bronreferentie>
+          <moz_dd_dossier_string></moz_dd_dossier_string>
+        </moz_dd_dossier>
+        <moz_kenmerk>
+          <moz_km_type_waarde>6127</moz_km_type_waarde>
+          <moz_km_type_string></moz_km_type_string>
+          <moz_km_waarde>{% if first_notification %}211636{% else %}211637{% endif %}</moz_km_waarde>
+          <moz_huidigewaarde_waarde></moz_huidigewaarde_waarde>
+          <moz_huidigewaarde_string></moz_huidigewaarde_string>
+          <moz_indtoevoegen>J</moz_indtoevoegen>
+          <moz_indverwijderen></moz_indverwijderen>
+          <moz_indwijzigen></moz_indwijzigen>
+        </moz_kenmerk>
+      </moz_attributen>
+    </moz_opdracht>
+    <moz_opdracht>
+      <moz_opdrachtapi>11</moz_opdrachtapi>
+      <moz_opdrachtreferentie>Toevoegen kenmerk</moz_opdrachtreferentie>
+      <moz_attributen>
+        <moz_dd_dossier>
+          <moz_dd_dossier_waarde></moz_dd_dossier_waarde>
+          <moz_zk_volgnr_waarde></moz_zk_volgnr_waarde>
+          <moz_zk_volgnr_indzojuistaangemaakt>J</moz_zk_volgnr_indzojuistaangemaakt>
+          <moz_zk_volgnr_indeerstaangemaakt></moz_zk_volgnr_indeerstaangemaakt>
+          <moz_zk_volgnr_zaaktype_waarde></moz_zk_volgnr_zaaktype_waarde>
+          <moz_zk_volgnr_zaaktype_string></moz_zk_volgnr_zaaktype_string>
+          <moz_zk_volgnr_referentiebo></moz_zk_volgnr_referentiebo>
+          <moz_doc_document_volgnr></moz_doc_document_volgnr>
+          <moz_doc_document_volgnr_indzojuistaangemaakt></moz_doc_document_volgnr_indzojuistaangemaakt>
+          <moz_obj_volgnr_waarde></moz_obj_volgnr_waarde>
+          <moz_obj_volgnr_indzojuistaangemaakt></moz_obj_volgnr_indzojuistaangemaakt>
+          <moz_obj_volgnr_indeerstaangemaakt></moz_obj_volgnr_indeerstaangemaakt>
+          <moz_obj_volgnr_registratie_waarde></moz_obj_volgnr_registratie_waarde>
+          <moz_obj_volgnr_registratie_string></moz_obj_volgnr_registratie_string>
+          <moz_obj_volgnr_bronreferentie></moz_obj_volgnr_bronreferentie>
+          <moz_dd_dossier_string></moz_dd_dossier_string>
+        </moz_dd_dossier>
+        <moz_kenmerk>
+          <moz_km_type_waarde>483</moz_km_type_waarde>
+          <moz_km_type_string></moz_km_type_string>
+          <moz_km_waarde>154</moz_km_waarde>
+          <moz_huidigewaarde_waarde></moz_huidigewaarde_waarde>
+          <moz_huidigewaarde_string></moz_huidigewaarde_string>
+          <moz_indtoevoegen>J</moz_indtoevoegen>
+          <moz_indverwijderen></moz_indverwijderen>
+          <moz_indwijzigen></moz_indwijzigen>
+        </moz_kenmerk>
+      </moz_attributen>
+    </moz_opdracht>
+    <moz_opdracht>
+      <moz_opdrachtapi>11</moz_opdrachtapi>
+      <moz_opdrachtreferentie>Toevoegen kenmerk</moz_opdrachtreferentie>
+      <moz_attributen>
+        <moz_dd_dossier>
+          <moz_dd_dossier_waarde></moz_dd_dossier_waarde>
+          <moz_zk_volgnr_waarde></moz_zk_volgnr_waarde>
+          <moz_zk_volgnr_indzojuistaangemaakt>J</moz_zk_volgnr_indzojuistaangemaakt>
+          <moz_zk_volgnr_indeerstaangemaakt></moz_zk_volgnr_indeerstaangemaakt>
+          <moz_zk_volgnr_zaaktype_waarde></moz_zk_volgnr_zaaktype_waarde>
+          <moz_zk_volgnr_zaaktype_string></moz_zk_volgnr_zaaktype_string>
+          <moz_zk_volgnr_referentiebo></moz_zk_volgnr_referentiebo>
+          <moz_doc_document_volgnr></moz_doc_document_volgnr>
+          <moz_doc_document_volgnr_indzojuistaangemaakt></moz_doc_document_volgnr_indzojuistaangemaakt>
+          <moz_obj_volgnr_waarde></moz_obj_volgnr_waarde>
+          <moz_obj_volgnr_indzojuistaangemaakt></moz_obj_volgnr_indzojuistaangemaakt>
+          <moz_obj_volgnr_indeerstaangemaakt></moz_obj_volgnr_indeerstaangemaakt>
+          <moz_obj_volgnr_registratie_waarde></moz_obj_volgnr_registratie_waarde>
+          <moz_obj_volgnr_registratie_string></moz_obj_volgnr_registratie_string>
+          <moz_obj_volgnr_bronreferentie></moz_obj_volgnr_bronreferentie>
+          <moz_dd_dossier_string></moz_dd_dossier_string>
+        </moz_dd_dossier>
+        <moz_kenmerk>
+          <moz_km_type_waarde>753</moz_km_type_waarde>
+          <moz_km_type_string></moz_km_type_string>
+          <moz_km_waarde>WN-{{ case.id }}</moz_km_waarde>
+          <moz_huidigewaarde_waarde></moz_huidigewaarde_waarde>
+          <moz_huidigewaarde_string></moz_huidigewaarde_string>
+          <moz_indtoevoegen>J</moz_indtoevoegen>
+          <moz_indverwijderen></moz_indverwijderen>
+          <moz_indwijzigen></moz_indwijzigen>
+        </moz_kenmerk>
+      </moz_attributen>
+    </moz_opdracht>
+{% for document in documents %}
+    <moz_opdracht>
+      <moz_opdrachtapi>2</moz_opdrachtapi>
+      <moz_opdrachtreferentie>Toevoegen document</moz_opdrachtreferentie>
+      <moz_attributen>
+        <moz_dd_document>
+          <moz_dd_document_volgnr></moz_dd_document_volgnr>
+          <moz_dd_documentblob></moz_dd_documentblob>
+          <moz_dd_document_download_url>{{ document.url }}</moz_dd_document_download_url>
+          <moz_dd_document_download_uid></moz_dd_document_download_uid>
+          <moz_dd_document_download_ww></moz_dd_document_download_ww>
+        </moz_dd_document>
+        <moz_dd_dossier>
+          <moz_dd_dossier_waarde></moz_dd_dossier_waarde>
+          <moz_zk_volgnr_waarde></moz_zk_volgnr_waarde>
+          <moz_zk_volgnr_indzojuistaangemaakt>J</moz_zk_volgnr_indzojuistaangemaakt>
+          <moz_zk_volgnr_indeerstaangemaakt></moz_zk_volgnr_indeerstaangemaakt>
+          <moz_zk_volgnr_zaaktype_waarde></moz_zk_volgnr_zaaktype_waarde>
+          <moz_zk_volgnr_zaaktype_string></moz_zk_volgnr_zaaktype_string>
+          <moz_zk_volgnr_referentiebo></moz_zk_volgnr_referentiebo>
+          <moz_doc_document_volgnr></moz_doc_document_volgnr>
+          <moz_doc_document_volgnr_indzojuistaangemaakt></moz_doc_document_volgnr_indzojuistaangemaakt>
+          <moz_obj_volgnr_waarde></moz_obj_volgnr_waarde>
+          <moz_obj_volgnr_indzojuistaangemaakt></moz_obj_volgnr_indzojuistaangemaakt>
+          <moz_obj_volgnr_indeerstaangemaakt></moz_obj_volgnr_indeerstaangemaakt>
+          <moz_obj_volgnr_registratie_waarde></moz_obj_volgnr_registratie_waarde>
+          <moz_obj_volgnr_registratie_string></moz_obj_volgnr_registratie_string>
+          <moz_obj_volgnr_bronreferentie></moz_obj_volgnr_bronreferentie>
+          <moz_dd_dossier_string></moz_dd_dossier_string>
+        </moz_dd_dossier>
+        <moz_dd_documenttype>
+          <moz_dd_documenttype_waarde>26</moz_dd_documenttype_waarde>
+          <moz_dd_documenttype_string></moz_dd_documenttype_string>
+        </moz_dd_documenttype>
+        <moz_dd_publicatieniveau>
+          <moz_dd_publicatieniveau_waarde>30</moz_dd_publicatieniveau_waarde>
+          <moz_dd_publicatieniveau_string></moz_dd_publicatieniveau_string>
+        </moz_dd_publicatieniveau>
+        <moz_doc_formaat>
+          <moz_doc_formaat_string>{{ document.extension }}</moz_doc_formaat_string>
+        </moz_doc_formaat>
+        <moz_dd_naam>{{ document.filename }}</moz_dd_naam>
+        <moz_dd_sorteerprio></moz_dd_sorteerprio>
+        <moz_dd_indnoglezen></moz_dd_indnoglezen>
+        <moz_dd_inddocumentversiebevriezen></moz_dd_inddocumentversiebevriezen>
+        <moz_kmt_auteur></moz_kmt_auteur>
+        <moz_kmt_trefwoorden></moz_kmt_trefwoorden>
+        <moz_doc_versie>1</moz_doc_versie>
+        <moz_doc_indconcept></moz_doc_indconcept>
+        <moz_dd_omschrijving></moz_dd_omschrijving>
+        <moz_dd_subdossier_naam></moz_dd_subdossier_naam>
+        <moz_dd_subsubdossier_naam></moz_dd_subsubdossier_naam>
+      </moz_attributen>
+    </moz_opdracht>
+{% endfor %}
+    <moz_opdracht>
+      <moz_opdrachtapi>3</moz_opdrachtapi>
+      <moz_opdrachtreferentie>Toevoegen contactgegevens</moz_opdrachtreferentie>
+      <moz_attributen>
+        <moz_dosn_aard>
+          <moz_dosn_aard_waarde>AV</moz_dosn_aard_waarde>
+          <moz_dosn_aard_string></moz_dosn_aard_string>
+        </moz_dosn_aard>
+        <moz_dosn_emailadres>{{ requestor.email }}</moz_dosn_emailadres>
+        <moz_dosn_telefoonnummer>{{ requestor.phone }}</moz_dosn_telefoonnummer>
+        <moz_dosn_indsignviaemail></moz_dosn_indsignviaemail>
+        <moz_dosn_indsignviatelefoon></moz_dosn_indsignviatelefoon>
+        <moz_dosn_indsignviasms></moz_dosn_indsignviasms>
+        <moz_gmk_registratie>
+          <moz_gmk_registratie_waarde></moz_gmk_registratie_waarde>
+          <moz_gmk_registratie_string></moz_gmk_registratie_string>
+        </moz_gmk_registratie>
+        <moz_gmk_sleutel>
+          <moz_gmk_sleutel_volgnr></moz_gmk_sleutel_volgnr>
+          <moz_gmk_sleutel_bronreferentie_string></moz_gmk_sleutel_bronreferentie_string>
+          <moz_gmk_sleutel_bronidentificatie_string></moz_gmk_sleutel_bronidentificatie_string>
+        </moz_gmk_sleutel>
+        <moz_naw_naam>{{ requestor.organization }}</moz_naw_naam>
+        <moz_naw_indnnp>J</moz_naw_indnnp>
+        <moz_naw_voorvoegsel></moz_naw_voorvoegsel>
+        <moz_naw_tussenvoegsel></moz_naw_tussenvoegsel>
+        <moz_naw_tav>{{ requestor.surname }}</moz_naw_tav>
+        <moz_naw_geslacht></moz_naw_geslacht>
+        <moz_naw_voorletters>{{ requestor.initials }}</moz_naw_voorletters>
+        <moz_naw_voornamen>{{ requestor.givenname }}</moz_naw_voornamen>
+        <moz_naw_adres>{{ requestor.address }}</moz_naw_adres>
+        <moz_naw_huisnummer>{{ requestor.house_number }}</moz_naw_huisnummer>
+        <moz_naw_postcode>{{ requestor.zip }}</moz_naw_postcode>
+        <moz_naw_woonplaats>{{ requestor.city }}</moz_naw_woonplaats>
+        <moz_naw_land></moz_naw_land>
+        <moz_naw_datumgeboorte></moz_naw_datumgeboorte>
+        <moz_naw_bsn></moz_naw_bsn>
+        <moz_naw_kvknummer></moz_naw_kvknummer>
+        <moz_zk_volgnr>
+          <moz_zk_volgnr_waarde></moz_zk_volgnr_waarde>
+          <moz_zk_volgnr_indzojuistaangemaakt>J</moz_zk_volgnr_indzojuistaangemaakt>
+          <moz_zk_volgnr_indeerstaangemaakt></moz_zk_volgnr_indeerstaangemaakt>
+          <moz_zk_volgnr_zaaktype_waarde></moz_zk_volgnr_zaaktype_waarde>
+          <moz_zk_volgnr_zaaktype_string></moz_zk_volgnr_zaaktype_string>
+          <moz_zk_volgnr_referentiebo></moz_zk_volgnr_referentiebo>
+        </moz_zk_volgnr>
+      </moz_attributen>
+    </moz_opdracht>
+    <moz_opdracht>
+      <moz_opdrachtapi>5</moz_opdrachtapi>
+      <moz_opdrachtreferentie>Wijzigen naam zaak</moz_opdrachtreferentie>
+      <moz_attributen>
+        <moz_dos_naam></moz_dos_naam>
+        <moz_dos_naam_indobvconfiguratie>J</moz_dos_naam_indobvconfiguratie>
+        <moz_zk_volgnr>
+          <moz_zk_volgnr_waarde></moz_zk_volgnr_waarde>
+          <moz_zk_volgnr_indzojuistaangemaakt>J</moz_zk_volgnr_indzojuistaangemaakt>
+          <moz_zk_volgnr_indeerstaangemaakt></moz_zk_volgnr_indeerstaangemaakt>
+          <moz_zk_volgnr_zaaktype_waarde></moz_zk_volgnr_zaaktype_waarde>
+          <moz_zk_volgnr_zaaktype_string></moz_zk_volgnr_zaaktype_string>
+          <moz_zk_volgnr_referentiebo></moz_zk_volgnr_referentiebo>
+        </moz_zk_volgnr>
+      </moz_attributen>
+    </moz_opdracht>
+    <moz_opdracht>
+      <moz_opdrachtapi>4</moz_opdrachtapi>
+      <moz_opdrachtreferentie>Wijzigen status</moz_opdrachtreferentie>
+      <moz_attributen>
+        <moz_zk_statusnr>
+          <moz_zk_statusnr_waarde>1</moz_zk_statusnr_waarde>
+        </moz_zk_statusnr>
+        <moz_zk_volgnr>
+          <moz_zk_volgnr_waarde></moz_zk_volgnr_waarde>
+          <moz_zk_volgnr_indzojuistaangemaakt>J</moz_zk_volgnr_indzojuistaangemaakt>
+          <moz_zk_volgnr_indeerstaangemaakt></moz_zk_volgnr_indeerstaangemaakt>
+          <moz_zk_volgnr_zaaktype_waarde></moz_zk_volgnr_zaaktype_waarde>
+          <moz_zk_volgnr_zaaktype_string></moz_zk_volgnr_zaaktype_string>
+          <moz_zk_volgnr_referentiebo></moz_zk_volgnr_referentiebo>
+        </moz_zk_volgnr>
+      </moz_attributen>
+    </moz_opdracht>
+  </moz_opdrachten>
+</moz_koppelverzoek>

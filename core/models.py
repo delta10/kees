@@ -11,13 +11,14 @@ from .lib import get_actions_from_apps
 
 
 class Manager(BaseUserManager):
-    def create_user(self, username, name, password=None, external_id=None, is_active=True):
+    def create_user(self, username, givenname, surname, password=None, external_id=None, is_active=True):
         if not username:
             raise ValueError('Users must have a username')
 
         user = self.model(
             username=username,
-            name=name
+            givenname=givenname,
+            surname=surname,
         )
 
         if is_active:
@@ -33,10 +34,11 @@ class Manager(BaseUserManager):
 
         return user
 
-    def create_superuser(self, username, name, password):
+    def create_superuser(self, username, givenname, surname, password):
         user = self.create_user(
             username=username,
-            name=name,
+            givenname=givenname,
+            surname=surname,
             password=password
         )
 
@@ -52,13 +54,19 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     username = models.CharField(max_length=255, unique=True)
     email = models.EmailField(max_length=255, unique=True)
-    name = models.CharField(max_length=100)
+
+    initials = models.CharField(max_length=10, null=True)
+    givenname = models.CharField(max_length=255, null=True)
+    surname = models.CharField(max_length=255, null=True)
+    company = models.CharField(max_length=255, null=True)
+    phone = models.CharField(max_length=255, null=True)
+
     is_active = models.BooleanField(default=True)
     last_visit = models.DateTimeField(null=True)
 
     external_id = models.CharField(max_length=50, unique=True, blank=True, null=True)
 
-    REQUIRED_FIELDS = ['name']
+    REQUIRED_FIELDS = ['givenname', 'surname']
     USERNAME_FIELD = 'username'
 
     def __str__(self):
@@ -73,6 +81,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     def get_short_name(self):
         return self.name
 
+    @property
+    def name(self):
+        return '{} {}'.format(self.givenname, self.surname)
+
     def email_user(self, subject, message, from_email=None, **kwargs):
         send_mail(subject, message, from_email or settings.FROM_EMAIL, [
             self.email
@@ -82,7 +94,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Case(models.Model):
     name = models.CharField(max_length=255)
     case_type = models.ForeignKey('CaseType', on_delete=models.PROTECT)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     current_phase = models.ForeignKey('Phase', on_delete=models.PROTECT, null=True, blank=True)
     assignee = models.ForeignKey('User', on_delete=models.PROTECT, null=True, blank=True)
     data = JSONField(default=dict, blank=True)
@@ -99,13 +111,13 @@ class Case(models.Model):
         self.current_phase = None
         return self.save()
 
-    def next_phase(self):
+    def next_phase(self, request):
         phases = list(self.case_type.phases.all())
 
         if self.current_phase:
             old_index = phases.index(self.current_phase)
             new_phase = phases[old_index + 1]
-            self.execute_actions()
+            self.execute_actions(request)
         else:
             new_phase = phases[1]
 
@@ -121,7 +133,7 @@ class Case(models.Model):
     def last_phase(self):
         return self.case_type.phases.last()
 
-    def execute_actions(self):
+    def execute_actions(self, request):
         result = True
 
         for action in self.current_phase.actions.all():
@@ -129,13 +141,13 @@ class Case(models.Model):
             cls = getattr(mod, 'Action')
             instance = cls()
 
-            if not instance.execute(self, action.args):
+            if not instance.execute(self, {**action.args, 'user': request.user}):
                 result = False
 
         return result
 
     class Meta:
-        ordering = ['-id']
+        ordering = ['-created_at']
 
         permissions = (
             ('can_manage_cases', 'Can manage cases'),
@@ -157,11 +169,11 @@ class CaseLog(models.Model):
     case = models.ForeignKey('Case', on_delete=models.CASCADE, related_name='logs')
     event = models.CharField(max_length=255)
     performer = models.ForeignKey('User', on_delete=models.PROTECT, null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     metadata = JSONField(default=dict, blank=True)
 
     class Meta:
-        ordering = ['-id']
+        ordering = ['-created_at']
 
 
 class Phase(models.Model):
@@ -241,5 +253,11 @@ class Attachment(models.Model):
     class Meta:
         ordering = ['-id']
 
+    @property
     def filename(self):
         return os.path.basename(self.file.name)
+
+    @property
+    def extension(self):
+        _, extension = os.path.splitext(self.file.name)
+        return extension.replace('.', '')

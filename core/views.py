@@ -151,7 +151,7 @@ def next_phase(request, case_id):
 
             return redirect('view_case_phase', case.id, case.last_phase.id)
 
-        case.next_phase()
+        case.next_phase(request)
         messages.add_message(request, messages.INFO, _('De zaak is doorgezet naar de volgende fase.'))
 
         case.logs.create(event='next_phase', performer=request.user, metadata={
@@ -233,7 +233,7 @@ def create_attachment(request, case_id):
             new_attachment.save()
 
             case.logs.create(event='create_attachment', performer=request.user, metadata={
-                'attachment_name': new_attachment.filename(),
+                'attachment_name': new_attachment.filename,
             })
 
             return redirect('attachments', case.id)
@@ -253,7 +253,7 @@ def delete_attachment(request, case_id, attachment_id):
         attachment.delete()
 
         case.logs.create(event='delete_attachment', performer=request.user, metadata={
-            'attachment_name': attachment.filename(),
+            'attachment_name': attachment.filename,
         })
 
         messages.add_message(request, messages.INFO, _('De bijlage is verwijderd.'))
