@@ -233,7 +233,7 @@ def create_attachment(request, case_id):
             new_attachment.save()
 
             case.logs.create(event='create_attachment', performer=request.user, metadata={
-                'attachment_name': new_attachment.filename,
+                'attachment_name': new_attachment.display_name,
             })
 
             return redirect('attachments', case.id)
@@ -253,7 +253,7 @@ def delete_attachment(request, case_id, attachment_id):
         attachment.delete()
 
         case.logs.create(event='delete_attachment', performer=request.user, metadata={
-            'attachment_name': attachment.filename,
+            'attachment_name': attachment.display_name,
         })
 
         messages.add_message(request, messages.INFO, _('De bijlage is verwijderd.'))

@@ -75,3 +75,33 @@ class ObjectData(Base):
     object_id = Column(BigInteger)
     object_class = Column(String)
     properties = Column(JSONEncodedDict)
+
+class Logging(Base):
+    __tablename__ = 'logging'
+    id = Column(BigInteger, primary_key=True)
+    zaak_id = Column(BigInteger)
+    event_type = Column(String)
+    onderwerp = Column(String)
+    event_data = Column(JSONEncodedDict)
+    created = Column(LocalDateTime)
+    created_by = Column(String)
+
+class File(Base):
+    __tablename__ = 'file'
+    id = Column(BigInteger, primary_key=True)
+    filestore_id = Column(BigInteger, ForeignKey('filestore.id'))
+    case_id = Column(BigInteger)
+    version = Column(BigInteger)
+    date_created = Column(LocalDateTime)
+    created_by = Column(String)
+    name = Column(String)
+
+    filestore = relationship('Filestore')
+
+class Filestore(Base):
+    __tablename__ = 'filestore'
+    id = Column(BigInteger, primary_key=True)
+    uuid = Column(UUID)
+    original_name = Column(String)
+    mimetype = Column(String)
+    date_created = Column(LocalDateTime)

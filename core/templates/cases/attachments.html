@@ -20,7 +20,7 @@
             <tbody>
                 {% for attachment in case.attachments.all %}
                     <tr>
-                        <td><a href="{{ attachment.file.url }}" target="_blank">{{ attachment.filename }}</a><br /></td>
+                        <td><a href="{{ attachment.file.url }}" target="_blank">{{ attachment.display_name }}</a><br /></td>
                         <td>{{ attachment.file.size|filesizeformat }}</td>
                         <td><a href="{% url 'delete_attachment' case.id attachment.id %}"><i class="far fa-trash-alt"></i></a></td>
                     </tr>

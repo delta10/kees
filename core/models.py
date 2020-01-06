@@ -2,6 +2,7 @@ import os
 import html
 from importlib import import_module
 from django.contrib.postgres.fields import JSONField
+from django.utils.timezone import datetime
 from django.utils.functional import lazy
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
@@ -94,7 +95,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Case(models.Model):
     name = models.CharField(max_length=255)
     case_type = models.ForeignKey('CaseType', on_delete=models.PROTECT)
-    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    created_at = models.DateTimeField(default=datetime.now, db_index=True)
     current_phase = models.ForeignKey('Phase', on_delete=models.PROTECT, null=True, blank=True)
     assignee = models.ForeignKey('User', on_delete=models.PROTECT, null=True, blank=True)
     data = JSONField(default=dict, blank=True)
@@ -169,7 +170,7 @@ class CaseLog(models.Model):
     case = models.ForeignKey('Case', on_delete=models.CASCADE, related_name='logs')
     event = models.CharField(max_length=255)
     performer = models.ForeignKey('User', on_delete=models.PROTECT, null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    created_at = models.DateTimeField(default=datetime.now, db_index=True)
     metadata = JSONField(default=dict, blank=True)
 
     class Meta:
@@ -246,15 +247,24 @@ class Action(models.Model):
         return self.key
 
 
+def upload_to(instance, filename):
+    dirname = instance.created_at.strftime('attachments/%Y/%m/%d/')
+    return os.path.join(dirname, filename)
+
 class Attachment(models.Model):
     case = models.ForeignKey('Case', on_delete=models.CASCADE, related_name='attachments')
-    file = models.FileField(upload_to='attachments/%Y/%m/%d/')
+    name = models.CharField(max_length=255, blank=True, null=True)
+    file = models.FileField(upload_to=upload_to)
+    created_at = models.DateTimeField(default=datetime.now, db_index=True)
 
     class Meta:
         ordering = ['-id']
 
     @property
-    def filename(self):
+    def display_name(self):
+        if self.name:
+            return self.name
+
         return os.path.basename(self.file.name)
 
     @property
