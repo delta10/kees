@@ -57,7 +57,7 @@ class PhaseAdmin(admin.ModelAdmin):
 
 
 class PhaseFieldAdmin(admin.ModelAdmin):
-    list_display = ('phase', 'label', 'order')
+    list_display = ('order', 'phase', 'label', 'type', 'widget', )
 
 
 class AttachmentAdmin(admin.ModelAdmin):
