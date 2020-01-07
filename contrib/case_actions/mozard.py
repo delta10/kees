@@ -31,13 +31,9 @@ class Action:
             'case': case,
             'assignments': self.get_assignments(case),
             'documents': self.get_documents(case),
-            'requestor': {
-                'initials': args['user'].initials,
-                'givenname': args['user'].givenname,
-                'surname': args['user'].surname,
-                'phone': args['user'].phone,
-                'email': args['user'].email,
-                'organization': config.COMPANY_NAME,
+            'user': args['user'],
+            'organization': {
+                'name': config.COMPANY_NAME,
                 'address': config.COMPANY_ADDRESS,
                 'house_number': config.COMPANY_HOUSE_NUMBER,
                 'zip': config.COMPANY_ZIP,

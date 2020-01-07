@@ -9,7 +9,7 @@ from .models import User, Case, CaseType, Phase, PhaseField, Action, CaseLog, At
 class UserCreationForm(ModelForm):
     class Meta:
         model = User
-        fields = ('username', 'givenname', 'surname', )
+        fields = ('username', 'first_name', 'last_name', )
 
     def save(self, commit=True):
         user = super().save(commit=False)
@@ -20,16 +20,16 @@ class UserCreationForm(ModelForm):
 
 class UserAdmin(BaseUserAdmin):
     add_form = UserCreationForm
-    list_display = ('username', 'givenname', 'surname', 'company', 'email', 'last_visit')
+    list_display = ('username', 'first_name', 'last_name', 'company', 'email', 'last_visit')
     list_filter = ('is_superuser', )
-    ordering = ('givenname', 'surname', )
+    ordering = ('first_name', 'last_name', )
     filter_horizontal = ()
 
     readonly_fields = ('last_visit', )
 
     fieldsets = (
         (None, {'fields': ('username', 'password', 'last_visit')}),
-        (_('Personal info'), {'fields': ('initials', 'givenname', 'surname', 'email', 'company', 'phone')}),
+        (_('Personal info'), {'fields': ('initials', 'first_name', 'last_name', 'email', 'company', 'phone')}),
         (_('Permissions'), {'fields': ('is_active', 'is_superuser', 'groups')})
     )
 
@@ -40,8 +40,8 @@ class UserAdmin(BaseUserAdmin):
                 'username',
                 'password',
                 'initials',
-                'givenname',
-                'surname',
+                'first_name',
+                'last_name',
                 'email',
                 'company',
                 'phone',

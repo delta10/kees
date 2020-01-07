@@ -27,15 +27,14 @@ class Command(BaseCommand):
     help = 'Import data from zs'
 
     def add_arguments(self, parser):
-        parser.add_argument('--database-name', type=str,
-                            help='The name of the database to import from')
+        parser.add_argument('--database-url', type=str,
+                            help='The URL of the database to import from')
         parser.add_argument('--storage-path', type=str,
                             help='The path where the storage resides',
                             default='/var/tmp/zs/storage')
 
-    def handle(self, database_name, storage_path, *args, **kwargs):
-        engine = create_engine(
-            'postgresql://localhost/{}'.format(database_name), pool_recycle=3600)
+    def handle(self, database_url, storage_path, *args, **kwargs):
+        engine = create_engine(database_url, pool_recycle=3600)
         session = sessionmaker(bind=engine)()
 
         for user in session.query(src.UserEntity).join(src.Subject).all():
@@ -44,11 +43,11 @@ class Command(BaseCommand):
                 defaults={
                     'username': user.subject.username,
                     'initials': user.subject.properties['initials'][:10],
-                    'givenname': user.subject.properties['givenname'],
-                    'surname': user.subject.properties['sn'],
+                    'first_name': user.subject.properties['givenname'],
+                    'last_name': user.subject.properties['sn'],
                     'password': user.password.replace('{SSHA}', 'ldap_salted_sha1$'),
                     'email': user.subject.properties['mail'],
-                    'phone': users.subject.properties['telephonenumber']
+                    'phone': user.subject.properties.get('telephonenumber')
                 }
             )
 

@@ -2,8 +2,9 @@ import os
 import html
 from importlib import import_module
 from django.contrib.postgres.fields import JSONField
-from django.utils.timezone import datetime
+from django.utils import timezone
 from django.utils.functional import lazy
+from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
@@ -12,14 +13,14 @@ from django.template import Template, Context
 from .lib import get_actions_from_apps
 
 class Manager(BaseUserManager):
-    def create_user(self, username, givenname, surname, password=None, external_id=None, is_active=True):
+    def create_user(self, username, first_name, last_name, password=None, external_id=None, is_active=True):
         if not username:
             raise ValueError('Users must have a username')
 
         user = self.model(
             username=username,
-            givenname=givenname,
-            surname=surname,
+            first_name=first_name,
+            last_name=last_name,
         )
 
         if is_active:
@@ -35,11 +36,11 @@ class Manager(BaseUserManager):
 
         return user
 
-    def create_superuser(self, username, givenname, surname, password):
+    def create_superuser(self, username, first_name, last_name, password):
         user = self.create_user(
             username=username,
-            givenname=givenname,
-            surname=surname,
+            first_name=first_name,
+            last_name=last_name,
             password=password
         )
 
@@ -56,18 +57,18 @@ class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=255, unique=True)
     email = models.EmailField(max_length=255)
 
-    initials = models.CharField(max_length=10, null=True)
-    givenname = models.CharField(max_length=255, null=True)
-    surname = models.CharField(max_length=255, null=True)
-    company = models.CharField(max_length=255, null=True)
-    phone = models.CharField(max_length=255, null=True)
+    initials = models.CharField(_('initials'), max_length=10, blank=True, null=True)
+    first_name = models.CharField(_('first name'), max_length=30, blank=True)
+    last_name = models.CharField(_('last name'), max_length=150, blank=True)
+    company = models.CharField(max_length=255, blank=True, null=True)
+    phone = models.CharField(max_length=255, blank=True, null=True)
 
     is_active = models.BooleanField(default=True)
     last_visit = models.DateTimeField(null=True)
 
     external_id = models.CharField(max_length=50, unique=True, blank=True, null=True)
 
-    REQUIRED_FIELDS = ['givenname', 'surname']
+    REQUIRED_FIELDS = ['first_name', 'last_name']
     USERNAME_FIELD = 'username'
 
     def __str__(self):
@@ -84,7 +85,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     @property
     def name(self):
-        return '{} {}'.format(self.givenname, self.surname)
+        return '{} {}'.format(self.first_name, self.last_name)
 
     def email_user(self, subject, message, from_email=None, **kwargs):
         send_mail(subject, message, from_email or settings.FROM_EMAIL, [
@@ -95,7 +96,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Case(models.Model):
     name = models.CharField(max_length=255)
     case_type = models.ForeignKey('CaseType', on_delete=models.PROTECT)
-    created_at = models.DateTimeField(default=datetime.now, db_index=True)
+    created_at = models.DateTimeField(default=timezone.now, db_index=True)
     current_phase = models.ForeignKey('Phase', on_delete=models.PROTECT, null=True, blank=True)
     assignee = models.ForeignKey('User', on_delete=models.PROTECT, null=True, blank=True)
     data = JSONField(default=dict, blank=True)
@@ -170,7 +171,7 @@ class CaseLog(models.Model):
     case = models.ForeignKey('Case', on_delete=models.CASCADE, related_name='logs')
     event = models.CharField(max_length=255)
     performer = models.ForeignKey('User', on_delete=models.PROTECT, null=True, blank=True)
-    created_at = models.DateTimeField(default=datetime.now, db_index=True)
+    created_at = models.DateTimeField(default=timezone.now, db_index=True)
     metadata = JSONField(default=dict, blank=True)
 
     class Meta:
@@ -255,7 +256,7 @@ class Attachment(models.Model):
     case = models.ForeignKey('Case', on_delete=models.CASCADE, related_name='attachments')
     name = models.CharField(max_length=255, blank=True, null=True)
     file = models.FileField(upload_to=upload_to)
-    created_at = models.DateTimeField(default=datetime.now, db_index=True)
+    created_at = models.DateTimeField(default=timezone.now, db_index=True)
 
     class Meta:
         ordering = ['-id']

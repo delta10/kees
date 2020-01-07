@@ -248,8 +248,8 @@
           <moz_dosn_aard_waarde>AV</moz_dosn_aard_waarde>
           <moz_dosn_aard_string></moz_dosn_aard_string>
         </moz_dosn_aard>
-        <moz_dosn_emailadres>{{ requestor.email }}</moz_dosn_emailadres>
-        <moz_dosn_telefoonnummer>{{ requestor.phone }}</moz_dosn_telefoonnummer>
+        <moz_dosn_emailadres>{{ user.email }}</moz_dosn_emailadres>
+        <moz_dosn_telefoonnummer>{{ user.phone }}</moz_dosn_telefoonnummer>
         <moz_dosn_indsignviaemail></moz_dosn_indsignviaemail>
         <moz_dosn_indsignviatelefoon></moz_dosn_indsignviatelefoon>
         <moz_dosn_indsignviasms></moz_dosn_indsignviasms>
@@ -262,18 +262,18 @@
           <moz_gmk_sleutel_bronreferentie_string></moz_gmk_sleutel_bronreferentie_string>
           <moz_gmk_sleutel_bronidentificatie_string></moz_gmk_sleutel_bronidentificatie_string>
         </moz_gmk_sleutel>
-        <moz_naw_naam>{{ requestor.organization }}</moz_naw_naam>
+        <moz_naw_naam>{{ organization.name }}</moz_naw_naam>
         <moz_naw_indnnp>J</moz_naw_indnnp>
         <moz_naw_voorvoegsel></moz_naw_voorvoegsel>
         <moz_naw_tussenvoegsel></moz_naw_tussenvoegsel>
-        <moz_naw_tav>{{ requestor.surname }}</moz_naw_tav>
+        <moz_naw_tav>{{ user.last_name }}</moz_naw_tav>
         <moz_naw_geslacht></moz_naw_geslacht>
-        <moz_naw_voorletters>{{ requestor.initials }}</moz_naw_voorletters>
-        <moz_naw_voornamen>{{ requestor.givenname }}</moz_naw_voornamen>
-        <moz_naw_adres>{{ requestor.address }}</moz_naw_adres>
-        <moz_naw_huisnummer>{{ requestor.house_number }}</moz_naw_huisnummer>
-        <moz_naw_postcode>{{ requestor.zip }}</moz_naw_postcode>
-        <moz_naw_woonplaats>{{ requestor.city }}</moz_naw_woonplaats>
+        <moz_naw_voorletters>{{ user.initials }}</moz_naw_voorletters>
+        <moz_naw_voornamen>{{ user.first_name }}</moz_naw_voornamen>
+        <moz_naw_adres>{{ organization.address }}</moz_naw_adres>
+        <moz_naw_huisnummer>{{ organization.house_number }}</moz_naw_huisnummer>
+        <moz_naw_postcode>{{ organization.zip }}</moz_naw_postcode>
+        <moz_naw_woonplaats>{{ organization.city }}</moz_naw_woonplaats>
         <moz_naw_land></moz_naw_land>
         <moz_naw_datumgeboorte></moz_naw_datumgeboorte>
         <moz_naw_bsn></moz_naw_bsn>
