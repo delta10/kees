@@ -1,5 +1,5 @@
 from django import forms
-from .models import Case, Attachment
+from .models import Case, Field, Attachment
 
 
 class PhaseForm(forms.Form):
@@ -13,7 +13,7 @@ class PhaseForm(forms.Form):
     def __init__(self, phase, *args, **kwargs):
         super(PhaseForm, self).__init__(*args, **kwargs)
 
-        for field in phase.fields.all():
+        for field in [Field.objects.get(key=key) for key in phase.fields]:
             field_args = field.args
 
             if field.widget:

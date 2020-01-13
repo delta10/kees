@@ -180,8 +180,9 @@ class CaseLog(models.Model):
 
 class Phase(models.Model):
     case_type = models.ForeignKey('CaseType', on_delete=models.PROTECT, related_name='phases')
+    order = models.IntegerField()
     name = models.CharField(max_length=255)
-    order = models.PositiveIntegerField()
+    fields = JSONField(default=list, blank=True)
 
     class Meta:
         ordering = ['case_type', 'order']
@@ -190,8 +191,9 @@ class Phase(models.Model):
         return self.name
 
 
-class PhaseField(models.Model):
+class Field(models.Model):
     FIELD_TYPES = (
+        ('ArrayField', 'ArrayField'),
         ('CharField', 'CharField'),
         ('IntegerField', 'IntegerField'),
         ('DateField', 'DateField'),
@@ -223,17 +225,18 @@ class PhaseField(models.Model):
         ('CheckboxSelectMultiple', 'CheckboxSelectMultiple'),
     )
 
-    phase = models.ForeignKey('Phase', on_delete=models.PROTECT, related_name='fields')
+    case_type = models.ForeignKey('CaseType', on_delete=models.PROTECT)
     key = models.SlugField(max_length=50)
+
     label = models.CharField(max_length=255)
     type = models.CharField(max_length=255, choices=FIELD_TYPES)
     widget = models.CharField(max_length=255, choices=FIELD_WIDGETS, blank=True, null=True)
     initial = models.CharField(max_length=255, blank=True, null=True)
     args = JSONField(default=dict, blank=True)
-    order = models.PositiveIntegerField()
 
     class Meta:
-        ordering = ['phase', 'order']
+        unique_together = ['case_type', 'key']
+        ordering = ['case_type', 'key']
 
     def __str__(self):
         return self.label
