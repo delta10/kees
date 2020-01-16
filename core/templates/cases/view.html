@@ -8,15 +8,8 @@
 
 {% block content %}
     {% if selected_phase %}
-        <form method="POST" action="{% url 'view_case_phase' case.id selected_phase.id %}">
-            {% if case.last_phase == selected_phase %}
-                {% trans 'Controleer de zaak en sluit de zaak dan af door de zaak door te zetten.' %}
-            {% else %}
-                {% csrf_token %}
-                {{ form|crispy }}
-                <button class="btn btn-primary" type="submit">{% trans 'Opslaan' %}</button>
-            {% endif %}
-        </form>
+        {{ js_phase_form_data|json_script:"js-phase-form-data" }}
+        <div id="js-phase-form-entry-point"></div>
     {% else %}
         {% trans 'Deze zaak is afgesloten.' %}
     {% endif %}

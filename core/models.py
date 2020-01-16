@@ -241,6 +241,16 @@ class Field(models.Model):
     def __str__(self):
         return self.label
 
+    def toDict(self):
+        return {
+            'key': self.key,
+            'label': self.label,
+            'type': self.type,
+            'widget': self.widget,
+            'initial': self.initial,
+            'args': self.args
+        }
+
 
 class Action(models.Model):
     phase = models.ForeignKey('Phase', on_delete=models.PROTECT, related_name='actions')

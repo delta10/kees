@@ -10,18 +10,18 @@ INSTALLED_APPS = [
     'core',
     'contrib',
     'webpack_loader',
-    'ariadne.contrib.django',
+    'django_nose',
+    'crispy_forms',
+    'rest_framework',
+    'constance',
+    'constance.backends.database',
+    'django_filters',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'constance',
-    'constance.backends.database',
-    'django_nose',
-    'crispy_forms',
-    'django_filters',
 ]
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
@@ -174,6 +174,14 @@ WEBPACK_LOADER = {
         'BUNDLE_DIR_NAME': 'bundles/',
         'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
     }
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 25,
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated'
+    ],
 }
 
 LOGIN_URL = 'login'

@@ -64,7 +64,7 @@ class Command(BaseCommand):
                     if key.startswith('attribute.'):
                         if type(content['value']) == dict:
                             if content['value'].get('__DateTime__'):
-                                value = content['value']['__DateTime__']
+                                value = { '__datetime': content['value']['__DateTime__'] }
                             else:
                                 value = content['value']
                         else:

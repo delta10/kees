@@ -1,11 +1,12 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.middleware import csrf
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.translation import gettext as _
 from django.http import Http404
 from django.contrib import messages
-from .models import CaseType, Case, Phase, Attachment
+from .models import CaseType, Case, Phase, Field, Attachment
 from .forms import PhaseForm, ChangeAssigneeForm, ChangePhaseForm, AttachmentForm
 from .filters import CaseFilter
 
@@ -90,18 +91,46 @@ def view_case(request, case_id, phase_id=None):
     else:
         phase = case.current_phase
 
-    if request.method == 'POST':
-        form = PhaseForm(phase, request.POST)
-        if form.is_valid():
-            case.data = {**case.data, **form.cleaned_data}
-            case.save()
+    fields = []
+    for key in phase.fields:
+        field = Field.objects.get(key=key).toDict()
+        if field['type'] == 'ArrayField':
+            field['args']['fields'] = [Field.objects.get(key=key).toDict() for key in field['args']['fields']]
 
-            messages.add_message(request, messages.INFO, _('De wijzigingen zijn opgeslagen.'))
+        fields.append(field)
+
+    if request.method == 'POST':
+        new_values = {}
+
+        print(request.POST)
+
+        for field in fields:
+            if field['type'] in ['ArrayField', 'MultipleChoiceField']:
+                value = request.POST.getlist(field['key'])
+            else:
+                value = request.POST.get(field['key'])
+
+            if field['type'] == 'IntegerField':
+                value = int(value)
+
+            new_values[field['key']] = value
+
+        case.data = {**case.data, **new_values}
+        case.save()
+
+        messages.add_message(request, messages.INFO, _('De wijzigingen zijn opgeslagen.'))
 
     return render(request, 'cases/view.html', {
         'case': case,
         'selected_phase': phase,
-        'form': PhaseForm(phase, initial=case.data) if phase else None
+        'js_phase_form_data': {
+            'fields': fields,
+            'case': {
+                'id': case.id,
+                'data': case.data,
+            },
+            'csrftoken': csrf.get_token(request)
+        }
     })
 
 @permission_required('core.can_manage_cases', raise_exception=True)
