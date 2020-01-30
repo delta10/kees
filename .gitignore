@@ -1,9 +1,12 @@
-.vscode/
-.coverage
-node_modules/
-assets/bundles/
+# Python
+__pycache__/
+docs/_build/
 static/
-kees/config.py
+.coverage
 db.sqlite3
+kees/config.py
+
+# Javascript
+node_modules/
+dist/
 webpack-stats.json
-__pycache__
