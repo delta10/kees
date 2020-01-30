@@ -11,7 +11,8 @@
                     :id="`${field.key}-${index}`"
                     :name="field.key"
                     :value="choice"
-                    v-model="value"
+                    :checked="value.includes(choice)"
+                    v-on:input="changeField"
                 />
                 {{choice}}
             </label>
@@ -25,6 +26,18 @@ export default {
     props: {
         field: Object,
         value: { type: Array }
+    },
+    methods: {
+        changeField(e) {
+            let newValue
+            if (this.value.includes(e.target.value)) {
+                newValue = this.value.filter(choice => choice !== e.target.value)
+            } else {
+                newValue = [ ...this.value, e.target.value ]
+            }
+
+            this.$emit('input', newValue)
+        }
     }
 }
 </script>
