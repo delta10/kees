@@ -1,3 +1,4 @@
+{{- with set . "component" "postgres" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -5,7 +6,7 @@ metadata:
   labels:
     {{- include "kees.labels" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: 1
   selector:
     matchLabels:
       {{- include "kees.selectorLabels" . | nindent 6 }}
@@ -24,33 +25,30 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image }}:{{ .Values.tag }}"
+          image: "{{ .Values.postgresImage }}"
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           env:
-            - name: DB_HOST
-              value: {{ .Values.dbHost }}
-            - name: DB_USER
-              value: {{ .Values.dbUser }}
-            - name: DB_PASSWORD
-              value: {{ .Values.dbPassword }}
-            - name: DB_NAME
-              value: {{ .Values.dbName }}
-            - name: SECRET_KEY
-              value: {{ .Values.secretKey }}
-            - name: ALLOWED_HOST
-              value: {{ .Values.allowedHost }}
+            - name: POSTGRES_USER
+              value: {{ .Values.postgresUser }}
+            - name: POSTGRES_PASSWORD
+              value: {{ .Values.postgresPassword }}
+            - name: POSTGRES_DB
+              value: {{ .Values.postgresDb }}
           ports:
-            - name: http
-              containerPort: 8000
+            - name: postgres
+              containerPort: 5432
               protocol: TCP
           livenessProbe:
             tcpSocket:
-              port: http
+              port: postgres
           readinessProbe:
             tcpSocket:
-              port: http
+              port: postgres
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-pvc
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -63,3 +61,23 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
     {{- end }}
+      volumes:
+        - name: postgres-pvc
+          persistentVolumeClaim:
+            claimName: {{ .Values.postgresPvcName }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "kees.fullname" . }}
+  labels:
+    {{- include "kees.labels" . | nindent 4 }}
+spec:
+  ports:
+    - port: 5432
+      targetPort: postgres
+      protocol: TCP
+      name: postgres
+  selector:
+    {{- include "kees.selectorLabels" . | nindent 4 }}
+{{- end }}
