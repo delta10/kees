@@ -1,13 +1,16 @@
+# pylint: skip-file
 import json
-from django.utils.timezone import get_default_timezone
 from datetime import datetime
+
+from django.utils.timezone import get_default_timezone
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy import Column, ForeignKey, BigInteger, String, Text, DateTime, MetaData, ARRAY, VARCHAR
+from sqlalchemy import Column, ForeignKey, BigInteger, String, Text, DateTime, ARRAY, VARCHAR
 from sqlalchemy.types import TypeDecorator
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
+
 
 class LocalDateTime(TypeDecorator):
     impl = DateTime

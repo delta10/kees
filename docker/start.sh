@@ -1,13 +1,11 @@
-#!/bin/sh
+#!/usr/bin/env sh
+set -e
 
-# Collect static files
-echo "Collect static files"
+# Collect static
 python manage.py collectstatic --noinput
 
-# Apply database migrations
-echo "Apply database migrations"
+# Run migrations
 python manage.py migrate
 
 # Start server
-echo "Starting server"
-uwsgi --http :8000 --uid www-data --gid www-data --module kees.wsgi --static-map /static=/app/static --static-map /media=/app/media
+uwsgi --http :8000 --module kees.wsgi --processes 4 --threads 2 --static-map /static=/app/static --static-map /media=/app/media
