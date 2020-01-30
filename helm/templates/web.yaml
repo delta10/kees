@@ -35,7 +35,7 @@ spec:
             - name: ALLOWED_HOST
               value: "{{ .Values.allowedHost }}"
             - name: DB_HOST
-              value: "postgres"
+              value: "{{ include "kees.prefix" . }}-postgres"
             - name: DB_USER
               value: "{{ .Values.postgresUser }}"
             - name: DB_PASSWORD
