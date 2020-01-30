@@ -8,6 +8,7 @@ imagePullSecrets: []
 
 secretKey: ""
 debug: "False"
+sessionCookieSecure: "False"
 allowedHost: ""
 
 postgresUser: postgres

@@ -8,6 +8,8 @@ DEBUG = (os.getenv('DEBUG') == 'True')
 
 ALLOWED_HOSTS = [os.getenv('ALLOWED_HOST')]
 
+SESSION_COOKIE_SECURE = (os.getenv('SESSION_COOKIE_SECURE') == 'True')
+
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 DATABASES = {
@@ -24,6 +26,6 @@ EMAIL_HOST = os.getenv('EMAIL_HOST')
 EMAIL_PORT = os.getenv('EMAIL_PORT')
 EMAIL_HOST_USER = os.getenv('EMAIL_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD')
-EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS' == 'True')
-EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL' == 'True')
+EMAIL_USE_TLS = (os.getenv('EMAIL_USE_TLS') == 'True')
+EMAIL_USE_SSL = (os.getenv('EMAIL_USE_SSL') == 'True')
 EMAIL_FROM = os.getenv('EMAIL_FROM')

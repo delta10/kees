@@ -34,6 +34,8 @@ spec:
               value: "{{ .Values.debug }}"
             - name: ALLOWED_HOST
               value: "{{ .Values.allowedHost }}"
+            - name: SESSION_COOKIE_SECURE
+              value: "{{ .Values.sessionCookieSecure }}"
             - name: DB_HOST
               value: "{{ include "kees.prefix" . }}-postgres"
             - name: DB_USER
