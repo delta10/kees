@@ -41,7 +41,7 @@ export default {
 
             try {
                 const response = await fetch(`/api/cases/${this.case.id}/`, {
-                    method: 'patch',
+                    method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRFToken': this.csrftoken,
