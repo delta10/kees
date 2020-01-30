@@ -27,6 +27,35 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.keesImage }}"
           imagePullPolicy: {{ .Values.imagePullPolicy }}
+          env:
+            - name: SECRET_KEY
+              value: "{{ .Values.secretKey }}"
+            - name: DEBUG
+              value: "{{ .Values.debug }}"
+            - name: ALLOWED_HOST
+              value: "{{ .Values.allowedHost }}"
+            - name: DB_HOST
+              value: "postgres"
+            - name: DB_USER
+              value: "{{ .Values.postgresUser }}"
+            - name: DB_PASSWORD
+              value: "{{ .Values.postgresPassword }}"
+            - name: DB_NAME
+              value: "{{ .Values.postgresDb }}"
+            - name: EMAIL_HOST
+              value: "{{ .Values.emailHost }}"
+            - name: EMAIL_PORT
+              value: "{{ .Values.emailPort }}"
+            - name: EMAIL_USER
+              value: "{{ .Values.emailUser }}"
+            - name: EMAIL_PASSWORD
+              value: "{{ .Values.emailPassword }}"
+            - name: EMAIL_USE_TLS
+              value: "{{ .Values.emailUseTLS }}"
+            - name: EMAIL_USE_SSL
+              value: "{{ .Values.emailUseSSL }}"
+            - name: EMAIL_FROM
+              value: "{{ .Values.emailFrom }}"
           ports:
             - name: http
               containerPort: 8000
