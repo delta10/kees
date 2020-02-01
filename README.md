@@ -4,34 +4,57 @@ Kees is a minimalistic case management solution.
 ## Preparing
 First install the npm dependencies with:
 
-    npm install
+```bash
+cd frontend/
+npm install
+```
 
-Then run the npm build command with:
-
-    npm run build
+Next install the Pyton dependencies with:
+```bash
+cd ../
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
 
 Now create the database with:
 
-    python manage.py migrate
+```bash
+cd ../
+python manage.py migrate
+```
 
-And create a superuser with:
+(Optionally) load the test data with:
 
-    python manage.py createsuperuser
+```bash
+python manage.py loaddata fixtures/testdata.json
+```
+
+Create a superuser with:
+
+```bash
+python manage.py createsuperuser
+```
 
 ## Developing
-Run a watch server with:
+Run a frontend watch server with:
 
-    python manage.py runserver
+```bash
+cd frontend/
+npm run serve
+```
 
-## Building
-Build a Kees Docker container with:
+And a backend watch server with:
 
-    npm run build
-    docker build -t registry.gitlab.com/delta10/kees:latest .
-    docker push registry.gitlab.com/delta10/kees:latest
+```bash
+cd ../
+python manage.py runserver
+```
 
-## Deploying
-You can easily deploy (or update) kees with:
+## Testing
+Run the unit tests with:
 
-    helm upgrade --install kees ./helm --namespace kees
-
+```bash
+( cd frontend/ && npm run test )
+python manage.py test
+```
