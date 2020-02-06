@@ -2,6 +2,7 @@ import os
 import html
 from importlib import import_module
 from django.contrib.postgres.fields import JSONField
+from django.utils.crypto import get_random_string
 from django.utils import timezone
 from django.utils.functional import lazy
 from django.utils.translation import gettext_lazy as _
@@ -263,7 +264,7 @@ class Action(models.Model):
 
 def upload_to(instance, filename):
     dirname = instance.created_at.strftime('attachments/%Y/%m/%d/')
-    return os.path.join(dirname, filename)
+    return os.path.join(dirname, get_random_string(length=24), filename)
 
 class Attachment(models.Model):
     case = models.ForeignKey('Case', on_delete=models.CASCADE, related_name='attachments')
