@@ -92,17 +92,16 @@ def view_case(request, case_id, phase_id=None):
         phase = case.current_phase
 
     fields = []
-    for key in phase.fields:
-        field = Field.objects.get(key=key).toDict()
-        if field['type'] == 'ArrayField':
-            field['args']['fields'] = [Field.objects.get(key=key).toDict() for key in field['args']['fields']]
+    if phase:
+        for key in phase.fields:
+            field = Field.objects.get(key=key).toDict()
+            if field['type'] == 'ArrayField':
+                field['args']['fields'] = [Field.objects.get(key=key).toDict() for key in field['args']['fields']]
 
-        fields.append(field)
+            fields.append(field)
 
     if request.method == 'POST':
         new_values = {}
-
-        print(request.POST)
 
         for field in fields:
             if field['type'] in ['ArrayField', 'MultipleChoiceField']:
