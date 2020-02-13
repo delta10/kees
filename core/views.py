@@ -6,6 +6,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.translation import gettext as _
 from django.http import Http404
 from django.contrib import messages
+import reversion
 from .models import CaseType, Case, Phase, Field, Attachment
 from .forms import ChangeAssigneeForm, ChangePhaseForm, AttachmentForm
 from .filters import CaseFilter
@@ -124,7 +125,9 @@ def delete_case(request, case_id):
     case = get_object_or_404(Case, pk=case_id)
 
     if request.method == 'POST':
-        case.delete()
+        with reversion.create_revision():
+            case.delete()
+            reversion.set_user(request.user)
 
         messages.add_message(request, messages.INFO, _('De zaak is verwijderd.'))
         return redirect('cases')
@@ -243,9 +246,11 @@ def create_attachment(request, case_id):
     if request.method == 'POST':
         form = AttachmentForm(request.POST, request.FILES)
         if form.is_valid():
-            new_attachment = form.save(commit=False)
-            new_attachment.case = case
-            new_attachment.save()
+            with reversion.create_revision():
+                new_attachment = form.save(commit=False)
+                new_attachment.case = case
+                new_attachment.save()
+                reversion.set_user(request.user)
 
             case.logs.create(event='create_attachment', performer=request.user, metadata={
                 'attachment_name': new_attachment.display_name,
@@ -265,7 +270,9 @@ def delete_attachment(request, case_id, attachment_id):
     attachment = get_object_or_404(Attachment, pk=attachment_id)
 
     if request.method == 'POST':
-        attachment.delete()
+        with reversion.create_revision():
+            attachment.delete()
+            reversion.set_user(request.user)
 
         case.logs.create(event='delete_attachment', performer=request.user, metadata={
             'attachment_name': attachment.display_name,

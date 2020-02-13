@@ -12,6 +12,7 @@ INSTALLED_APPS = [
     'django_nose',
     'crispy_forms',
     'rest_framework',
+    'reversion',
     'constance',
     'constance.backends.database',
     'django_filters',

@@ -2,8 +2,9 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib import admin
 from django.forms import ModelForm
+from reversion.admin import VersionAdmin
 
-from .models import User, Case, CaseType, Phase, Field, Action, CaseLog, Attachment
+from .models import User, Case, CaseType, Phase, Field, Action, Attachment
 
 
 class UserCreationForm(ModelForm):
@@ -60,15 +61,14 @@ class FieldAdmin(admin.ModelAdmin):
     list_display = ('case_type', 'key', 'label', )
 
 
-class AttachmentAdmin(admin.ModelAdmin):
+class AttachmentAdmin(VersionAdmin):
     list_display = ('case', 'file')
 
 
 admin.site.register(User, UserAdmin)
-admin.site.register(Case)
+admin.site.register(Case, VersionAdmin)
 admin.site.register(CaseType)
 admin.site.register(Phase, PhaseAdmin)
 admin.site.register(Field, FieldAdmin)
 admin.site.register(Action)
-admin.site.register(CaseLog)
 admin.site.register(Attachment, AttachmentAdmin)
