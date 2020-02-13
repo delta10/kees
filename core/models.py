@@ -93,6 +93,15 @@ class User(AbstractBaseUser, PermissionsMixin):
             self.email
         ], **kwargs)
 
+    def __str__(self):
+        return '{} {} ({})'.format(self.first_name, self.last_name, self.username)
+
+    class Meta:
+        ordering = ['first_name', 'last_name']
+        indexes = [
+            models.Index(fields=['first_name', 'last_name']),
+        ]
+
 
 class Case(models.Model):
     name = models.CharField(max_length=255)
