@@ -145,6 +145,14 @@ class Case(models.Model):
     def last_phase(self):
         return self.case_type.phases.last()
 
+    @property
+    def is_open(self):
+        return self.current_phase is not None
+
+    @property
+    def is_closed(self):
+        return self.current_phase is None
+
     def execute_actions(self, request):
         result = True
 

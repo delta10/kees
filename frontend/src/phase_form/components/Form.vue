@@ -2,7 +2,7 @@
     <form id="form" @submit="submitForm" method="POST">
         <Alert v-if="alert" :type="alert.type" :message="alert.message" />
         <FormFields :fields="fields" v-model="value" />
-        <button type="submit" class="btn btn-primary" :disabled="loading">Opslaan</button>
+        <button v-if="!isDisabled" type="submit" class="btn btn-primary" :disabled="loading">Opslaan</button>
     </form>
 </template>
 
@@ -28,7 +28,8 @@ export default {
         case_type: state => state.case_type,
         case: state => state.case,
         value: state => state.case.data,
-        csrftoken: state => state.csrftoken
+        csrftoken: state => state.csrftoken,
+        isDisabled: state => state.case.is_closed
     }),
     methods: {
         async submitForm(e) {
@@ -58,9 +59,9 @@ export default {
                     body: JSON.stringify(body)
                 })
 
-                if (response.ok) {
-                    const data = await response.json()
+                const data = await response.json()
 
+                if (response.ok) {
                     if (!this.case.id) {
                         window.location.href = `/cases/view/${data.id}`
                     } else {
@@ -68,12 +69,13 @@ export default {
                         scroll(0,0)
                     }
                 } else {
-                    this.showErrorAlert()
+                    this.showErrorAlert(data.detail)
                     scroll(0,0)
                 }
             } catch(e) {
-                this.showErrorAlert()
                 console.error(e)
+                this.showErrorAlert()
+                scroll(0,0)
             }
 
             this.loading = false
@@ -81,8 +83,12 @@ export default {
         showSuccessAlert() {
             this.alert = { type: 'success', message: 'Succesvol opgeslagen.' }
         },
-        showErrorAlert() {
-            this.alert = { type: 'danger', message: 'Fout opgetreden tijdens opslaan. Controleer de verbinding en probeer het opnieuw.' }
+        showErrorAlert(detail) {
+            if (!detail) {
+                detail = 'Controleer de verbinding en probeer het opnieuw.'
+            }
+
+            this.alert = { type: 'danger', message: `Fout opgetreden tijdens opslaan. ${detail}` }
         }
     }
 }

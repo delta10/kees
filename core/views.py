@@ -115,6 +115,7 @@ def view_case(request, case_id, phase_id=None):
             'case': {
                 'id': case.id,
                 'data': case.data,
+                'is_closed': case.is_closed,
             },
             'csrftoken': csrf.get_token(request)
         }
@@ -243,6 +244,10 @@ def attachments(request, case_id):
 def create_attachment(request, case_id):
     case = get_object_or_404(Case, pk=case_id)
 
+    if case.is_closed:
+        messages.add_message(request, messages.ERROR, _('Kan geen bijlage toevoegen aan een gesloten zaak.'))
+        return redirect('attachments', case.id)
+
     if request.method == 'POST':
         form = AttachmentForm(request.POST, request.FILES)
         if form.is_valid():
@@ -268,6 +273,10 @@ def create_attachment(request, case_id):
 def delete_attachment(request, case_id, attachment_id):
     case = get_object_or_404(Case, pk=case_id)
     attachment = get_object_or_404(Attachment, pk=attachment_id)
+
+    if case.is_closed:
+        messages.add_message(request, messages.ERROR, _('Kan geen bijlage verwijderen van een gesloten zaak.'))
+        return redirect('attachments', case.id)
 
     if request.method == 'POST':
         with reversion.create_revision():

@@ -12,6 +12,7 @@
                     :name="field.key"
                     :value="choice"
                     :checked="value.includes(choice)"
+                    :disabled="isDisabled"
                     @input="updateValue"
                 />
                 {{choice}}
@@ -21,11 +22,13 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
     name: 'CheckboxField',
     props: {
         field: Object,
-        value: { type: Array }
+        value: { type: Array, default: () => [] }
     },
     methods: {
         updateValue(e) {
@@ -38,6 +41,9 @@ export default {
 
             this.$store.commit('setData', { [this.field.key]: newValue })
         }
-    }
+    },
+    computed: mapState({
+        isDisabled: state => state.case.is_closed
+    })
 }
 </script>

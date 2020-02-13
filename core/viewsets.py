@@ -1,4 +1,5 @@
 from rest_framework import viewsets
+from rest_framework.exceptions import PermissionDenied
 import reversion
 from .models import Case
 from .serializers import CaseSerializer
@@ -11,15 +12,23 @@ class CaseViewSet(viewsets.ModelViewSet): # pylint: disable=too-many-ancestors
 
     def perform_create(self, serializer):
         with reversion.create_revision():
-            super().perform_create(serializer)
             reversion.set_user(self.request.user)
+            return super().perform_create(serializer)
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+
+        if instance.is_closed:
+           raise PermissionDenied('Kan de velden niet opslaan omdat de zaak gesloten is.')
+
+        return super().update(request, *args, **kwargs)
 
     def perform_update(self, serializer):
         with reversion.create_revision():
-            super().perform_update(serializer)
             reversion.set_user(self.request.user)
+            return super().perform_update(serializer)
 
     def perform_destroy(self, instance):
         with reversion.create_revision():
-            super().perform_destroy(instance)
             reversion.set_user(self.request.user)
+            return super().perform_destroy(instance)

@@ -12,6 +12,7 @@
                     :name="field.key"
                     :value="choice"
                     :checked="value == choice"
+                    :disabled="isDisabled"
                     @input="updateValue"
                 />
                 {{choice}}
@@ -21,6 +22,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
     name: 'RadioField',
     props: {
@@ -31,6 +34,9 @@ export default {
         updateValue(e) {
             this.$store.commit('setData', { [this.field.key]: e.target.value })
         }
-    }
+    },
+    computed: mapState({
+        isDisabled: state => state.case.is_closed
+    })
 }
 </script>

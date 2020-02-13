@@ -9,12 +9,15 @@
             :id="field.key"
             :name="field.key"
             :value="value"
+            :disabled="isDisabled"
             @input="updateValue"
         />
     </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
     name: 'InputField',
     props: {
@@ -26,6 +29,9 @@ export default {
         updateValue(e) {
             this.$store.commit('setData', { [this.field.key]: e.target.value })
         }
-    }
+    },
+    computed: mapState({
+        isDisabled: state => state.case.is_closed
+    })
 }
 </script>
