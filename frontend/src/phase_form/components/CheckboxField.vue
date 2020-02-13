@@ -3,7 +3,7 @@
         <label class="col-form-label">
             {{field.label}}<span v-if="field.args.required !== false">*</span>
         </label>
-        <div class="form-check" :key="choice" v-for="(choice, index) in field.args.choices">
+        <div class="form-check" :key="choice" v-for="(choice, index) in choices">
             <label :for="`${field.key}-${index}`" class="form-check-label">
                 <input
                     type="checkbox"
@@ -28,7 +28,8 @@ export default {
     name: 'CheckboxField',
     props: {
         field: Object,
-        value: { type: Array, default: () => [] }
+        value: { type: Array, default: () => [] },
+        initialValue: { type: Array, default: () => [] }
     },
     methods: {
         updateValue(e) {
@@ -42,8 +43,17 @@ export default {
             this.$store.commit('setData', { [this.field.key]: newValue })
         }
     },
-    computed: mapState({
-        isDisabled: state => state.case.is_closed
-    })
+    computed: {
+        choices() {
+            if (!this.initialValue) {
+                return this.field.args.choices
+            }
+
+            return [...new Set([...this.field.args.choices, ...this.initialValue])]
+        },
+        ...mapState({
+            isDisabled: state => state.case.is_closed
+        })
+    }
 }
 </script>

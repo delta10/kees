@@ -77,6 +77,8 @@ def create_case(request, case_type_id):
             'case': {
                 'id': None,
                 'data': {},
+                'initialData': {},
+                'is_closed': False
             },
             'case_type': {
                 'id': case_type.id
@@ -115,6 +117,7 @@ def view_case(request, case_id, phase_id=None):
             'case': {
                 'id': case.id,
                 'data': case.data,
+                'initialData': case.data,
                 'is_closed': case.is_closed,
             },
             'csrftoken': csrf.get_token(request)

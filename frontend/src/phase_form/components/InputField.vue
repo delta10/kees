@@ -23,7 +23,8 @@ export default {
     props: {
         field: Object,
         type: { type: String, default: 'text' },
-        value: { type: [ String, Number ] }
+        value: { type: [ String, Number ] },
+        initialValue: { type: [ String, Number ] }
     },
     methods: {
         updateValue(e) {

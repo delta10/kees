@@ -12,7 +12,7 @@
             @input="updateValue"
         >
             <option></option>
-            <option v-for="choice in field.args.choices" :key="choice" v-html="choice" :value="choice" />
+            <option v-for="choice in choices" :key="choice" v-html="choice" :value="choice" />
         </select>
     </div>
 </template>
@@ -24,7 +24,8 @@ export default {
     name: 'SelectField',
     props: {
         field: Object,
-        value: { type: String }
+        value: { type: String },
+        initialValue: { type: String }
     },
     methods: {
         updateValue(e) {
@@ -44,8 +45,17 @@ export default {
             this.$store.commit('setData', prefill[value])
         }
     },
-    computed: mapState({
-        isDisabled: state => state.case.is_closed
-    })
+    computed: {
+        choices() {
+            if (!this.initialValue) {
+                return this.field.args.choices
+            }
+
+            return [...new Set([...this.field.args.choices, this.initialValue])]
+        },
+        ...mapState({
+            isDisabled: state => state.case.is_closed
+        }),
+    }
 }
 </script>

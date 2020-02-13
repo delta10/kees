@@ -23,7 +23,8 @@ export default {
     name: 'TextareaField',
     props: {
         field: Object,
-        value: String
+        value: String,
+        initialValue: String
     },
     methods: {
         updateValue(e) {

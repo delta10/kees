@@ -1,7 +1,7 @@
 <template>
     <form id="form" @submit="submitForm" method="POST">
         <Alert v-if="alert" :type="alert.type" :message="alert.message" />
-        <FormFields :fields="fields" v-model="value" />
+        <FormFields :fields="fields" :data="this.case.data" :initialData="this.case.initialData" />
         <button v-if="!isDisabled" type="submit" class="btn btn-primary" :disabled="loading">Opslaan</button>
     </form>
 </template>
@@ -27,7 +27,6 @@ export default {
         fields: state => state.fields,
         case_type: state => state.case_type,
         case: state => state.case,
-        value: state => state.case.data,
         csrftoken: state => state.csrftoken,
         isDisabled: state => state.case.is_closed
     }),
@@ -39,7 +38,7 @@ export default {
             this.loading = true
 
             const body = {
-                data: this.value
+                data: this.case.data
             }
 
             if (!this.case.id) {
