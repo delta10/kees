@@ -25,6 +25,7 @@ export default {
     },
     computed: mapState({
         fields: state => state.fields,
+        case_type: state => state.case_type,
         case: state => state.case,
         value: state => state.case.data,
         csrftoken: state => state.csrftoken
@@ -40,9 +41,16 @@ export default {
                 data: this.value
             }
 
+            if (!this.case.id) {
+                body.case_type = this.case_type.id
+            }
+
             try {
-                const response = await fetch(`/api/cases/${this.case.id}/`, {
-                    method: 'PATCH',
+                const url = this.case.id ? `/api/cases/${this.case.id}/` : '/api/cases/'
+                const method = this.case.id ? 'PATCH' : 'POST'
+
+                const response = await fetch(url, {
+                    method,
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRFToken': this.csrftoken,
@@ -51,16 +59,24 @@ export default {
                 })
 
                 if (response.ok) {
-                    this.showSuccessAlert()
+                    const data = await response.json()
+
+                    if (!this.case.id) {
+                        window.location.href = `/cases/view/${data.id}`
+                    } else {
+                        this.showSuccessAlert()
+                        scroll(0,0)
+                    }
                 } else {
                     this.showErrorAlert()
+                    scroll(0,0)
                 }
             } catch(e) {
                 this.showErrorAlert()
+                console.error(e)
             }
 
             this.loading = false
-            scroll(0,0)
         },
         showSuccessAlert() {
             this.alert = { type: 'success', message: 'Succesvol opgeslagen.' }

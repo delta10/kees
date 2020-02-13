@@ -7,7 +7,7 @@ from django.utils.translation import gettext as _
 from django.http import Http404
 from django.contrib import messages
 from .models import CaseType, Case, Phase, Field, Attachment
-from .forms import PhaseForm, ChangeAssigneeForm, ChangePhaseForm, AttachmentForm
+from .forms import ChangeAssigneeForm, ChangePhaseForm, AttachmentForm
 from .filters import CaseFilter
 
 def startpage(request):
@@ -61,22 +61,27 @@ def create_case(request, case_type_id):
     case_type = get_object_or_404(CaseType, pk=case_type_id)
     phase = case_type.phases.first()
 
-    if request.method == 'POST':
-        form = PhaseForm(phase, request.POST)
-        if form.is_valid():
-            case = Case(name=_('Nieuwe zaak'), case_type=case_type, data=form.cleaned_data)
-            case.save()
+    fields = []
+    for key in phase.fields:
+        field = Field.objects.get(key=key).toDict()
+        if field['type'] == 'ArrayField':
+            field['args']['fields'] = [Field.objects.get(key=key).toDict() for key in field['args']['fields']]
 
-            case.logs.create(event='create_case', performer=request.user)
-
-            messages.add_message(request, messages.INFO, _('Nieuwe zaak is aangemaakt.'))
-            return redirect('view_case', case.id)
-    else:
-        form = PhaseForm(phase)
+        fields.append(field)
 
     return render(request, 'cases/create.html', {
         'case_type': case_type,
-        'form': form
+        'js_phase_form_data': {
+            'fields': fields,
+            'case': {
+                'id': None,
+                'data': {},
+            },
+            'case_type': {
+                'id': case_type.id
+            },
+            'csrftoken': csrf.get_token(request)
+        }
     })
 
 
@@ -100,24 +105,6 @@ def view_case(request, case_id, phase_id=None):
 
             fields.append(field)
 
-    if request.method == 'POST':
-        new_values = {}
-
-        for field in fields:
-            if field['type'] in ['ArrayField', 'MultipleChoiceField']:
-                value = request.POST.getlist(field['key'])
-            else:
-                value = request.POST.get(field['key'])
-
-            if field['type'] == 'IntegerField':
-                value = int(value)
-
-            new_values[field['key']] = value
-
-        case.data = {**case.data, **new_values}
-        case.save()
-
-        messages.add_message(request, messages.INFO, _('De wijzigingen zijn opgeslagen.'))
 
     return render(request, 'cases/view.html', {
         'case': case,
