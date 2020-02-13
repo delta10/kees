@@ -12,7 +12,7 @@
                     :name="field.key"
                     :value="choice"
                     :checked="value.includes(choice)"
-                    v-on:input="changeField"
+                    @input="updateValue"
                 />
                 {{choice}}
             </label>
@@ -28,7 +28,7 @@ export default {
         value: { type: Array }
     },
     methods: {
-        changeField(e) {
+        updateValue(e) {
             let newValue
             if (this.value.includes(e.target.value)) {
                 newValue = this.value.filter(choice => choice !== e.target.value)
@@ -36,7 +36,7 @@ export default {
                 newValue = [ ...this.value, e.target.value ]
             }
 
-            this.$emit('input', newValue)
+            this.$store.commit('setData', { [this.field.key]: newValue })
         }
     }
 }

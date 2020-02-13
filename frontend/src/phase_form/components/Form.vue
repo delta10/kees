@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import Alert from './Alert'
 import FormFields from './FormFields'
 
@@ -19,15 +20,15 @@ export default {
     data() {
         return {
             alert: null,
-            loading: false,
-            fields: this.$root.fields,
-            case: {
-                id: this.$root.case.id
-            },
-            value: this.$root.case.data,
-            csrftoken: this.$root.csrftoken
+            loading: false
         }
     },
+    computed: mapState({
+        fields: state => state.fields,
+        case: state => state.case,
+        value: state => state.case.data,
+        csrftoken: state => state.csrftoken
+    }),
     methods: {
         async submitForm(e) {
             e.preventDefault()

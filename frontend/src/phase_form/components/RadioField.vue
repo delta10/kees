@@ -12,7 +12,7 @@
                     :name="field.key"
                     :value="choice"
                     :checked="value == choice"
-                    v-on:input="$emit('input', $event.target.value)"
+                    @input="updateValue"
                 />
                 {{choice}}
             </label>
@@ -26,6 +26,11 @@ export default {
     props: {
         field: Object,
         value: { type: String }
+    },
+    methods: {
+        updateValue(e) {
+            this.$store.commit('setData', { [this.field.key]: e.target.value })
+        }
     }
 }
 </script>

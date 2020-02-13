@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import Vuex from 'vuex';
 import Form from './components/Form';
 import FormFields from './components/FormFields';
 
@@ -12,9 +13,18 @@ document.addEventListener('DOMContentLoaded', () => {
         FormFields
     )
 
+    const store = new Vuex.Store({
+        state: JSON.parse(data.innerHTML),
+        mutations: {
+            setData(state, newData) {
+                state.case.data = { ...state.case.data, ...newData }
+            }
+        }
+    })
+
     new Vue({
         el: '#js-phase-form-entry-point',
-        data: JSON.parse(data.innerHTML),
+        store,
         render: (h) => h(Form)
     });
 });

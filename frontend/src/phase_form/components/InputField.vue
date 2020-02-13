@@ -9,7 +9,7 @@
             :id="field.key"
             :name="field.key"
             :value="value"
-            v-on:input="$emit('input', $event.target.value)"
+            @input="updateValue"
         />
     </div>
 </template>
@@ -21,6 +21,11 @@ export default {
         field: Object,
         type: { type: String, default: 'text' },
         value: { type: [ String, Number ] }
+    },
+    methods: {
+        updateValue(e) {
+            this.$store.commit('setData', { [this.field.key]: e.target.value })
+        }
     }
 }
 </script>
