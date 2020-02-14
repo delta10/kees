@@ -1,5 +1,6 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.middleware import csrf
+from django.template import Template, Context
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render, get_object_or_404, redirect
@@ -100,18 +101,26 @@ def view_case(request, case_id, phase_id=None):
         phase = case.current_phase
 
     fields = []
+    templates = []
+
     if phase:
         for key in phase.fields:
             field = Field.objects.get(key=key).toDict()
             if field['type'] == 'ArrayField':
                 field['args']['fields'] = [Field.objects.get(key=key).toDict() for key in field['args']['fields']]
 
-            fields.append(field)
-
+            if field['type'] == 'Template':
+                template = Template(field['args'].get('template'))
+                context = Context({'case': case})
+                templates.append(template.render(context))
+            else:
+                fields.append(field)
 
     return render(request, 'cases/view.html', {
         'case': case,
+        'fields': fields,
         'selected_phase': phase,
+        'templates': templates,
         'js_phase_form_data': {
             'fields': fields,
             'case': {

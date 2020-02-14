@@ -225,6 +225,7 @@ class Field(models.Model):
         ('MultipleChoiceField', 'MultipleChoiceField'),
         ('FloatField', 'FloatField'),
         ('DecimalField', 'DecimalField'),
+        ('Template', 'Template'),
     )
 
     FIELD_WIDGETS = (

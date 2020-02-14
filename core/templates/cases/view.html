@@ -1,5 +1,6 @@
 {% extends '_base.html' %}
 {% load i18n %}
+{% load sumkey %}
 
 {% block top %}
     {% include 'partials/case_nav.html' %}
@@ -7,8 +8,13 @@
 
 {% block content %}
     {% if selected_phase %}
-        {{ js_phase_form_data|json_script:"js-phase-form-data" }}
-        <div id="js-phase-form-entry-point"></div>
+        {% for template in templates %}
+            {{ template }}
+        {% endfor %}
+        {% if fields|length > 0 %}
+            {{ js_phase_form_data|json_script:"js-phase-form-data" }}
+            <div id="js-phase-form-entry-point"></div>
+        {% endif %}
     {% else %}
         {% trans 'Deze zaak is afgesloten.' %}
     {% endif %}
