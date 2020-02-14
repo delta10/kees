@@ -7,7 +7,7 @@ Test:
   stage: Test
   image: python:3.8
   services:
-    - postgres:11.6-alpine
+    - postgres:11.7-alpine
   variables:
     PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
     DB_HOST: postgres
