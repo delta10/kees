@@ -23,6 +23,17 @@ case_phase_mapping = {
     'Afhandelen': dest.Phase.objects.get(name='Afhandelen'),
 }
 
+array_fields = [
+    'organisatorische_aspecten',
+    'uitvoeringsscenario',
+    'soort_afwijking',
+    'aanwezigen',
+    'bezoekerslijst',
+    'vochtigheid_1',
+    'windrichting_1',
+    'materieel'
+]
+
 class Command(BaseCommand):
     help = 'Import data from zs'
 
@@ -52,6 +63,8 @@ class Command(BaseCommand):
             )
 
         for zaak in session.query(src.Zaak).all():
+            print('Importing {}'.format(zaak.id))
+
             try:
                 case_type = case_type_mapping[zaak.zaaktype_id]
                 src_data = session.query(src.ObjectData).filter_by(object_class='case', object_id=zaak.id).first()
@@ -61,12 +74,20 @@ class Command(BaseCommand):
 
                 dest_data = {}
                 for key, content in src_data.properties['values'].items():
+                    if key[10:] == 'startdatum':
+                        print(content['value'])
+
                     if key.startswith('attribute.'):
                         if type(content['value']) == dict:
                             if content['value'].get('__DateTime__'):
-                                value = { '__datetime': content['value']['__DateTime__'] }
+                                value = content['value']['__DateTime__'][:10] if len(content['value']) > 0 else ''
                             else:
                                 value = content['value']
+                        elif type(content['value']) == list:
+                            if key[10:] in array_fields:
+                                value = content['value']
+                            else:
+                                value = content['value'][0] if len(content['value']) > 0 else None
                         else:
                             value = content['value']
 
