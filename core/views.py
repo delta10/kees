@@ -169,6 +169,30 @@ def claim_case(request, case_id):
 def next_phase(request, case_id):
     case = get_object_or_404(Case, pk=case_id)
 
+    if case.current_phase:
+        missing_fields = []
+
+        for key in case.current_phase.fields:
+            field = Field.objects.get(key=key)
+            if not field:
+                continue
+
+            required = field.args.get('required')
+            if isinstance(required, bool) and not required:
+                continue
+
+            if not case.data.get(field.key):
+                missing_fields.append(field.label)
+
+    if len(missing_fields) > 0:
+        messages.add_message(
+            request,
+            messages.ERROR,
+            _('Kan de zaak niet doorzetten naar de volgende fase omdat de volgende velden ontbreken: {}.'.format(', '.join(missing_fields)))
+        )
+
+        return redirect('view_case', case.id)
+
     try:
         old_phase = str(case.current_phase) if case.current_phase else None
 
