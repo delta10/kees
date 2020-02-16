@@ -8,8 +8,8 @@
 
 <script>
 import { mapState } from 'vuex'
-import Alert from './Alert'
-import FormFields from './FormFields'
+import Alert from '../components/Alert'
+import FormFields from '../components/FormFields'
 
 export default {
     name: "Form",

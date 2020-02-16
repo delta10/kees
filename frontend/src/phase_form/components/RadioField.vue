@@ -29,11 +29,12 @@ export default {
     props: {
         field: Object,
         value: { type: String },
-        initialValue: { type: String }
+        initialValue: { type: String },
+        arrayField: { type: Object }
     },
     methods: {
         updateValue(e) {
-            this.$store.commit('setData', { [this.field.key]: e.target.value })
+            this.$store.commit('setData', { data: { [this.field.key]: e.target.value }, arrayField: this.arrayField })
         }
     },
     computed: {

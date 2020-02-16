@@ -25,11 +25,12 @@ export default {
         field: Object,
         type: { type: String, default: 'text' },
         value: { type: [ String, Number ] },
-        initialValue: { type: [ String, Number ] }
+        initialValue: { type: [ String, Number ] },
+        arrayField: { type: Object }
     },
     methods: {
         updateValue(e) {
-            this.$store.commit('setData', { [this.field.key]: e.target.value })
+            this.$store.commit('setData', { data: { [this.field.key]: e.target.value }, arrayField: this.arrayField })
         }
     },
     computed: mapState({

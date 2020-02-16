@@ -25,11 +25,12 @@ export default {
     props: {
         field: Object,
         value: { type: String },
-        initialValue: { type: String }
+        initialValue: { type: String },
+        arrayField: { type: Object }
     },
     methods: {
         updateValue(e) {
-            this.$store.commit('setData', { [this.field.key]: e.target.value })
+            this.$store.commit('setData', { data: { [this.field.key]: e.target.value }, arrayField: this.arrayField })
 
             if (this.field.args.prefill) {
                 this.prefill(e.target.value)
@@ -42,7 +43,7 @@ export default {
                 return
             }
 
-            this.$store.commit('setData', prefill[value])
+            this.$store.commit('setData', { data: prefill[value], arrayField: this.arrayField })
         }
     },
     computed: {

@@ -29,7 +29,8 @@ export default {
     props: {
         field: Object,
         value: { type: Array, default: () => [] },
-        initialValue: { type: Array, default: () => [] }
+        initialValue: { type: Array, default: () => [] },
+        arrayField: { type: Object }
     },
     methods: {
         updateValue(e) {
@@ -40,7 +41,7 @@ export default {
                 newValue = [ ...this.currentValue, e.target.value ]
             }
 
-            this.$store.commit('setData', { [this.field.key]: newValue })
+            this.$store.commit('setData', { data: { [this.field.key]: newValue }, arrayField: this.arrayField })
         }
     },
     computed: {
