@@ -11,7 +11,7 @@
                     :id="`${field.key}-${index}`"
                     :name="field.key"
                     :value="choice"
-                    :checked="value.includes(choice)"
+                    :checked="currentValue.includes(choice)"
                     :disabled="isDisabled"
                     @input="updateValue"
                 />
@@ -34,16 +34,19 @@ export default {
     methods: {
         updateValue(e) {
             let newValue
-            if (this.value.includes(e.target.value)) {
+            if (this.currentValue.includes(e.target.value)) {
                 newValue = this.value.filter(choice => choice !== e.target.value)
             } else {
-                newValue = [ ...this.value, e.target.value ]
+                newValue = [ ...this.currentValue, e.target.value ]
             }
 
             this.$store.commit('setData', { [this.field.key]: newValue })
         }
     },
     computed: {
+        currentValue() {
+            return Array.isArray(this.value) ? this.value : []
+        },
         choices() {
             if (!this.initialValue) {
                 return this.field.args.choices
