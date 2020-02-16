@@ -10,6 +10,7 @@ Test:
     - postgres:11.7-alpine
   variables:
     PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+    POSTGRES_PASSWORD: postgres
     DB_HOST: postgres
     DB_USER: postgres
     DB_PASSWORD: postgres
