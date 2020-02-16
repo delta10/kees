@@ -47,7 +47,7 @@ urlpatterns = [
          views.delete_case, name='delete_case'),
     path('cases/view/<int:case_id>/attachments',
          views.attachments, name='attachments'),
-    path('cases/view/<int:case_id>/attachments/create/',
+    path('cases/view/<int:case_id>/attachments/create/<str:attachment_type>/',
          views.create_attachment, name='create_attachment'),
     path('cases/view/<int:case_id>/attachments/delete/<int:attachment_id>/',
          views.delete_attachment, name='delete_attachment'),

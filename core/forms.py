@@ -21,6 +21,28 @@ class ChangePhaseForm(forms.ModelForm):
 
 
 class AttachmentForm(forms.ModelForm):
+    def __init__(self, data=None, files=None, attachment_type='file', **kwargs):
+        super().__init__(data, files, **kwargs)
+        self.fields['file'].widget.attrs.update({
+            'multiple': True,
+        })
+
+        if attachment_type == 'image':
+            self.fields['file'].widget.attrs.update({
+                'accept': 'image/*',
+            })
+
+    def save(self, case, *args, **kwargs):
+        attachments = []
+        for file in self.files.getlist('file'):
+            attachment = case.attachments.create(
+                file=file,
+                name=file.name
+            )
+            attachments.append(attachment)
+
+        return attachments
+
     class Meta:
         model = Attachment
         fields = ['file']

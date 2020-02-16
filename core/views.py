@@ -253,7 +253,7 @@ def attachments(request, case_id):
         'in_attachments': True
     })
 
-def create_attachment(request, case_id):
+def create_attachment(request, case_id, attachment_type):
     case = get_object_or_404(Case, pk=case_id)
 
     if case.is_closed:
@@ -261,21 +261,17 @@ def create_attachment(request, case_id):
         return redirect('attachments', case.id)
 
     if request.method == 'POST':
-        form = AttachmentForm(request.POST, request.FILES)
+        form = AttachmentForm(request.POST, request.FILES, attachment_type=attachment_type)
         if form.is_valid():
             with reversion.create_revision():
-                new_attachment = form.save(commit=False)
-                new_attachment.case = case
-                new_attachment.save()
+                form.save(case=case)
                 reversion.set_user(request.user)
 
-            case.logs.create(event='create_attachment', performer=request.user, metadata={
-                'attachment_name': new_attachment.display_name,
-            })
+            case.logs.create(event='create_attachment', performer=request.user)
 
             return redirect('attachments', case.id)
     else:
-        form = AttachmentForm()
+        form = AttachmentForm(attachment_type=attachment_type)
 
     return render(request, 'cases/create_attachment.html', {
         'case': case,

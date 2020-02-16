@@ -8,7 +8,15 @@
 
 {% block content %}
     {% if case.is_open %}
-        <a href="{% url 'create_attachment' case.id %}" class="btn btn-light float-right mb-3">{% trans 'Bijlage toevoegen' %}</a>
+        <div class="dropdown">
+            <button class="btn btn-light float-right mb-3 dropdown-toggle" type="button" id="attachmentDropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {% trans 'Bijlage toevoegen' %}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="attachmentDropdown">
+                <a class="dropdown-item" href="{% url 'create_attachment' case.id 'file' %}">Bestand uploaden</a>
+                <a class="dropdown-item" href="{% url 'create_attachment' case.id 'image' %}">Foto maken</a>
+            </div>
+        </div>
     {% endif %}
     <div class="table-responsive">
         <table class="table table-hover">
@@ -24,7 +32,7 @@
             <tbody>
                 {% for attachment in case.attachments.all %}
                     <tr>
-                        <td><a href="{{ attachment.file.url }}" target="_blank">{{ attachment.display_name }}</a><br /></td>
+                        <td><a href="{{ attachment.file.url }}">{{ attachment.display_name }}</a><br /></td>
                         <td>{{ attachment.file.size|filesizeformat }}</td>
                         {% if case.is_open %}
                             <td><a href="{% url 'delete_attachment' case.id attachment.id %}"><i class="far fa-trash-alt"></i></a></td>
