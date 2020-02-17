@@ -41,7 +41,10 @@
             {% for phase in case.case_type.phases.all %}
                 <li class="nav-item">
                     <a class="nav-link {% if phase == selected_phase %}active{% endif %}" href="{% url 'view_case_phase' case.id phase.id %}">
-                        {{ phase.name }} {% if phase == case.current_phase %}{% trans '(huidig)' %}{% endif %}
+                        {% if phase == case.current_phase %}
+                            <i class="fas fa-play-circle"></i>&nbsp;
+                        {% endif %}
+                        {{ phase.name }}
                     </a>
                 </li>
             {% endfor %}
@@ -52,7 +55,7 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link {% if in_logs %}active{% endif %}" href="{% url 'logs' case.id %}">
-                    Logs
+                    Logboek
                 </a>
             </li>
         </ul>
