@@ -48,7 +48,7 @@ export default {
 
             this.$store.commit('setData', {
                 data: {
-                    [this.field.key]: [ ...this.value, newItem ]
+                    [this.field.key]: [ ...this.value || [], newItem ]
                 }
             })
         },
