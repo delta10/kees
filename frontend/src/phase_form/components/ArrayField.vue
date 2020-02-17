@@ -8,17 +8,17 @@
                 <tr :key="index" v-for="(item, index) in value">
                     <td scope="row">
                         <span :key="`${index}-${fieldIndex}`" v-for="(field, fieldIndex) in firstField">
-                            <b>{{ field.label }}</b>: {{ value[index][field.key] }}
+                            <b>{{ field.label }}</b>: {{ displayValue(field, value[index][field.key]) }}
                         </span>
                     </td>
                     <td>
                         <router-link :to="`/fields/${field.key}/${index}`" class="btn btn-light">Bekijken</router-link>&nbsp;
-                        <button type="button" @click="deleteItem(index)" class="btn btn-light">Verwijderen</button>
+                        <button v-if="!isDisabled" type="button" @click="deleteItem(index)" class="btn btn-light">Verwijderen</button>
                     </td>
                 </tr>
             </tbody>
         </table>
-        <button type="button" @click="addItem()" class="btn btn-light">{{field.label}} toevoegen</button>
+        <button v-if="!isDisabled" type="button" @click="addItem()" class="btn btn-light">{{field.label}} toevoegen</button>
     </div>
 </template>
 
@@ -69,6 +69,16 @@ export default {
                     [this.field.key]: e.target.value
                 }
             })
+        },
+        displayValue(field, value) {
+            switch (field.type) {
+                case "DateField":
+                    return new Date(value).toLocaleDateString('nl-NL', { day: '2-digit', month: '2-digit', year: 'numeric' })
+                case "DateTimeField":
+                    return new Date(value).toLocaleDateString('nl-NL', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+                default:
+                    return value
+            }
         }
     },
     computed: {
