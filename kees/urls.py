@@ -24,6 +24,7 @@ from core import viewsets, views
 
 router = routers.DefaultRouter()
 router.register(r'cases', viewsets.CaseViewSet)
+router.register(r'attachments', viewsets.AttachmentViewSet)
 
 urlpatterns = [
     path('', views.startpage, name='startpage'),

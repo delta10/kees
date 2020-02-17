@@ -11,6 +11,7 @@ INSTALLED_APPS = [
     'webpack_loader',
     'django_nose',
     'crispy_forms',
+    'rest_framework.authtoken',
     'rest_framework',
     'reversion',
     'constance',
@@ -173,6 +174,13 @@ WEBPACK_LOADER = {
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 25,
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication'
+    ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated'
     ],
@@ -183,6 +191,6 @@ LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'dashboard'
 
 LOGIN_EXEMPT_URLS = [
-    '^graphql$',
+    '^api/(.+)$',
     '^media/(.+)$'
 ]

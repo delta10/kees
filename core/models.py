@@ -13,6 +13,7 @@ from django.core.mail import send_mail
 from django.template import Template, Context
 from .lib import get_actions_from_apps
 
+
 class Manager(BaseUserManager):
     def create_user(self, username, first_name, last_name, password=None, external_id=None, is_active=True):
         if not username:
@@ -290,8 +291,11 @@ class Attachment(models.Model):
     file = models.FileField(upload_to=upload_to)
     created_at = models.DateTimeField(default=timezone.now, db_index=True)
 
-    class Meta:
-        ordering = ['-id']
+    def save(self, *args, **kwargs):
+        if not self.name:
+            self.name = os.path.basename(self.file.name)
+
+        super(Attachment, self).save(*args, **kwargs)
 
     @property
     def display_name(self):
@@ -304,3 +308,6 @@ class Attachment(models.Model):
     def extension(self):
         _, extension = os.path.splitext(self.file.name)
         return extension.replace('.', '')
+
+    class Meta:
+        ordering = ['-id']

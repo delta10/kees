@@ -1,5 +1,11 @@
 from rest_framework import serializers
-from .models import Case
+from .models import Case, Attachment
+
+
+class AttachmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Attachment
+        fields = ['id', 'case', 'name', 'file']
 
 
 class CaseSerializer(serializers.ModelSerializer):
