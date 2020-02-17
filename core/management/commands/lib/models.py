@@ -67,9 +67,11 @@ class Zaak(Base):
     __tablename__ = 'zaak'
     id = Column(BigInteger, primary_key=True)
     zaaktype_id = Column(BigInteger)
+    pid = Column(BigInteger)
     onderwerp = Column(String)
     resultaat = Column(String)
     created = Column(LocalDateTime)
+    registratiedatum = Column(LocalDateTime)
     status = Column(String)
 
 class ObjectData(Base):
