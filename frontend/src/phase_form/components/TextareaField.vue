@@ -11,7 +11,7 @@
             :name="field.key"
             :value="value"
             :disabled="isDisabled"
-            @input="updateValue"
+            @change="updateValue"
         />
     </div>
 </template>

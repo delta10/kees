@@ -13,7 +13,7 @@
                     :value="choice"
                     :checked="currentValue.includes(choice)"
                     :disabled="isDisabled"
-                    @input="updateValue"
+                    @change="updateValue"
                 />
                 {{choice}}
             </label>

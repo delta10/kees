@@ -9,7 +9,7 @@
             :name="field.key"
             :value="value"
             :disabled="isDisabled"
-            @input="updateValue"
+            @change="updateValue"
         >
             <option></option>
             <option v-for="choice in choices" :key="choice" v-html="choice" :value="choice" />

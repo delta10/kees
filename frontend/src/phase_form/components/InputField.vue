@@ -11,7 +11,7 @@
             :value="value"
             :disabled="isDisabled"
             :step="(type == 'number') ? '0.01' : null"
-            @input="updateValue"
+            @change="updateValue"
         />
     </div>
 </template>
