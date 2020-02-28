@@ -108,8 +108,8 @@ class Case(models.Model):
     name = models.CharField(max_length=255)
     case_type = models.ForeignKey('CaseType', on_delete=models.PROTECT)
     created_at = models.DateTimeField(default=timezone.now, db_index=True)
-    current_phase = models.ForeignKey('Phase', on_delete=models.PROTECT, null=True, blank=True)
-    assignee = models.ForeignKey('User', on_delete=models.PROTECT, null=True, blank=True)
+    current_phase = models.ForeignKey('Phase', on_delete=models.PROTECT, null=True, blank=True, verbose_name=_('Huidige fase'))
+    assignee = models.ForeignKey('User', on_delete=models.PROTECT, null=True, blank=True, verbose_name=_('Behandelaar'))
     data = JSONField(default=dict, blank=True)
 
     def save(self, *args, **kwargs):
