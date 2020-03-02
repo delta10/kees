@@ -169,9 +169,8 @@ def claim_case(request, case_id):
 def next_phase(request, case_id):
     case = get_object_or_404(Case, pk=case_id)
 
+    missing_fields = []
     if case.current_phase:
-        missing_fields = []
-
         for key in case.current_phase.fields:
             field = Field.objects.get(key=key)
             if not field:
@@ -204,7 +203,7 @@ def next_phase(request, case_id):
                 'old_phase': old_phase,
             })
 
-            return redirect('view_case_phase', case.id, case.last_phase.id)
+            return redirect('cases')
 
         case.next_phase(request)
         messages.add_message(request, messages.INFO, _('De zaak is doorgezet naar de volgende fase.'))
