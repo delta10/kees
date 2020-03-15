@@ -1,7 +1,7 @@
 # Python
 __pycache__/
 docs/_build/
-static/
+./static/
 .coverage
 db.sqlite3
 kees/config.py

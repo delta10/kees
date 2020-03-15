@@ -1,10 +1,12 @@
 from django.utils.translation import gettext_lazy as _
+from django.contrib.postgres.fields import JSONField
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib import admin
 from django.forms import ModelForm
 from reversion.admin import VersionAdmin
 
 from .models import User, Case, CaseType, Phase, Field, Action, Attachment
+from .formfields import JSONEditor
 
 
 class UserCreationForm(ModelForm):
@@ -53,12 +55,30 @@ class UserAdmin(BaseUserAdmin):
     actions = []
 
 
+class CaseAdmin(VersionAdmin):
+    formfield_overrides = {
+        JSONField: {'widget': JSONEditor},
+    }
+
+
 class PhaseAdmin(admin.ModelAdmin):
     list_display = ('case_type', 'name', 'order', )
+    formfield_overrides = {
+        JSONField: {'widget': JSONEditor},
+    }
 
 
 class FieldAdmin(admin.ModelAdmin):
     list_display = ('case_type', 'key', 'label', )
+    formfield_overrides = {
+        JSONField: {'widget': JSONEditor},
+    }
+
+
+class ActionAdmin(admin.ModelAdmin):
+    formfield_overrides = {
+        JSONField: {'widget': JSONEditor},
+    }
 
 
 class AttachmentAdmin(VersionAdmin):
@@ -66,9 +86,9 @@ class AttachmentAdmin(VersionAdmin):
 
 
 admin.site.register(User, UserAdmin)
-admin.site.register(Case, VersionAdmin)
+admin.site.register(Case, CaseAdmin)
 admin.site.register(CaseType)
 admin.site.register(Phase, PhaseAdmin)
 admin.site.register(Field, FieldAdmin)
-admin.site.register(Action)
+admin.site.register(Action, ActionAdmin)
 admin.site.register(Attachment, AttachmentAdmin)

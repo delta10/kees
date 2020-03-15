@@ -1,0 +1,12 @@
+.jsoneditor-container {
+    display: flex;
+}
+
+.jsoneditor {
+    border: 1px solid #ccc;
+}
+
+.jsoneditor-menu {
+    background-color: #417690;
+    border-bottom: 1px solid #ccc;
+}
