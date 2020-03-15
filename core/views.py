@@ -46,8 +46,7 @@ def case_list(request):
         if order_by in ['id', 'name', 'case_type', 'created_at', 'current_phase']:
             queryset = queryset.order_by(order_by)
 
-        queryset = queryset.order_by(RawSQL("data->>%s", (order_by, )))
-        #queryset = queryset.order_by(RawSQL("data->>%s", (order_by, )).desc(nulls_last=True))
+        queryset = queryset.order_by(RawSQL("data->>%s", (order_by, )).desc(nulls_last=True))
 
     cases = CaseFilter(request.GET, queryset=queryset)
     paginator = Paginator(cases.qs, 50)
