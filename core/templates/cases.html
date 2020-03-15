@@ -19,10 +19,10 @@
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th>Nr.</th>
-                    <th>{% trans 'Naam' %}</th>
+                    {% include 'partials/table_header_item.html' with key='id' label='Nr.' %}
+                    {% include 'partials/table_header_item.html' with key='name' label='Naam' %}
                     {% for field in additional_fields %}
-                        <th>{{ field.label }}</th>
+                        {% include 'partials/table_header_item.html' with key=field.key label=field.label %}
                     {% endfor %}
                     <th>{% trans 'Fase' %}</th>
                     <th>{% trans 'Type' %}</th>

@@ -1,0 +1,13 @@
+{% load url_replace %}
+<th class="nowrap">
+    {% if order_by == key %}
+        {% if direction == 'asc' %}
+            <a href="?{% url_replace request 'direction' 'desc' %}">{{ label }}</a>
+        {% else %}
+            <a href="?{% url_replace request 'direction' 'asc' %}">{{ label }}</a>
+        {% endif %}
+    {% else %}
+        <a href="?{% url_replace request 'order_by' key %}">{{ label }}</a>
+    {% endif %}
+    {% if order_by == key %}&nbsp;<i class="fas fa-chevron-{% if direction == 'asc' %}down{% else %}up{% endif %}"></i>{% endif %}
+</th>

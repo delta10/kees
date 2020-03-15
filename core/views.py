@@ -1,3 +1,4 @@
+from django.db.models import F
 from django.db.models.expressions import RawSQL
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.middleware import csrf
@@ -41,12 +42,23 @@ def dashboard(request):
 def case_list(request):
     queryset = Case.objects.all()
 
-    order_by = request.GET.get('order_by')
-    if order_by:
-        if order_by in ['id', 'name', 'case_type', 'created_at', 'current_phase']:
-            queryset = queryset.order_by(order_by)
+    order_by = request.GET.get('order_by', 'id')
 
-        queryset = queryset.order_by(RawSQL("data->>%s", (order_by, )).desc(nulls_last=True))
+    if request.GET.get('direction') == 'asc':
+        direction = 'asc'
+    else:
+        direction = 'desc'
+
+    if order_by in ['id', 'name', 'case_type', 'created_at', 'current_phase']:
+        if direction == 'desc':
+            queryset = queryset.order_by(F(order_by).desc(nulls_last=True))
+        else:
+            queryset = queryset.order_by(F(order_by).asc(nulls_last=True))
+    else:
+        if direction == 'desc':
+            queryset = queryset.order_by(RawSQL("data->>%s", (order_by, )).desc(nulls_last=True))
+        else:
+            queryset = queryset.order_by(RawSQL("data->>%s", (order_by, )).asc(nulls_last=True))
 
     cases = CaseFilter(request.GET, queryset=queryset)
     paginator = Paginator(cases.qs, 50)
@@ -63,6 +75,8 @@ def case_list(request):
 
     return render(request, 'cases.html', {
         'show_sidebar': True,
+        'order_by': order_by,
+        'direction': direction,
         'filter_form': cases.form,
         'additional_fields': _get_additional_fields(config.ADDITIONAL_FIELDS),
         'page_range': page_range,

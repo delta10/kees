@@ -49,3 +49,11 @@ body.login {
     height: 40px;
     width: auto;
 }
+
+th a {
+    color: #000;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
