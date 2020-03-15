@@ -59,6 +59,7 @@ CONSTANCE_CONFIG = {
     'COMPANY_CITY': ('Example city', 'Company city'),
     'LOGO_IMAGE': ('default/logo.svg', 'Logo', 'image_field'),
     'FAVICON_IMAGE': ('default/favicon.png', 'Favicon', 'image_field'),
+    'ADDITIONAL_FIELDS': ('', 'Comma separarated list of additional fields that are shown on the case overview page'),
 }
 
 CONSTANCE_CONFIG_FIELDSETS = {
@@ -71,6 +72,7 @@ CONSTANCE_CONFIG_FIELDSETS = {
         'COMPANY_CITY',
         'LOGO_IMAGE',
         'FAVICON_IMAGE',
+        'ADDITIONAL_FIELDS',
     ),
 }
 

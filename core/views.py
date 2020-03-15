@@ -1,3 +1,4 @@
+from django.db.models.expressions import RawSQL
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.middleware import csrf
 from django.template import Template, Context
@@ -7,6 +8,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.translation import gettext as _
 from django.http import Http404
 from django.contrib import messages
+from constance import config
 import reversion
 from .models import CaseType, Case, Phase, Field, Attachment
 from .forms import ChangeAssigneeForm, ChangePhaseForm, AttachmentForm
@@ -37,8 +39,17 @@ def dashboard(request):
 
 
 def case_list(request):
-    cases = CaseFilter(request.GET, queryset=Case.objects.all())
+    queryset = Case.objects.all()
 
+    order_by = request.GET.get('order_by')
+    if order_by:
+        if order_by in ['id', 'name', 'case_type', 'created_at', 'current_phase']:
+            queryset = queryset.order_by(order_by)
+
+        queryset = queryset.order_by(RawSQL("data->>%s", (order_by, )))
+        #queryset = queryset.order_by(RawSQL("data->>%s", (order_by, )).desc(nulls_last=True))
+
+    cases = CaseFilter(request.GET, queryset=queryset)
     paginator = Paginator(cases.qs, 50)
 
     try:
@@ -54,10 +65,25 @@ def case_list(request):
     return render(request, 'cases.html', {
         'show_sidebar': True,
         'filter_form': cases.form,
+        'additional_fields': _get_additional_fields(config.ADDITIONAL_FIELDS),
         'page_range': page_range,
         'page': page
     })
 
+def _get_additional_fields(field_keys):
+    if not field_keys:
+        return []
+
+    field_keys = field_keys.split(',')
+
+    fields = []
+    for field_key in field_keys:
+        try:
+            fields.append(Field.objects.get(key=field_key))
+        except Field.DoesNotExist:
+            pass
+
+    return fields
 
 def create_case(request, case_type_id):
     case_type = get_object_or_404(CaseType, pk=case_type_id)

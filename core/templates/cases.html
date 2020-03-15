@@ -1,11 +1,13 @@
 {% extends '_base.html' %}
 {% load i18n %}
+{% load display_field %}
 {% load url_replace %}
 {% load crispy_forms_tags %}
 
 {% block sidebar %}
     <form method="GET" action=".">
         {{ filter_form|crispy }}
+        <input type="hidden" name="fields" value="{{ fields|join:',' }}">
         <button type="submit" class="btn btn-primary">Filteren</button>
     </form>
 {% endblock %}
@@ -18,8 +20,10 @@
             <thead>
                 <tr>
                     <th>Nr.</th>
-                    <th>{% trans 'Aanmaakdatum' %}</th>
                     <th>{% trans 'Naam' %}</th>
+                    {% for field in additional_fields %}
+                        <th>{{ field.label }}</th>
+                    {% endfor %}
                     <th>{% trans 'Fase' %}</th>
                     <th>{% trans 'Type' %}</th>
                 </tr>
@@ -28,12 +32,16 @@
                 {% for case in page %}
                     <tr>
                         <td><a href="/cases/view/{{case.id}}">#{{ case.id }}</a></td>
-                        <td>{{case.created_at|date:"SHORT_DATE_FORMAT"}}</td>
                         <td>
                             <a href="/cases/view/{{case.id}}">{{case.name}}</a>
                             &nbsp;
                         </td>
-                        <td>{% if case.current_phase %}{{case.current_phase.name}}{% else %}-{% endif %}</td>
+                        {% for field in additional_fields %}
+                            <td>
+                                {{ case.data|display_field:field }}
+                            </td>
+                        {% endfor %}
+                        <td>{% if case.current_phase %}{{case.current_phase.name}}{% endif %}</td>
                         <td>{{case.case_type}}</td>
                     </tr>
                 {% endfor %}
