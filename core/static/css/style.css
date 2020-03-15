@@ -57,3 +57,13 @@ th a {
 .nowrap {
     white-space: nowrap;
 }
+
+.bootstrap-select .btn-light {
+    background-color: #fff;
+    border: 1px solid #ced4da;
+}
+
+.bootstrap-select .btn-light:hover,
+.bootstrap-select .btn-light:active {
+    background-color: #fff;
+}

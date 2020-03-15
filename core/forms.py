@@ -6,6 +6,11 @@ class ChangeAssigneeForm(forms.ModelForm):
     def __init__(self, case, *args, **kwargs):
         super(ChangeAssigneeForm, self).__init__(*args, **kwargs)
 
+        self.fields['assignee'].widget.attrs.update({
+            'data-bootstrap-select': 'true',
+            'data-live-search': 'true',
+        })
+
     class Meta:
         model = Case
         fields = ['assignee']
