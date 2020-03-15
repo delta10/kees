@@ -4,7 +4,7 @@ version: "3"
 
 services:
   kees:
-    image: "registry.gitlab.com/delta10/kees:{{ kees_version }}"
+    image: "{{ kees_image }}:{{ kees_version }}"
     restart: "unless-stopped"
     ports:
       - "8000:8000"

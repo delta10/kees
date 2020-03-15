@@ -1,4 +1,5 @@
 ---
+kees_image: "registry.gitlab.com/delta10/kees"
 kees_version: "latest"
 kees_path: "/opt/kees"
 kees_ssl_enabled: false
