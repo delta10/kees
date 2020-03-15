@@ -40,6 +40,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     state.case.data = { ...state.case.data, ...payload.data }
                 }
+            },
+            setInitialData(state, payload) {
+                state.case.initialData = payload
             }
         }
     })
@@ -48,6 +51,23 @@ document.addEventListener('DOMContentLoaded', () => {
         el: '#js-phase-form-entry-point',
         router,
         store,
-        render: (h) => h(App)
+        render: (h) => h(App),
+        created() {
+            window.addEventListener('beforeunload', this.beforeUnload)
+        },
+        methods: {
+            beforeUnload(e) {
+                const initialData = JSON.stringify(this.$store.state.case.initialData)
+                const currentData = JSON.stringify(this.$store.state.case.data)
+
+                if (initialData === currentData) {
+                    return
+                }
+
+                const message = 'Site verlaten? Wijzigingen die je hebt aangebracht, worden niet opgeslagen.'
+                e.returnValue = message
+                return message
+            }
+        }
     });
 });

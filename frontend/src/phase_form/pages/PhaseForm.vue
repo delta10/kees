@@ -61,6 +61,8 @@ export default {
                 const data = await response.json()
 
                 if (response.ok) {
+                    this.$store.commit('setInitialData', this.case.data)
+
                     if (!this.case.id) {
                         window.location.href = `/cases/view/${data.id}`
                     } else {
