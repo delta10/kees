@@ -1,0 +1,8 @@
+- name: Apply all roles to all hosts
+  hosts: "all"
+  roles:
+    - { role: "common" }
+    - { role: "docker" }
+    - { role: "nginx" }
+    - { role: "certbot" }
+    - { role: "kees" }

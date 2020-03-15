@@ -1,0 +1,36 @@
+---
+- name: "Install GPG key"
+  apt_key:
+    url: "{{ docker_package_gpg_key_url }}"
+    state: "present"
+
+- name: "Install package repository"
+  apt_repository:
+    repo: "{{ docker_package_repository }}"
+    state: "present"
+    update_cache: true
+
+- name: "Install Docker"
+  package:
+    name: "docker-ce"
+    state: "present"
+
+- name: "Install Docker CLI"
+  package:
+    name: "docker-ce-cli"
+    state: "present"
+
+- name: "Install Docker Python SDK"
+  package:
+    name: "python3-docker"
+    state: "present"
+
+- name: "Make sure Docker is running"
+  service:
+    name: "docker"
+    state: "started"
+    enabled: "yes"
+
+- name: "Install docker-compose"
+  pip:
+    name: "docker-compose"

@@ -1,0 +1,21 @@
+# {{ ansible_managed }}
+
+ssl_certificate {{ kees_ssl_certificate }};
+ssl_certificate_key {{ kees_ssl_certificate_key }};
+
+ssl_dhparam {{ kees_ssl_dhparam }};
+
+ssl_session_timeout 1d;
+ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
+ssl_session_tickets off;
+
+ssl_protocols {{ ssl_config.configurations.intermediate.tls_versions | join(' ') }};
+ssl_ciphers {{ ssl_config.configurations.intermediate.ciphers.openssl | join(':') }};
+ssl_prefer_server_ciphers off;
+
+add_header Strict-Transport-Security "max-age=63072000" always;
+
+ssl_stapling on;
+ssl_stapling_verify on;
+
+ssl_trusted_certificate {{ kees_ssl_ocsp_certificates }};

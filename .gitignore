@@ -10,3 +10,6 @@ kees/config.py
 node_modules/
 dist/
 webpack-stats.json
+
+# Vagrant
+.vagrant/

@@ -1,0 +1,33 @@
+# {{ ansible_managed }}
+
+version: "3"
+
+services:
+  kees:
+    image: "registry.gitlab.com/delta10/kees:{{ kees_version }}"
+    restart: "unless-stopped"
+    ports:
+      - "8000:8000"
+    environment:
+      SECRET_KEY: "{{ kees_secret_key }}"
+      DEBUG: "{% if kees_debug %}True{% else %}False{% endif %}"
+      ALLOWED_HOST: "{{ kees_host }}"
+      SESSION_COOKIE_SECURE: "{% if kees_ssl_enabled %}True{% else %}False{% endif %}"
+      DB_HOST: "postgres"
+      DB_USER: "{{ kees_db_user }}"
+      DB_PASSWORD: "{{ kees_db_password }}"
+      DB_NAME: "{{ kees_db_name }}"
+      EMAIL_HOST: "{{ kees_email_host }}"
+      EMAIL_PORT: "{{ kees_email_port }}"
+      EMAIL_USER: "{{ kees_email_user }}"
+      EMAIL_PASSWORD: "{{ kees_email_password }}"
+      EMAIL_USE_TLS: "{% if kees_email_use_tls %}True{% else %}False{% endif %}"
+      EMAIL_USE_SSL: "{% if kees_email_use_ssl %}True{% else %}False{% endif %}"
+      EMAIL_FROM: "{{ kees_email_from }}"
+  postgres:
+    image: "postgres:11.4"
+    restart: "unless-stopped"
+    environment:
+      POSTGRES_USER: "{{ kees_db_user }}"
+      POSTGRES_PASSWORD: "{{ kees_db_password }}"
+      POSTGRES_DB: "{{ kees_db_name }}"

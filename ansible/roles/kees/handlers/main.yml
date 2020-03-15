@@ -1,0 +1,5 @@
+---
+- name: Restart kees
+  systemd:
+    name: kees
+    state: restarted
