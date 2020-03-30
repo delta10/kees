@@ -6,7 +6,18 @@
 
 {% block sidebar %}
     <form method="GET" action=".">
-        {{ filter_form|crispy }}
+        {{ filter_form.predefined|as_crispy_field }}
+
+        <hr />
+
+        {{ filter_form.name|as_crispy_field }}
+
+        {{ filter_form.case_type|as_crispy_field }}
+
+        {{ filter_form.current_phase|as_crispy_field }}
+
+        {{ filter_form.assignee|as_crispy_field }}
+
         <input type="hidden" name="fields" value="{{ fields|join:',' }}">
         <button type="submit" class="btn btn-primary">Filteren</button>
     </form>

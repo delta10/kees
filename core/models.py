@@ -311,3 +311,11 @@ class Attachment(models.Model):
 
     class Meta:
         ordering = ['-id']
+
+
+class PredefinedFilter(models.Model):
+    name = models.CharField(max_length=255)
+    args = JSONField(default=dict, blank=True)
+
+    def __str__(self):
+        return self.name
