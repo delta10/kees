@@ -19,23 +19,27 @@ def startpage(request):
     return redirect('dashboard')
 
 def dashboard(request):
-    my_cases = Case.objects.filter(assignee=request.user)
+    groups = request.user.groups.all()
+    phases = Phase.objects.filter(assign_to__in=groups)
 
-    paginator = Paginator(my_cases, 50)
+    intake = Case.objects.filter(current_phase__in=phases, assignee=None)
+    intake_paginator = Paginator(intake, 10)
 
     try:
-        page = paginator.page(request.GET.get('page'))
+        intake_page = intake_paginator.page(request.GET.get('page'))
     except PageNotAnInteger:
-        page = paginator.page(1)
+        intake_page = intake_paginator.page(1)
     except EmptyPage:
-        page = paginator.page(paginator.num_pages)
+        intake_page = intake_paginator.page(intake_paginator.num_pages)
 
-    index = page.number - 1
-    page_range = paginator.page_range[max(0, index - 5):(min(len(paginator.page_range), index + 5))]
+    index = intake_page.number - 1
+    intake_page_range = intake_paginator.page_range[max(0, index - 5):(min(len(intake_paginator.page_range), index + 5))]
 
     return render(request, 'dashboard.html', {
-        'page_range': page_range,
-        'page': page
+        'intake_paginator': intake_paginator,
+        'intake_page_range': intake_page_range,
+        'intake_page': intake_page,
+        'my_cases': Case.objects.filter(assignee=request.user)
     })
 
 

@@ -7,7 +7,7 @@ from django.utils import timezone
 from django.utils.functional import lazy
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, Group
 from django.db import models
 from django.core.mail import send_mail
 from django.template import Template, Context
@@ -202,6 +202,7 @@ class Phase(models.Model):
     order = models.IntegerField()
     name = models.CharField(max_length=255)
     fields = JSONField(default=list, blank=True)
+    assign_to = models.ForeignKey(Group, on_delete=models.PROTECT, null=True, blank=True)
 
     class Meta:
         ordering = ['case_type', 'order']
