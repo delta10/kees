@@ -122,6 +122,8 @@ class Case(models.Model):
 
     def close(self):
         self.current_phase = None
+        self.assignee = None
+
         return self.save()
 
     def next_phase(self, request):
