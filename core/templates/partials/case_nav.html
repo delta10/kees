@@ -20,7 +20,12 @@
                 {% if case.current_phase %}
                     <form method="POST" action="{% url 'next_phase' case.id %}">
                         {% csrf_token %}
-                        <button class="btn btn-outline-dark btn-light" type="submit">&#8250;</button>
+                        <button class="btn btn-outline-dark btn-light" type="submit">
+                            {% if case.current_phase == case.last_phase %}
+                                {% trans 'Afhandelen' %}
+                            {% endif %}
+                            &#8250;
+                        </button>
                     </form>
                 {% endif %}
             </div>
