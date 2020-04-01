@@ -20,13 +20,12 @@
 
         {{ filter_form.status|as_crispy_field }}
 
-        <input type="hidden" name="fields" value="{{ fields|join:',' }}">
         <button type="submit" class="btn btn-primary">Filteren</button>
     </form>
 {% endblock %}
 
 {% block content %}
-    <h1>{% trans 'Overzicht' %}</h1>
+    <h2>{% trans 'Overzicht' %} ({{ paginator.count }})</h2>
 
     <div class="table-responsive">
         <table class="table table-hover">

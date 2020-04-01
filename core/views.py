@@ -86,6 +86,7 @@ def case_list(request):
         'direction': direction,
         'filter_form': case_filter.form,
         'additional_fields': _get_additional_fields(config.ADDITIONAL_FIELDS),
+        'paginator': paginator,
         'page_range': page_range,
         'page': page
     })
