@@ -11,6 +11,9 @@ def display_field(data, field):
     if field.type == 'DateField':
         return _date_format(value)
 
+    if not value:
+        return ''
+
     return value
 
 def _date_format(value):
