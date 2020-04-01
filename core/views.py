@@ -67,6 +67,14 @@ def case_list(request):
         else:
             queryset = queryset.order_by(RawSQL("data->>%s", (order_by, )).asc(nulls_last=True))
 
+
+    additional_filters = _get_additional_fields(config.ADDITIONAL_FILTERS)
+    additional_fields = _get_additional_fields(config.ADDITIONAL_FIELDS)
+
+    for additional_filter in additional_filters:
+        if request.GET.get(additional_filter.key):
+            queryset = queryset.filter(data__contains={additional_filter.key: request.GET.get(additional_filter.key)})
+
     case_filter = CaseFilter(request.GET, queryset=queryset, request=request)
     paginator = Paginator(case_filter.qs, 50)
 
@@ -85,7 +93,8 @@ def case_list(request):
         'order_by': order_by,
         'direction': direction,
         'filter_form': case_filter.form,
-        'additional_fields': _get_additional_fields(config.ADDITIONAL_FIELDS),
+        'additional_filters': additional_filters,
+        'additional_fields': additional_fields,
         'paginator': paginator,
         'page_range': page_range,
         'page': page

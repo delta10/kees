@@ -60,6 +60,7 @@ CONSTANCE_CONFIG = {
     'LOGO_IMAGE': ('default/logo.svg', 'Logo', 'image_field'),
     'FAVICON_IMAGE': ('default/favicon.png', 'Favicon', 'image_field'),
     'ADDITIONAL_FIELDS': ('', 'Comma separarated list of additional fields that are shown on the case overview page'),
+    'ADDITIONAL_FILTERS': ('', 'Comma separarated list of additional filters that are shown on the case overview page'),
     'CREATE_CASE': (True, 'Show option for creating a new case'),
 }
 
@@ -74,6 +75,7 @@ CONSTANCE_CONFIG_FIELDSETS = {
         'LOGO_IMAGE',
         'FAVICON_IMAGE',
         'ADDITIONAL_FIELDS',
+        'ADDITIONAL_FILTERS',
         'CREATE_CASE'
     ),
 }

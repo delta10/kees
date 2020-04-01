@@ -20,6 +20,22 @@
 
         {{ filter_form.status|as_crispy_field }}
 
+        {% if additional_filters %}
+            {% for filter in additional_filters %}
+                <div id="div_id_{{ filter.key }}" class="form-group">
+                    <label for="id_{{ filter.key }}">{{ filter.label }}</label>
+                    <div>
+                        <select name="{{ filter.key }}" class="select form-control" id="id_{{ filter.key }}">
+                            <option value="">---------</option>
+                            {% for option in filter.args.choices %}
+                                <option value="{{ option }}" {% if request.GET|get_item:filter.key == option %}selected{% endif%}>{{ option }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+
         <button type="submit" class="btn btn-primary">Filteren</button>
     </form>
 {% endblock %}
