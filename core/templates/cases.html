@@ -18,6 +18,8 @@
 
         {{ filter_form.assignee|as_crispy_field }}
 
+        {{ filter_form.status|as_crispy_field }}
+
         <input type="hidden" name="fields" value="{{ fields|join:',' }}">
         <button type="submit" class="btn btn-primary">Filteren</button>
     </form>

@@ -46,6 +46,9 @@ def dashboard(request):
 def case_list(request):
     queryset = Case.objects.all()
 
+    if not request.GET.get('status'):
+        queryset = queryset.filter(current_phase__isnull=False)
+
     order_by = request.GET.get('order_by', 'id')
 
     if request.GET.get('direction') == 'asc':
