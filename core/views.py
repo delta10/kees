@@ -103,6 +103,10 @@ def _get_additional_fields(field_keys):
     return fields
 
 def create_case(request, case_type_id):
+    if not config.CREATE_CASE:
+        messages.add_message(request, messages.ERROR, _('Het creëren van zaken is uitgeschakeld.'))
+        return redirect('dashboard')
+
     case_type = get_object_or_404(CaseType, pk=case_type_id)
     phase = case_type.phases.first()
 
