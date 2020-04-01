@@ -1,8 +1,9 @@
 {% extends '_base.html' %}
 {% load i18n %}
+{% load humanize %}
+{% load crispy_forms_tags %}
 {% load display_field %}
 {% load url_replace %}
-{% load crispy_forms_tags %}
 
 {% block sidebar %}
     <form method="GET" action=".">
@@ -41,7 +42,7 @@
 {% endblock %}
 
 {% block content %}
-    <h2>{% trans 'Overzicht' %} ({{ paginator.count }})</h2>
+    <h2>{% trans 'Overzicht' %} ({{ paginator.count|intcomma }})</h2>
 
     <div class="table-responsive">
         <table class="table table-hover">

@@ -1,10 +1,11 @@
 {% extends '_base.html' %}
+{% load humanize %}
 {% load i18n %}
 {% load url_replace %}
 
 {% block content %}
     {% if intake_page %}
-        <h2>{% trans 'Zaakintake' %} ({{ intake_paginator.count }})</h2>
+        <h2>{% trans 'Zaakintake' %} ({{ intake_paginator.count|intcomma }})</h2>
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
@@ -64,7 +65,7 @@
         </nav>
     {% endif %}
 
-    <h2>{% trans 'Mijn zaken' %} ({{ my_cases|length }})</h2>
+    <h2>{% trans 'Mijn zaken' %} ({{ my_cases|length|intcomma }})</h2>
     <div class="table-responsive">
         <table class="table table-hover">
             <thead>
