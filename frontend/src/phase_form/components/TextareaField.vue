@@ -33,7 +33,7 @@ export default {
         }
     },
     computed: mapState({
-        isDisabled: state => state.case.is_closed
+        isDisabled: state => state.case.isClosed
     })
 }
 </script>

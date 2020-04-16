@@ -7,15 +7,10 @@
 {% endblock %}
 
 {% block content %}
-    {% if selected_phase %}
-        {% for template in templates %}
-            {{ template }}
-        {% endfor %}
-        {% if fields|length > 0 %}
-            {{ js_phase_form_data|json_script:"js-phase-form-data" }}
-            <div id="js-phase-form-entry-point"></div>
-        {% endif %}
-    {% else %}
-        {% trans 'Deze zaak is afgesloten.' %}
-    {% endif %}
+    {% for template in templates %}
+        {{ template }}
+    {% endfor %}
+
+    {{ js_phase_form_data|json_script:"js-phase-form-data" }}
+    <div id="js-phase-form-entry-point"></div>
 {% endblock %}

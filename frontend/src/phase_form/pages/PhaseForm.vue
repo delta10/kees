@@ -1,7 +1,7 @@
 <template>
     <form id="form" @submit="submitForm" method="POST">
         <Alert v-if="alert" :type="alert.type" :message="alert.message" />
-        <FormFields :fields="fields" :data="this.case.data" :initialData="this.case.initialData" />
+        <FormItems :formItems="this.formItems" :data="this.case.data" :initialData="this.case.initialData" />
         <button v-if="!isDisabled" type="submit" class="btn btn-primary" :disabled="loading">Opslaan</button>
     </form>
 </template>
@@ -9,13 +9,13 @@
 <script>
 import { mapState } from 'vuex'
 import Alert from '../components/Alert'
-import FormFields from '../components/FormFields'
+import FormItems from '../components/FormItems'
 
 export default {
     name: "Form",
     components: {
         'Alert': Alert,
-        'FormFields': FormFields,
+        'FormItems': FormItems,
     },
     data() {
         return {
@@ -24,11 +24,11 @@ export default {
         }
     },
     computed: mapState({
-        fields: state => state.fields,
+        formItems: state => state.formItems,
         case_type: state => state.case_type,
         case: state => state.case,
         csrftoken: state => state.csrftoken,
-        isDisabled: state => state.case.is_closed
+        isDisabled: state => state.case.isClosed
     }),
     methods: {
         async submitForm(e) {

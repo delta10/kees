@@ -126,12 +126,12 @@ def create_case(request, case_type_id):
     return render(request, 'cases/create.html', {
         'case_type': case_type,
         'js_phase_form_data': {
-            'fields': _get_fields(phase),
+            'formItems': _get_form_items(phase),
             'case': {
                 'id': None,
                 'data': {},
                 'initialData': {},
-                'is_closed': False
+                'isClosed': False
             },
             'case_type': {
                 'id': case_type.id
@@ -156,39 +156,53 @@ def view_case(request, case_id, phase_id=None):
 
     return render(request, 'cases/view.html', {
         'case': case,
-        'fields': _get_fields(phase),
         'selected_phase': phase,
         'templates': _render_templates(phase, case),
         'js_phase_form_data': {
-            'fields': _get_fields(phase),
+            'formItems': _get_form_items(phase),
             'case': {
                 'id': case.id,
                 'data': case.data,
                 'initialData': case.data,
-                'is_closed': case.is_closed,
+                'isClosed': case.is_closed,
             },
             'csrftoken': csrf.get_token(request)
         }
     })
 
-def _get_fields(phase):
+def _get_form_items(phase):
     fields = []
 
-    for key in phase.fields:
-        field = Field.objects.get(key=key).toDict()
-
-        if field['type'] == 'ArrayField':
-            field['args']['fields'] = [Field.objects.get(key=key).toDict() for key in field['args']['fields']]
-
-        fields.append(field)
+    for item in phase.fields:
+        if isinstance(item, str):
+            fields.append({'field': _get_field(item)})
+        else:
+            if item.get('field'):
+                fields.append({'field': _get_field(item.get('field'))})
+            elif item.get('heading'):
+                fields.append(item)
 
     return fields
+
+def _get_field(key):
+    field = Field.objects.get(key=key).toDict()
+
+    if field['type'] == 'ArrayField':
+        field['args']['formItems'] = [{'field': _get_field(key)} for key in field['args'].get('formItems', [])]
+
+    return field
 
 def _render_templates(phase, case):
     templates = []
 
-    for key in phase.fields:
-        field = Field.objects.get(key=key).toDict()
+    for item in phase.fields:
+        if isinstance(item, str):
+            field = Field.objects.get(key=item).toDict()
+        else:
+            if item.get('field'):
+                field = Field.objects.get(key=item.get('field')).toDict()
+            else:
+                continue
 
         if field['type'] == 'Template':
             template = Template(field['args'].get('template'))
@@ -235,10 +249,14 @@ def next_phase(request, case_id):
 
     missing_fields = []
     if case.current_phase:
-        for key in case.current_phase.fields:
-            field = Field.objects.get(key=key)
-            if not field:
-                continue
+        for item in case.current_phase.fields:
+            if isinstance(item, str):
+                field = Field.objects.get(key=item)
+            else:
+                if item.get('field'):
+                    field = Field.objects.get(key=item.get('field'))
+                else:
+                    continue
 
             required = field.args.get('required')
             if isinstance(required, bool) and not required:

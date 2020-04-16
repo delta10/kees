@@ -5,19 +5,19 @@
             Overzicht
         </router-link>
         <h2>{{ field.label }}</h2>
-        <FormFields :fields="field.args.fields" :data="this.case.data[arrayField.key][arrayField.index]" :initialData="this.case.initialData" :arrayField="arrayField" />
+        <FormItems :formItems="field.args.formItems" :data="this.case.data[arrayField.key][arrayField.index]" :initialData="this.case.initialData" :arrayField="arrayField" />
         <button v-if="!isDisabled" type="submit" class="btn btn-primary">Opslaan en terug</button>
     </form>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import FormFields from '../components/FormFields'
+import FormItems from '../components/FormItems'
 
 export default {
     name: "Form",
     components: {
-        'FormFields': FormFields,
+        'FormItems': FormItems,
     },
     computed: {
         arrayField() {
@@ -27,13 +27,14 @@ export default {
             }
         },
         field() {
-            return this.$store.state.fields.find((f) => f.key === this.arrayField.key)
+            const formItem = this.$store.state.formItems.find((item) => item.field && item.field.key === this.arrayField.key)
+            return formItem.field
         },
         ...mapState({
             case_type: state => state.case_type,
             case: state => state.case,
             csrftoken: state => state.csrftoken,
-            isDisabled: state => state.case.is_closed
+            isDisabled: state => state.case.isClosed
         })
     },
     methods: {

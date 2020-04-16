@@ -1,14 +1,14 @@
 <template>
-    <div class="mb-5">
-        <label class="col-form-label mb-3">
-            {{field.label}}<span v-if="field.args.required !== false">*</span>
-        </label>
-        <table class="table table-hover">
+    <div class="mt-4 mb-5">
+        <h5>{{field.label}}<span v-if="field.args.required !== false">*</span></h5>
+        <hr />
+
+        <table class="table table-borderless table-hover">
             <tbody>
                 <tr :key="index" v-for="(item, index) in value">
                     <td scope="row">
-                        <span :key="`${index}-${fieldIndex}`" v-for="(field, fieldIndex) in firstField">
-                            <b>{{ field.label }}</b>: {{ displayValue(field, value[index][field.key]) }}
+                        <span :key="`${index}-${itemIndex}`" v-for="(item, itemIndex) in firstFormItem">
+                            <b>{{ item.field.label }}</b>: {{ displayValue(item.field, value[index][item.field.key]) }}
                         </span>
                     </td>
                     <td>
@@ -35,13 +35,15 @@ export default {
     methods: {
         addItem() {
             let newItem = {}
-            this.field.args.fields.forEach((field) => {
-                if (this.case.data[field.key]) {
-                    newItem[field.key] = this.case.data[field.key]
-                } else {
-                    if (field.type === "DateField") {
-                        const now = new Date()
-                        newItem[field.key] = now.toISOString().substring(0, 10)
+            this.field.args.formItems.forEach((item) => {
+                if (item.field) {
+                    if (this.case.data[item.field.key]) {
+                        newItem[item.field.key] = this.case.data[item.field.key]
+                    } else {
+                        if (item.field.type === "DateField") {
+                            const now = new Date()
+                            newItem[item.field.key] = now.toISOString().substring(0, 10)
+                        }
                     }
                 }
             })
@@ -82,12 +84,12 @@ export default {
         }
     },
     computed: {
-        firstField() {
-            return this.field.args.fields.slice(0, 1)
+        firstFormItem() {
+            return this.field.args.formItems.slice(0, 1)
         },
         ...mapState({
             case: state => state.case,
-            isDisabled: state => state.case.is_closed
+            isDisabled: state => state.case.isClosed
         })
     }
 }

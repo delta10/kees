@@ -3,7 +3,7 @@ import VueRouter from 'vue-router';
 import Vuex from 'vuex';
 import App from './App';
 
-import FormFields from './components/FormFields';
+import FormItems from './components/FormItems';
 import ArrayFieldForm from './pages/ArrayFieldForm';
 import PhaseForm from './pages/PhaseForm';
 
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     Vue.use(Vuex)
 
     Vue.component(
-        FormFields
+        FormItems
     )
 
     const router = new VueRouter({
