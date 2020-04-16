@@ -48,6 +48,7 @@
         <table class="table table-hover">
             <thead>
                 <tr>
+                    <th></th>
                     {% include 'partials/table_header_item.html' with key='id' label='Nr.' %}
                     {% include 'partials/table_header_item.html' with key='name' label='Naam' %}
                     {% for field in additional_fields %}
@@ -60,6 +61,13 @@
             <tbody>
                 {% for case in page %}
                     <tr>
+                        <td>
+                            {% if case.is_open %}
+                                <i class="fas fa-play-circle text-warning"></i>
+                            {% else %}
+                                <i class="fas fa-check-circle text-success"></i>
+                            {% endif %}
+                        </td>
                         <td><a href="/cases/view/{{case.id}}">#{{ case.id }}</a></td>
                         <td>
                             <a href="/cases/view/{{case.id}}">{{case.name}}</a>
