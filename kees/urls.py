@@ -26,6 +26,8 @@ router = routers.DefaultRouter()
 router.register(r'cases', viewsets.CaseViewSet)
 router.register(r'attachments', viewsets.AttachmentViewSet)
 
+admin.site.site_header = 'Kees beheer'
+
 urlpatterns = [
     path('', views.startpage, name='startpage'),
     path('api/', include(router.urls)),

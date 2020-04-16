@@ -5,7 +5,7 @@ from django.contrib import admin
 from django.forms import ModelForm
 from reversion.admin import VersionAdmin
 
-from .models import User, Case, CaseType, Phase, Field, Action, Attachment, PredefinedFilter
+from .models import User, Case, CaseType, Phase, Field, Action, PredefinedFilter
 from .formfields import JSONEditor
 
 
@@ -81,10 +81,6 @@ class ActionAdmin(admin.ModelAdmin):
     }
 
 
-class AttachmentAdmin(VersionAdmin):
-    list_display = ('case', 'file')
-
-
 class PredefinedFilterAdmin(admin.ModelAdmin):
     formfield_overrides = {
         JSONField: {'widget': JSONEditor},
@@ -97,5 +93,4 @@ admin.site.register(CaseType)
 admin.site.register(Phase, PhaseAdmin)
 admin.site.register(Field, FieldAdmin)
 admin.site.register(Action, ActionAdmin)
-admin.site.register(Attachment, AttachmentAdmin)
 admin.site.register(PredefinedFilter, PredefinedFilterAdmin)

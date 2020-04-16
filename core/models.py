@@ -56,17 +56,17 @@ class Manager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     objects = Manager()
 
-    username = models.CharField(max_length=255, unique=True)
+    username = models.CharField(_('gebruikersnaam'), max_length=255, unique=True)
     email = models.EmailField(max_length=255)
 
     initials = models.CharField(_('initials'), max_length=10, blank=True, null=True)
     first_name = models.CharField(_('first name'), max_length=30, blank=True)
     last_name = models.CharField(_('last name'), max_length=150, blank=True)
-    company = models.CharField(max_length=255, blank=True, null=True)
-    phone = models.CharField(max_length=255, blank=True, null=True)
+    company = models.CharField(_('bedrijf'), max_length=255, blank=True, null=True)
+    phone = models.CharField(_('telefoonnummer'), max_length=255, blank=True, null=True)
 
-    is_active = models.BooleanField(default=True)
-    last_visit = models.DateTimeField(null=True)
+    is_active = models.BooleanField(_('is actief'), default=True)
+    last_visit = models.DateTimeField(_('laatste bezoek'), null=True)
 
     external_id = models.CharField(max_length=50, unique=True, blank=True, null=True)
 
@@ -98,6 +98,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         return '{} {} ({})'.format(self.first_name, self.last_name, self.username)
 
     class Meta:
+        verbose_name = _('Gebruiker')
         ordering = ['first_name', 'last_name']
         indexes = [
             models.Index(fields=['first_name', 'last_name']),
@@ -105,9 +106,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Case(models.Model):
-    name = models.CharField(max_length=255)
-    case_type = models.ForeignKey('CaseType', on_delete=models.PROTECT)
-    created_at = models.DateTimeField(default=timezone.now, db_index=True)
+    name = models.CharField(_('naam'), max_length=255)
+    case_type = models.ForeignKey('CaseType', on_delete=models.PROTECT, verbose_name=_('zaaktype'))
+    created_at = models.DateTimeField(default=timezone.now, db_index=True, verbose_name=_('aangemaakt op'))
     current_phase = models.ForeignKey('Phase', on_delete=models.PROTECT, null=True, blank=True, verbose_name=_('Huidige fase'))
     assignee = models.ForeignKey('User', on_delete=models.PROTECT, null=True, blank=True, verbose_name=_('Behandelaar'))
     data = JSONField(default=dict, blank=True)
@@ -170,6 +171,8 @@ class Case(models.Model):
         return result
 
     class Meta:
+        verbose_name = _('Zaak')
+        verbose_name_plural = _('Zaken')
         ordering = ['-created_at']
 
         permissions = (
@@ -181,11 +184,14 @@ class Case(models.Model):
 
 
 class CaseType(models.Model):
-    name = models.CharField(max_length=255)
-    display_name = models.CharField(max_length=255)
+    name = models.CharField(_('naam'), max_length=255)
+    display_name = models.CharField(_('weergavenaam van zaak'), max_length=255)
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = _('Zaaktype')
 
 
 class CaseLog(models.Model):
@@ -200,13 +206,14 @@ class CaseLog(models.Model):
 
 
 class Phase(models.Model):
-    case_type = models.ForeignKey('CaseType', on_delete=models.PROTECT, related_name='phases')
-    order = models.IntegerField()
-    name = models.CharField(max_length=255)
-    fields = JSONField(default=list, blank=True)
-    assign_to = models.ForeignKey(Group, on_delete=models.PROTECT, null=True, blank=True)
+    case_type = models.ForeignKey('CaseType', on_delete=models.PROTECT, related_name='phases', verbose_name=_('zaaktype'))
+    order = models.IntegerField(_('volgorde'))
+    name = models.CharField(_('naam'), max_length=255)
+    fields = JSONField(_('velden'), default=list, blank=True)
+    assign_to = models.ForeignKey(Group, on_delete=models.PROTECT, null=True, blank=True, verbose_name=_('wijs toe aan groep'))
 
     class Meta:
+        verbose_name = 'Fase'
         ordering = ['case_type', 'order']
 
     def __str__(self):
@@ -248,16 +255,18 @@ class Field(models.Model):
         ('CheckboxSelectMultiple', 'CheckboxSelectMultiple'),
     )
 
-    case_type = models.ForeignKey('CaseType', on_delete=models.PROTECT)
-    key = models.SlugField(max_length=50)
+    case_type = models.ForeignKey('CaseType', on_delete=models.PROTECT, verbose_name=_('zaaktype'))
+    key = models.SlugField(max_length=50, verbose_name=_('sleutel'))
 
     label = models.CharField(max_length=255)
     type = models.CharField(max_length=255, choices=FIELD_TYPES)
     widget = models.CharField(max_length=255, choices=FIELD_WIDGETS, blank=True, null=True)
-    initial = models.CharField(max_length=255, blank=True, null=True)
-    args = JSONField(default=dict, blank=True)
+    initial = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('beginwaarde'))
+    args = JSONField(default=dict, blank=True, verbose_name=_('instellingen'))
 
     class Meta:
+        verbose_name = _('Veld')
+        verbose_name_plural = _('Velden')
         unique_together = ['case_type', 'key']
         ordering = ['case_type', 'key']
 
@@ -276,12 +285,15 @@ class Field(models.Model):
 
 
 class Action(models.Model):
-    phase = models.ForeignKey('Phase', on_delete=models.PROTECT, related_name='actions')
-    key = models.CharField(max_length=255, choices=lazy(get_actions_from_apps, tuple)())
-    args = JSONField(default=dict, blank=True)
+    phase = models.ForeignKey('Phase', on_delete=models.PROTECT, related_name='actions', verbose_name=_('fase'))
+    key = models.CharField(max_length=255, choices=lazy(get_actions_from_apps, tuple)(), verbose_name=_('type'))
+    args = JSONField(default=dict, blank=True, verbose_name=_('instellingen'))
 
     def __str__(self):
         return self.key
+
+    class Meta:
+        verbose_name = _('Actie')
 
 
 def upload_to(instance, filename):
@@ -314,11 +326,15 @@ class Attachment(models.Model):
 
     class Meta:
         ordering = ['-id']
+        verbose_name = _('Bijlage')
 
 
 class PredefinedFilter(models.Model):
-    name = models.CharField(max_length=255)
-    args = JSONField(default=dict, blank=True)
+    name = models.CharField(_('naam'), max_length=255)
+    args = JSONField(_('instellingen'), default=dict, blank=True)
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = _('Voorgedefinieerde filter')
