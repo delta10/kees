@@ -123,18 +123,10 @@ def create_case(request, case_type_id):
     case_type = get_object_or_404(CaseType, pk=case_type_id)
     phase = case_type.phases.first()
 
-    fields = []
-    for key in phase.fields:
-        field = Field.objects.get(key=key).toDict()
-        if field['type'] == 'ArrayField':
-            field['args']['fields'] = [Field.objects.get(key=key).toDict() for key in field['args']['fields']]
-
-        fields.append(field)
-
     return render(request, 'cases/create.html', {
         'case_type': case_type,
         'js_phase_form_data': {
-            'fields': fields,
+            'fields': _get_fields(phase),
             'case': {
                 'id': None,
                 'data': {},
@@ -157,32 +149,18 @@ def view_case(request, case_id, phase_id=None):
             phase = case.case_type.phases.get(pk=phase_id)
         except Phase.DoesNotExist:
             raise Http404('No Phase matches the given query.')
-    else:
+    elif case.is_open:
         phase = case.current_phase
-
-    fields = []
-    templates = []
-
-    if phase:
-        for key in phase.fields:
-            field = Field.objects.get(key=key).toDict()
-            if field['type'] == 'ArrayField':
-                field['args']['fields'] = [Field.objects.get(key=key).toDict() for key in field['args']['fields']]
-
-            if field['type'] == 'Template':
-                template = Template(field['args'].get('template'))
-                context = Context({'case': case})
-                templates.append(template.render(context))
-            else:
-                fields.append(field)
+    else:
+        phase = case.case_type.phases.last()
 
     return render(request, 'cases/view.html', {
         'case': case,
-        'fields': fields,
+        'fields': _get_fields(phase),
         'selected_phase': phase,
-        'templates': templates,
+        'templates': _render_templates(phase, case),
         'js_phase_form_data': {
-            'fields': fields,
+            'fields': _get_fields(phase),
             'case': {
                 'id': case.id,
                 'data': case.data,
@@ -192,6 +170,32 @@ def view_case(request, case_id, phase_id=None):
             'csrftoken': csrf.get_token(request)
         }
     })
+
+def _get_fields(phase):
+    fields = []
+
+    for key in phase.fields:
+        field = Field.objects.get(key=key).toDict()
+
+        if field['type'] == 'ArrayField':
+            field['args']['fields'] = [Field.objects.get(key=key).toDict() for key in field['args']['fields']]
+
+        fields.append(field)
+
+    return fields
+
+def _render_templates(phase, case):
+    templates = []
+
+    for key in phase.fields:
+        field = Field.objects.get(key=key).toDict()
+
+        if field['type'] == 'Template':
+            template = Template(field['args'].get('template'))
+            context = Context({'case': case})
+            templates.append(template.render(context))
+
+    return templates
 
 @permission_required('core.can_manage_cases', raise_exception=True)
 def delete_case(request, case_id):
