@@ -45,12 +45,16 @@
         <ul class="nav nav-tabs">
             {% for phase in case.case_type.phases.all %}
                 <li class="nav-item">
-                    <a class="nav-link {% if phase == selected_phase %}active{% endif %}" href="{% url 'view_case_phase' case.id phase.id %}">
-                        {% if phase == case.current_phase %}
-                            <i class="fas fa-play-circle"></i>&nbsp;
-                        {% endif %}
-                        {{ phase.name }}
-                    </a>
+                    {% with current_phase_index=case.case_type.phases.all|get_index:case.current_phase %}
+                        <a class="nav-link {% if phase == selected_phase %}active{% endif %}" href="{% url 'view_case_phase' case.id phase.id %}">
+                            {% if phase == case.current_phase %}
+                                <i class="fas fa-play-circle"></i>&nbsp;
+                            {% elif case.is_open and forloop.counter <= current_phase_index %}
+                                <i class="fas fa-check-circle"></i>&nbsp;
+                            {% endif %}
+                            {{ phase.name }}
+                        </a>
+                    {% endwith %}
                 </li>
             {% endfor %}
             <li class="nav-item">
