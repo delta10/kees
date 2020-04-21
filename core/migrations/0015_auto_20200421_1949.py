@@ -21,6 +21,7 @@ def forwards(apps, schema_editor):
             log.save(update_fields=['performer_json'])
 
 class Migration(migrations.Migration):
+    atomic = False
 
     dependencies = [
         ('auth', '0011_update_proxy_permissions'),
