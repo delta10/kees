@@ -49,7 +49,11 @@
                                 {{ log.event }}
                             {% endif %}
                         </td>
-                        <td>{{ log.performer }}</td>
+                        <td>
+                            {% if log.performer %}
+                                {{ log.performer.first_name }} {{ log.performer.last_name }} ({{ log.performer.username }})
+                            {% endif %}
+                        </td>
                         <td>{{ log.created_at }}</td>
                     </tr>
                 {% endfor %}

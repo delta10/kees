@@ -151,7 +151,7 @@ class Command(BaseCommand):
                         'new_phase': str(case.current_phase) if case.current_phase else None,
                     },
                     'created_at': log_record.created,
-                    'performer': performer
+                    'performer': performer.to_dict()
                 }
             )
         elif log_record.event_type == 'email/send':
@@ -167,7 +167,7 @@ class Command(BaseCommand):
                         )
                     },
                     'created_at': log_record.created,
-                    'performer': performer
+                    'performer': performer.to_dict()
                 }
             )
         elif log_record.event_type == 'case/accept':
@@ -176,7 +176,7 @@ class Command(BaseCommand):
                 defaults={
                     'event': 'claim_case',
                     'created_at': log_record.created,
-                    'performer': performer
+                    'performer': performer.to_dict()
                 }
             )
         elif log_record.event_type == 'case/note/create':
@@ -188,7 +188,7 @@ class Command(BaseCommand):
                     'metadata': {
                         'message': log_record.event_data['content'],
                     },
-                    'performer': performer
+                    'performer': performer.to_dict()
                 }
             )
 

@@ -238,7 +238,7 @@ def claim_case(request, case_id):
     case.assignee = request.user
     case.save()
 
-    case.logs.create(event='claim_case', performer=request.user)
+    case.logs.create(event='claim_case', performer=request.user.to_dict())
 
     messages.add_message(request, messages.INFO, _('Je bent nu behandelaar van deze zaak.'))
     return redirect('view_case', case.id)
@@ -281,7 +281,7 @@ def next_phase(request, case_id):
             case.close()
             messages.add_message(request, messages.INFO, _('De zaak is afgesloten.'))
 
-            case.logs.create(event='closed_case', performer=request.user, metadata={
+            case.logs.create(event='closed_case', performer=request.user.to_dict(), metadata={
                 'old_phase': old_phase,
             })
 
@@ -290,7 +290,7 @@ def next_phase(request, case_id):
         case.next_phase(request)
         messages.add_message(request, messages.INFO, _('De zaak is doorgezet naar de volgende fase.'))
 
-        case.logs.create(event='next_phase', performer=request.user, metadata={
+        case.logs.create(event='next_phase', performer=request.user.to_dict(), metadata={
             'old_phase': old_phase,
             'new_phase': str(case.current_phase) if case.current_phase else None,
         })
@@ -311,7 +311,7 @@ def change_assignee(request, case_id):
             case.assignee = form.cleaned_data['assignee']
             case.save()
 
-            case.logs.create(event='change_assignee', performer=request.user, metadata={
+            case.logs.create(event='change_assignee', performer=request.user.to_dict(), metadata={
                 'assignee_name': str(case.assignee) if case.assignee else None
             })
 
@@ -335,7 +335,7 @@ def change_phase(request, case_id):
         if form.is_valid():
             form.save()
 
-            case.logs.create(event='change_phase', performer=request.user, metadata={
+            case.logs.create(event='change_phase', performer=request.user.to_dict(), metadata={
                 'old_phase': old_phase,
                 'new_phase': str(case.current_phase) if case.current_phase else None,
             })
@@ -372,7 +372,7 @@ def create_attachment(request, case_id, attachment_type):
                 form.save(case=case)
                 reversion.set_user(request.user)
 
-            case.logs.create(event='create_attachment', performer=request.user)
+            case.logs.create(event='create_attachment', performer=request.user.to_dict())
 
             return redirect('attachments', case.id)
     else:
@@ -396,7 +396,7 @@ def delete_attachment(request, case_id, attachment_id):
             attachment.delete()
             reversion.set_user(request.user)
 
-        case.logs.create(event='delete_attachment', performer=request.user, metadata={
+        case.logs.create(event='delete_attachment', performer=request.user.to_dict(), metadata={
             'attachment_name': attachment.display_name,
         })
 

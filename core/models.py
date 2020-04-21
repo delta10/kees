@@ -76,6 +76,15 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.name
 
+    def to_dict(self):
+        return {
+            'username': self.username,
+            'email': self.email,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'company': self.company
+        }
+
     def is_staff(self):
         return self.is_superuser
 
@@ -197,7 +206,7 @@ class CaseType(models.Model):
 class CaseLog(models.Model):
     case = models.ForeignKey('Case', on_delete=models.CASCADE, related_name='logs')
     event = models.CharField(max_length=255)
-    performer = models.ForeignKey('User', on_delete=models.PROTECT, null=True, blank=True)
+    performer = JSONField(default=dict, blank=True)
     created_at = models.DateTimeField(default=timezone.now, db_index=True)
     metadata = JSONField(default=dict, blank=True)
 
