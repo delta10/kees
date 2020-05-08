@@ -1,5 +1,5 @@
 # UI build container
-FROM node:12.16.1-alpine AS ui-build
+FROM node:12.16.3-alpine AS ui-build
 WORKDIR /app/frontend
 
 COPY frontend/package.json \
