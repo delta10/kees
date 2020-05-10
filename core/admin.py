@@ -25,7 +25,7 @@ class UserCreationForm(ModelForm):
 class UserAdmin(BaseUserAdmin):
     add_form = UserCreationForm
     list_display = ('username', 'first_name', 'last_name', 'company', 'email', 'groepen', 'last_visit')
-    list_filter = ('is_superuser', )
+    list_filter = ('is_superuser', 'is_active', )
     ordering = ('first_name', 'last_name', )
     filter_horizontal = ()
 
