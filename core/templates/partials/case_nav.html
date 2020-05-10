@@ -23,6 +23,8 @@
                         <button class="btn btn-outline-dark btn-light" type="submit">
                             {% if case.current_phase == case.last_phase %}
                                 {% trans 'Afhandelen' %}
+                            {% else %}
+                                {% trans 'Fase afronden' %}
                             {% endif %}
                             &#8250;
                         </button>
