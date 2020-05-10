@@ -78,7 +78,7 @@ class PhaseAdmin(admin.ModelAdmin):
 
 
 class FieldAdmin(admin.ModelAdmin):
-    list_display = ('key', 'label', 'case_type', )
+    list_display = ('key', 'label', 'type', 'case_type', )
     formfield_overrides = {
         JSONField: {'widget': JSONEditor},
     }
