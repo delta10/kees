@@ -6,4 +6,4 @@ import Vuex from 'vuex'
 Vue.config.productionTip = false
 Vue.use(Vuex)
 
-import './phase_form'
+import './phase-form'

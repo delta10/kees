@@ -232,36 +232,15 @@ class Phase(models.Model):
 class Field(models.Model):
     FIELD_TYPES = (
         ('ArrayField', 'ArrayField'),
-        ('CharField', 'CharField'),
-        ('IntegerField', 'IntegerField'),
+        ('CheckboxField', 'CheckboxField'),
         ('DateField', 'DateField'),
-        ('TimeField', 'TimeField'),
-        ('DateTimeField', 'DateTimeField'),
-        ('DurationField', 'DurationField'),
-        ('EmailField', 'EmailField'),
-        ('URLField', 'URLField'),
-        ('BooleanField', 'BooleanField'),
-        ('ChoiceField', 'ChoiceField'),
-        ('MultipleChoiceField', 'MultipleChoiceField'),
-        ('FloatField', 'FloatField'),
-        ('DecimalField', 'DecimalField'),
+        ('Heading', 'Heading'),
+        ('NumberField', 'NumberField'),
+        ('RadioField', 'RadioField'),
+        ('SelectField', 'SelectField'),
         ('Template', 'Template'),
-    )
-
-    FIELD_WIDGETS = (
-        ('TextInput', 'TextInput'),
-        ('NumberInput', 'NumberInput'),
-        ('EmailInput', 'EmailInput'),
-        ('URLInput', 'URLInput'),
-        ('Textarea', 'Textarea'),
-        ('DateInput', 'DateInput'),
-        ('DateTimeInput', 'DateTimeInput'),
-        ('TimeInput', 'TimeInput'),
-        ('CheckboxInput', 'CheckboxInput'),
-        ('Select', 'Select'),
-        ('SelectMultiple', 'SelectMultiple'),
-        ('RadioSelect', 'RadioSelect'),
-        ('CheckboxSelectMultiple', 'CheckboxSelectMultiple'),
+        ('TextareaField', 'TextareaField'),
+        ('TextField', 'TextField'),
     )
 
     case_type = models.ForeignKey('CaseType', on_delete=models.PROTECT, verbose_name=_('zaaktype'))
@@ -269,7 +248,6 @@ class Field(models.Model):
 
     label = models.CharField(max_length=255)
     type = models.CharField(max_length=255, choices=FIELD_TYPES)
-    widget = models.CharField(max_length=255, choices=FIELD_WIDGETS, blank=True, null=True)
     initial = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('beginwaarde'))
     args = JSONField(default=dict, blank=True, verbose_name=_('instellingen'))
 
@@ -287,7 +265,6 @@ class Field(models.Model):
             'key': self.key,
             'label': self.label,
             'type': self.type,
-            'widget': self.widget,
             'initial': self.initial,
             'args': self.args
         }

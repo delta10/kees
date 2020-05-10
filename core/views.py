@@ -127,13 +127,13 @@ def create_case(request, case_type_id):
         'case_type': case_type,
         'js_phase_form_data': {
             'formItems': _get_form_items(phase),
+            'disabled': False,
             'case': {
                 'id': None,
                 'data': {},
-                'initialData': {},
-                'isClosed': False
+                'initialData': {}
             },
-            'case_type': {
+            'caseType': {
                 'id': case_type.id
             },
             'csrftoken': csrf.get_token(request)
@@ -160,11 +160,11 @@ def view_case(request, case_id, phase_id=None):
         'templates': _render_templates(phase, case),
         'js_phase_form_data': {
             'formItems': _get_form_items(phase),
+            'disabled': case.is_closed,
             'case': {
                 'id': case.id,
                 'data': case.data,
-                'initialData': case.data,
-                'isClosed': case.is_closed,
+                'initialData': case.data
             },
             'csrftoken': csrf.get_token(request)
         }
@@ -174,13 +174,12 @@ def _get_form_items(phase):
     fields = []
 
     for item in phase.fields:
-        if isinstance(item, str):
-            fields.append({'field': _get_field(item)})
-        else:
-            if item.get('field'):
-                fields.append({'field': _get_field(item.get('field'))})
-            elif item.get('heading'):
-                fields.append(item)
+        field = _get_field(item)
+
+        if field['type'] == 'Template':
+            continue
+
+        fields.append({'field': field})
 
     return fields
 
