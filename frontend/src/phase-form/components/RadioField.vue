@@ -27,21 +27,18 @@ export default {
   props: {
     field: Object,
     value: String,
-    initialValue: String,
     disabled: Boolean,
+  },
+  data() {
+    const value = this.value ? [this.value] : []
+
+    return {
+      choices: [ ...new Set([ ...this.field.args.choices, ...value ]) ]
+    }
   },
   methods: {
     onChange(e) {
       this.$emit('change', this.field.key, e.target.value)
-    }
-  },
-  computed: {
-    choices() {
-      if (!this.initialValue) {
-        return this.field.args.choices
-      }
-
-      return [...new Set([...this.field.args.choices, this.initialValue])]
     }
   }
 }

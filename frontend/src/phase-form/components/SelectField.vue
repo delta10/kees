@@ -23,8 +23,14 @@ export default {
   props: {
     field: Object,
     value: String,
-    initialValue: String,
     disabled: Boolean,
+  },
+  data() {
+    const value = this.value ? [this.value] : []
+
+    return {
+      choices: [ ...new Set([ ...this.field.args.choices, ...value ]) ]
+    }
   },
   methods: {
     onChange(e) {
@@ -44,15 +50,6 @@ export default {
       Object.keys(prefill[value]).forEach((prefillKey) => {
         this.$emit('change', prefillKey, prefill[value][prefillKey])
       })
-    }
-  },
-  computed: {
-    choices() {
-      if (!this.initialValue) {
-        return this.field.args.choices
-      }
-
-      return [...new Set([...this.field.args.choices, this.initialValue])]
     }
   }
 }

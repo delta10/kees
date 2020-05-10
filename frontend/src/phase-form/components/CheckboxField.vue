@@ -27,8 +27,14 @@ export default {
   props: {
     field: Object,
     value: { type: Array, default: () => [] },
-    initialValue: { type: Array, default: () => [] },
     disabled: Boolean
+  },
+  data() {
+    const value = this.value || []
+
+    return {
+      choices: [ ...new Set([ ...this.field.args.choices, ...value ]) ]
+    }
   },
   methods: {
     onChange(e) {
@@ -45,13 +51,6 @@ export default {
   computed: {
     currentValue() {
       return Array.isArray(this.value) ? this.value : []
-    },
-    choices() {
-      if (!this.initialValue) {
-        return this.field.args.choices
-      }
-
-      return [...new Set([...this.field.args.choices, ...this.initialValue])]
     }
   }
 }
