@@ -14,6 +14,7 @@
 
 <script>
 import ArrayField from './ArrayField';
+import ArrayTextField from './ArrayTextField';
 import CheckboxField from './CheckboxField';
 import DateField from './DateField';
 import Heading from './Heading';
@@ -27,6 +28,7 @@ export default {
   name: 'FormItems',
   components: {
     ArrayField,
+    ArrayTextField,
     CheckboxField,
     DateField,
     Heading,

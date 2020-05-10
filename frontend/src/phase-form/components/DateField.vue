@@ -21,7 +21,6 @@ export default {
   props: {
     field: Object,
     value: String,
-    initialValue: String,
     disabled: Boolean,
   },
   methods: {

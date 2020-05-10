@@ -232,6 +232,7 @@ class Phase(models.Model):
 class Field(models.Model):
     FIELD_TYPES = (
         ('ArrayField', 'ArrayField'),
+        ('ArrayTextField', 'ArrayTextField'),
         ('CheckboxField', 'CheckboxField'),
         ('DateField', 'DateField'),
         ('Heading', 'Heading'),

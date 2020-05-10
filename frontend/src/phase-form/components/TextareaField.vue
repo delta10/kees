@@ -22,8 +22,6 @@ export default {
   props: {
     field: Object,
     value: String,
-    initialValue: String,
-    arrayField: Object,
     disabled: Boolean,
   },
   methods: {
