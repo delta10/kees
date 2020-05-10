@@ -4,7 +4,7 @@
           <i class="fas fa-arrow-left mr-1"></i>
           Overzicht
         </router-link>
-        <h2>{{ field.label }}</h2>
+        <h2 class="mb-5">{{ field.label }}</h2>
         <FormItems
           :formItems="field.args.formItems"
           :data="this.case.data[arrayField.key][arrayField.index]"
