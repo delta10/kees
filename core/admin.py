@@ -24,12 +24,20 @@ class UserCreationForm(ModelForm):
 
 class UserAdmin(BaseUserAdmin):
     add_form = UserCreationForm
-    list_display = ('username', 'first_name', 'last_name', 'company', 'email', 'last_visit')
+    list_display = ('username', 'first_name', 'last_name', 'company', 'email', 'groepen', 'last_visit')
     list_filter = ('is_superuser', )
     ordering = ('first_name', 'last_name', )
     filter_horizontal = ()
 
     readonly_fields = ('last_visit', )
+
+    def groepen(self, user):
+        groups = user.groups.all()
+
+        if len(groups) > 0:
+            return ', '.join([group.name for group in groups])
+
+        return ''
 
     fieldsets = (
         (None, {'fields': ('username', 'password', 'last_visit')}),
