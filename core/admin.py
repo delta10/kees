@@ -71,14 +71,14 @@ class CaseAdmin(VersionAdmin):
 
 
 class PhaseAdmin(admin.ModelAdmin):
-    list_display = ('case_type', 'name', 'order', )
+    list_display = ('name', 'case_type', 'order', )
     formfield_overrides = {
         JSONField: {'widget': JSONEditor},
     }
 
 
 class FieldAdmin(admin.ModelAdmin):
-    list_display = ('case_type', 'key', 'label', )
+    list_display = ('key', 'label', 'case_type', )
     formfield_overrides = {
         JSONField: {'widget': JSONEditor},
     }
