@@ -195,13 +195,7 @@ def _render_templates(phase, case):
     templates = []
 
     for item in phase.fields:
-        if isinstance(item, str):
-            field = Field.objects.get(key=item).toDict()
-        else:
-            if item.get('field'):
-                field = Field.objects.get(key=item.get('field')).toDict()
-            else:
-                continue
+        field = Field.objects.get(key=item).toDict()
 
         if field['type'] == 'Template':
             template = Template(field['args'].get('template'))
@@ -249,13 +243,10 @@ def next_phase(request, case_id):
     missing_fields = []
     if case.current_phase:
         for item in case.current_phase.fields:
-            if isinstance(item, str):
-                field = Field.objects.get(key=item)
-            else:
-                if item.get('field'):
-                    field = Field.objects.get(key=item.get('field'))
-                else:
-                    continue
+            field = Field.objects.get(key=item)
+
+            if field.type == 'Heading' or field.type == 'Template':
+                continue
 
             required = field.args.get('required')
             if isinstance(required, bool) and not required:
