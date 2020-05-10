@@ -75,3 +75,7 @@ th a {
 .bootstrap-select .btn-light:active {
     background-color: #fff;
 }
+
+.heading:not(:first-child) {
+    margin-top: 3rem;
+}

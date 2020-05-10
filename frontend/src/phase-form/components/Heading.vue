@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="heading">
     <h5>{{field.label}}</h5>
     <hr />
   </div>

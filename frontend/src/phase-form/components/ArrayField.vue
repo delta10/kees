@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-4 mb-5">
+  <div class="heading mb-5">
     <h5>{{field.label}}<span v-if="field.args.required !== false">*</span></h5>
     <hr />
 
