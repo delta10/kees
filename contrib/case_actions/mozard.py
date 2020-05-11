@@ -1,10 +1,11 @@
 from xml.etree import ElementTree
 from urllib.parse import urlparse, urljoin
+from datetime import datetime
 import hashlib
 
 from constance import config
 from django.template.loader import render_to_string
-from django.utils import timezone, dateparse
+from django.utils import timezone
 import requests
 
 class Action:
@@ -71,14 +72,6 @@ class Action:
 
             return False
 
-    def get_documents(self, case):
-        for attachment in case.attachments.all():
-            yield {
-                'display_name': attachment.display_name,
-                'url': urljoin(config.URL, attachment.file.url),
-                'extension': attachment.extension.upper()
-            }
-
     def get_assignments(self, case):
         for key, mapping in self.assignment_mapping.items():
             if isinstance(case.data.get(key), list):
@@ -89,16 +82,25 @@ class Action:
             if mapping['type'] == 'string':
                 yield {'id': mapping['dest_id'], 'value': value}
             elif mapping['type'] == 'date':
+                print(value)
                 try:
-                    parsed_date = dateparse.parse_datetime(value)
+                    parsed_date = datetime.fromisoformat(value)
                 except TypeError:
-                    parsed_date = None
+                    parsed_date = ''
 
-                yield {'id': mapping['dest_id'], 'value': parsed_date.strftime('%Y%m%d') if parsed_date else None}
+                yield {'id': mapping['dest_id'], 'value': parsed_date.strftime('%Y%m%d') if parsed_date else ''}
             elif mapping['type'] == 'boolean':
                 yield {'id': mapping['dest_id'], 'value': 'J' if value else 'N'}
             else:
                 raise Exception('Unsupported type: {}'.format(mapping['type']))
+
+    def get_documents(self, case):
+        for attachment in case.attachments.all():
+            yield {
+                'display_name': attachment.display_name,
+                'url': urljoin(config.URL, attachment.file.url),
+                'extension': attachment.extension.upper()
+            }
 
     assignment_mapping = {
         'soort_werk': {'dest_id': 1205, 'type': 'string'},
