@@ -6,7 +6,7 @@ from django.contrib import admin
 from django.forms import ModelForm
 from reversion.admin import VersionAdmin
 
-from .models import User, Case, CaseType, Phase, Field, Action, PredefinedFilter
+from .models import User, Case, CaseLog, CaseType, Phase, Field, Action, PredefinedFilter
 from .formfields import JSONEditor
 
 
@@ -110,6 +110,18 @@ class CaseAdmin(VersionAdmin):
     }
 
 
+class CaseLogAdmin(admin.ModelAdmin):
+    list_display = ('created_at', 'case', 'display_event', 'display_performer')
+    list_filter = ('event', 'created_at')
+    readonly_fields = ('case', 'event', 'performer', 'created_at', 'metadata')
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+
 class PhaseAdmin(admin.ModelAdmin):
     list_display = ('name', 'case_type', 'order', )
     formfield_overrides = {
@@ -138,6 +150,7 @@ class PredefinedFilterAdmin(admin.ModelAdmin):
 
 admin.site.register(User, UserAdmin)
 admin.site.register(Case, CaseAdmin)
+admin.site.register(CaseLog, CaseLogAdmin)
 admin.site.register(CaseType)
 admin.site.register(Phase, PhaseAdmin)
 admin.site.register(Field, FieldAdmin)

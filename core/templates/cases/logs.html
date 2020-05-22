@@ -21,48 +21,11 @@
                 {% for log in page %}
                     <tr>
                         <td>
-                            {% if log.event == 'change_phase' %}
-                                {% if log.metadata.old_phase %}
-                                    Fase aangepast van {{ log.metadata.old_phase }} naar {{ log.metadata.new_phase|default:'[Geen fase]' }}
-                                {% else %}
-                                    Fase aangepast naar {{ log.metadata.new_phase|default:'[Geen fase]' }}
-                                {% endif %}
-                            {% elif log.event == 'next_phase' %}
-                                Fase doorgezet van {{ log.metadata.old_phase|default:'[Geen fase]' }} naar {{ log.metadata.new_phase|default:'[Geen fase]' }}
-                            {% elif log.event == 'create_attachment' %}
-                                Bijlage toegevoegd: {{ log.metadata.attachment_name }}
-                            {% elif log.event == 'delete_attachment' %}
-                                Bijlage verwijderd: {{ log.metadata.attachment_name }}
-                            {% elif log.event == 'change_assignee' %}
-                                {% if log.metadata.assignee_name %}
-                                    Behandelaar gewijzigd naar {{ log.metadata.assignee_name }}
-                                {% else %}
-                                    Behandelaar verwijderd
-                                {% endif %}
-                            {% elif log.event == 'claim_case' %}
-                                Zaak in behandeling genomen
-                            {% elif log.event == 'create_case' %}
-                                Zaak aangemaakt
-                            {% elif log.event == 'mozard_request' %}
-                                {% if log.metadata.success %}
-                                    Zaak aangemaakt in Mozard op {{ log.metadata.host }} onder nummer {{ log.metadata.mozard_case_id }}
-                                {% else %}
-                                    Kon zaak niet aanmaken in Mozard op {{ log.metadata.host }} vanwege {{ log.metadata.exception }}
-                                {% endif %}
-                            {% elif log.event == 'closed_case' %}
-                                Zaak gesloten
-                            {% elif log.event == 'http_request' %}
-                                Extern systeem:<br />{{ log.metadata.message }}
-                            {% elif log.event == 'send_email' %}
-                                Mail verstuurd naar {{ log.metadata.email_to }}<br />
-                                Onderwerp: {{ log.metadata.subject }}
-                            {% else %}
-                                {{ log.event }}
-                            {% endif %}
+                            {{ log.display_event }}
                         </td>
                         <td>
                             {% if log.performer %}
-                                {{ log.performer.first_name }} {{ log.performer.last_name }} ({{ log.performer.username }})
+                                {{ log.display_performer }}
                             {% endif %}
                         </td>
                         <td>{{ log.created_at }}</td>

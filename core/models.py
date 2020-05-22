@@ -207,14 +207,40 @@ class CaseType(models.Model):
 
 
 class CaseLog(models.Model):
-    case = models.ForeignKey('Case', on_delete=models.CASCADE, related_name='logs')
-    event = models.CharField(max_length=255)
-    performer = JSONField(default=dict, blank=True)
-    created_at = models.DateTimeField(default=timezone.now, db_index=True)
+    case = models.ForeignKey('Case', on_delete=models.CASCADE, related_name='logs', verbose_name=_('zaak'))
+    event = models.CharField(_('gebeurtenis'), max_length=255)
+    performer = JSONField(_('uitgevoerd door'), default=dict, blank=True)
+    created_at = models.DateTimeField(_('datum/tijd'), default=timezone.now, db_index=True)
     metadata = JSONField(default=dict, blank=True)
 
     class Meta:
         ordering = ['-created_at']
+
+    @property
+    def display_performer(self):
+        return '{} {} ({})'.format(
+            self.performer.get('first_name'),
+            self.performer.get('last_name'),
+            self.performer.get('username')
+        )
+
+    @property
+    def display_event(self):
+        events = {
+            'change_phase': _('Fase aangepast naar %s' % self.metadata.get('new_phase')),
+            'next_phase': _('Fase doorgezet naar %s' % self.metadata.get('new_phase')),
+            'create_attachment': _('Bijlage %s toegevoegd' % self.metadata.get('attachment_name')),
+            'delete_attachment': _('Bijlage %s verwijderd' % self.metadata.get('attachment_name')),
+            'change_assignee': _('Behandelaar gewijzigd naar %s' % self.metadata.get('assignee_name', '-')),
+            'claim_case': _('Zaak in behandeling genomen'),
+            'create_case': _('Zaak aangemaakt'),
+            'closed_case': _('Zaak gesloten'),
+            'mozard_request': _('Externe koppeling: Zaak aangemaakt op %s onder nummer %s' % (self.metadata.get('host'), self.metadata.get('mozard_case_id'))),
+            'http_request': _('Externe koppeling: %s' % self.metadata.get('message', '-')),
+            'send_email': _('E-mail koppeling: Verstuurd naar %s met onderwerp %s' % (self.metadata.get('email_to'), self.metadata.get('subject')))
+        }
+
+        return events.get(self.event, self.event)
 
 
 class Phase(models.Model):
