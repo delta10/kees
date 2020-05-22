@@ -45,6 +45,8 @@
                                 {% else %}
                                     Kon zaak niet aanmaken in Mozard op {{ log.metadata.host }} vanwege {{ log.metadata.exception }}
                                 {% endif %}
+                            {% elif log.event == 'closed_case' %}
+                                Zaak gesloten
                             {% else %}
                                 {{ log.event }}
                             {% endif %}
