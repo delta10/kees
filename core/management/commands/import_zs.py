@@ -46,8 +46,18 @@ class Command(BaseCommand):
         self.engine = create_engine(database_url, pool_recycle=3600)
         self.session = sessionmaker(bind=self.engine)()
 
+        self.statuses = self.get_statuses()
+
         self.import_users()
         self.import_cases()
+
+    def get_statuses(self):
+        statuses = {}
+
+        for status in self.session.query(src.CaseStatus).all():
+            statuses[status.id] = status.fase
+
+        return statuses
 
     def import_users(self):
         for user in self.session.query(src.UserEntity).join(src.Subject).all():
@@ -148,7 +158,7 @@ class Command(BaseCommand):
                     'event': 'change_phase',
                     'metadata': {
                         'old_phase': None,
-                        'new_phase': str(case.current_phase) if case.current_phase else None,
+                        'new_phase': self.statuses.get(log_record.event_data['phase_id']) if self.statuses.get(log_record.event_data['phase_id']) else None,
                     },
                     'created_at': log_record.created,
                     'performer': performer.to_dict()
@@ -160,11 +170,9 @@ class Command(BaseCommand):
                 defaults={
                     'event': 'send_email',
                     'metadata': {
-                        'message': 'Sucessfully sent email to {} with subject {} and message {}'.format(
-                            log_record.event_data['recipient'],
-                            log_record.event_data['subject'],
-                            log_record.event_data['content']
-                        )
+                        'email_to': log_record.event_data['recipient'],
+                        'subject': log_record.event_data['subject'],
+                        'message': log_record.event_data['content']
                     },
                     'created_at': log_record.created,
                     'performer': performer.to_dict()
@@ -188,6 +196,41 @@ class Command(BaseCommand):
                     'metadata': {
                         'message': log_record.event_data['content'],
                     },
+                    'performer': performer.to_dict()
+                }
+            )
+        elif log_record.event_type == 'case/relation/update':
+            if log_record.event_data['subject_relation'] != 'Behandelaar':
+                return
+            if log_record.event_data['subject_name'] == '&lt;Geen betrokkene&gt;':
+                return
+
+            case.logs.update_or_create(
+                pk=log_record.id,
+                defaults={
+                    'event': 'change_assignee',
+                    'created_at': log_record.created,
+                    'metadata': {
+                        'assignee_name': log_record.event_data['subject_name'],
+                    },
+                    'performer': performer.to_dict()
+                }
+            )
+        elif log_record.event_type == 'case/close':
+            case.logs.update_or_create(
+                pk=log_record.id,
+                defaults={
+                    'event': 'closed_case',
+                    'created_at': log_record.created,
+                    'performer': performer.to_dict()
+                }
+            )
+        elif log_record.event_type == 'case/create':
+            case.logs.update_or_create(
+                pk=log_record.id,
+                defaults={
+                    'event': 'create_case',
+                    'created_at': log_record.created,
                     'performer': performer.to_dict()
                 }
             )

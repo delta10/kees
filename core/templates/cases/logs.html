@@ -22,7 +22,11 @@
                     <tr>
                         <td>
                             {% if log.event == 'change_phase' %}
-                                Fase aangepast van {{ log.metadata.old_phase|default:'[Geen fase]' }} naar {{ log.metadata.new_phase|default:'[Geen fase]' }}
+                                {% if log.metadata.old_phase %}
+                                    Fase aangepast van {{ log.metadata.old_phase }} naar {{ log.metadata.new_phase|default:'[Geen fase]' }}
+                                {% else %}
+                                    Fase aangepast naar {{ log.metadata.new_phase|default:'[Geen fase]' }}
+                                {% endif %}
                             {% elif log.event == 'next_phase' %}
                                 Fase doorgezet van {{ log.metadata.old_phase|default:'[Geen fase]' }} naar {{ log.metadata.new_phase|default:'[Geen fase]' }}
                             {% elif log.event == 'create_attachment' %}
@@ -47,6 +51,11 @@
                                 {% endif %}
                             {% elif log.event == 'closed_case' %}
                                 Zaak gesloten
+                            {% elif log.event == 'http_request' %}
+                                Extern systeem:<br />{{ log.metadata.message }}
+                            {% elif log.event == 'send_email' %}
+                                Mail verstuurd naar {{ log.metadata.email_to }}<br />
+                                Onderwerp: {{ log.metadata.subject }}
                             {% else %}
                                 {{ log.event }}
                             {% endif %}

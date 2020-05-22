@@ -110,3 +110,8 @@ class Filestore(Base):
     original_name = Column(String)
     mimetype = Column(String)
     date_created = Column(LocalDateTime)
+
+class CaseStatus(Base):
+    __tablename__ = 'zaaktype_status'
+    id = Column(BigInteger, primary_key=True)
+    fase = Column(String)
