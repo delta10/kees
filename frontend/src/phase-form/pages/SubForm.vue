@@ -54,6 +54,7 @@ export default {
       },
       submitForm(e) {
         e.preventDefault()
+        this.$emit('submitForm')
         this.$router.go(-1)
       }
     }

@@ -12,7 +12,7 @@
             </span>
           </td>
             <td>
-              <router-link :to="`/fields/${field.key}/${index}`" class="btn btn-light">Bekijken</router-link>&nbsp;
+              <router-link :to="`/fields/${field.key}/${index}`" class="btn btn-light">Bekijk</router-link>&nbsp;
               <button v-if="!disabled" type="button" @click="deleteItem(index)" class="btn btn-light">Verwijderen</button>
             </td>
         </tr>

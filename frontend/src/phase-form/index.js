@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Vuex from 'vuex';
 
+import App from './App';
 import Form from './pages/Form';
 import SubForm from './pages/SubForm';
 
@@ -43,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
       { path: '/fields/:key/:index', component: SubForm }
     ],
     scrollBehavior() {
-      return { x: 0, y: 200 }
+      return { x: 0, y: 0 }
     }
   })
 
@@ -51,23 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
     el: '#js-phase-form-entry-point',
     router,
     store,
-    render: (createElement) => createElement('router-view'),
-    created() {
-      window.addEventListener('beforeunload', this.beforeUnload)
-    },
-    methods: {
-      beforeUnload(e) {
-        const initialData = JSON.stringify(this.$store.state.case.initialData)
-        const data = JSON.stringify(this.$store.state.case.data)
-        if (initialData === data) {
-          return
-        }
-
-        const message = 'Pagina verlaten? Wijzigingen die je hebt aangebracht, worden niet opgeslagen.'
-
-        e.returnValue = message
-        return message
-      }
-    }
+    render: (c) => c(App),
   })
 })
