@@ -42,7 +42,7 @@ def dashboard(request):
         'my_cases': Case.objects.filter(assignee=request.user)
     })
 
-
+@permission_required('core.can_manage_cases', raise_exception=True)
 def case_list(request):
     queryset = Case.objects.all()
 
@@ -115,6 +115,7 @@ def _get_additional_fields(field_keys):
 
     return fields
 
+@permission_required('core.can_manage_cases', raise_exception=True)
 def create_case(request, case_type_id):
     if not config.CREATE_CASE:
         messages.add_message(request, messages.ERROR, _('Het creëren van zaken is uitgeschakeld.'))
@@ -280,10 +281,19 @@ def next_phase(request, case_id):
         case.next_phase(request)
         messages.add_message(request, messages.INFO, _('De zaak is doorgezet naar de volgende fase.'))
 
+        new_phase = case.current_phase
+
         case.logs.create(event='next_phase', performer=request.user.to_dict(), metadata={
             'old_phase': old_phase,
-            'new_phase': str(case.current_phase) if case.current_phase else None,
+            'new_phase': str(new_phase) if new_phase else None,
         })
+
+        if new_phase and new_phase.assign_to:
+            user_groups = request.user.groups.all()
+            if new_phase.assign_to not in user_groups:
+                case.assignee = None
+                case.save()
+                return redirect('dashboard')
 
         return redirect('view_case', case.id)
 

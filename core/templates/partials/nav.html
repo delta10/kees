@@ -11,10 +11,12 @@
             <li class="nav-item {% active 'dashboard' %}">
                 <a class="nav-link" href="{% url 'dashboard' %}">{% trans 'Mijn zaken' %}</a>
             </li>
-            <li class="nav-item {% active 'cases' %}">
-                <a class="nav-link" href="{% url 'cases' %}">{% trans 'Overzicht' %}</a>
-            </li>
-            {% if config.CREATE_CASE %}
+            {% if perms.core.can_manage_cases %}
+                <li class="nav-item {% active 'cases' %}">
+                    <a class="nav-link" href="{% url 'cases' %}">{% trans 'Overzicht' %}</a>
+                </li>
+            {% endif %}
+            {% if config.CREATE_CASE and perms.core.can_manage_cases %}
                 <li class="nav-item {% active 'new_case' %}">
                     <a class="nav-link" href="{% url 'create_case' 1 %}">{% trans 'Nieuw' %}</a>
                 </li>
@@ -22,11 +24,13 @@
         </ul>
 
         <ul class="navbar-nav">
-            <li class="nav-item">
-                <form class="form-inline" method="GET" action="{% url 'cases' %}">
-                    <input class="form-control mr-sm-4" type="search" placeholder="{% trans 'Zoeken...' %}" name="name">
-                </form>
-            </li>
+            {% if perms.core.can_manage_cases %}
+                <li class="nav-item">
+                    <form class="form-inline" method="GET" action="{% url 'cases' %}">
+                        <input class="form-control mr-sm-4" type="search" placeholder="{% trans 'Zoeken...' %}" name="name">
+                    </form>
+                </li>
+            {% endif %}
 
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="user-menu" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ request.user.name }}</a>
