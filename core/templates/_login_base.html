@@ -1,4 +1,5 @@
 {% load static %}
+{% load render_bundle from webpack_loader %}
 {% get_media_prefix as MEDIA_URL %}
 {% load active %}
 <!doctype html>
@@ -45,6 +46,8 @@
     crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4"
     crossorigin="anonymous"></script>
+    {% render_bundle "chunk-vendors" %}
+    {% render_bundle "app" %}
 </body>
 
 </html>
