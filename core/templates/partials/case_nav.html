@@ -37,10 +37,12 @@
             {% if case.assignee %}
                 {% trans 'Behandelaar:' %} {{ case.assignee }}
             {% else %}
-                <form method="POST" action="{% url 'claim_case' case.id %}">
-                    {% csrf_token %}
-                    <button class="btn btn-link" type="submit"><i class="fas fa-chevron-right"></i>&nbsp;&nbsp;{% trans 'In behandeling nemen' %}</button>
-                </form>
+                {% if case.current_phase == selected_phase %}
+                    <form method="POST" action="{% url 'claim_case' case.id %}">
+                        {% csrf_token %}
+                        <button class="btn btn-link" type="submit"><i class="fas fa-chevron-right"></i>&nbsp;&nbsp;{% trans 'In behandeling nemen' %}</button>
+                    </form>
+                {% endif %}
             {% endif %}
         </div>
 
