@@ -137,6 +137,12 @@ class Command(BaseCommand):
                     assignee = dest.User.objects.get(id=content['value'])
                 except dest.User.DoesNotExist:
                     assignee = None
+            if key == 'case.status':
+                case_status = content['value']
+
+        if case_status == 'resolved':
+            current_phase = None
+            assignee = None
 
         return {
             'data': data,
