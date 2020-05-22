@@ -1,12 +1,34 @@
 from django.utils.translation import gettext_lazy as _
 from django.contrib.postgres.fields import JSONField
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.models import Group
 from django.contrib import admin
 from django.forms import ModelForm
 from reversion.admin import VersionAdmin
 
 from .models import User, Case, CaseType, Phase, Field, Action, PredefinedFilter
 from .formfields import JSONEditor
+
+
+def create_add_to_group(group):
+    def add_to_group(modeladmin, request, queryset):
+        for user in queryset:
+            user.groups.add(group)
+
+    add_to_group.short_description = "Voeg toe aan groep {0}".format(group)
+    add_to_group.__name__ = 'add_to_group_{0}'.format(group.id)
+
+    return add_to_group
+
+def create_delete_from_group(group):
+    def delete_from_group(modeladmin, request, queryset):
+        for user in queryset:
+            user.groups.remove(group)
+
+    delete_from_group.short_description = "Verwijder uit groep {0}".format(group)
+    delete_from_group.__name__ = 'delete_from_group_{0}'.format(group.id)
+
+    return delete_from_group
 
 
 class UserCreationForm(ModelForm):
@@ -61,7 +83,25 @@ class UserAdmin(BaseUserAdmin):
         }),
     )
 
-    actions = []
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+
+        for group in Group.objects.all():
+            action = create_add_to_group(group)
+            actions[action.__name__] = (
+                action,
+                action.__name__,
+                action.short_description
+            )
+
+            action = create_delete_from_group(group)
+            actions[action.__name__] = (
+                action,
+                action.__name__,
+                action.short_description
+            )
+
+        return actions
 
 
 class CaseAdmin(VersionAdmin):
