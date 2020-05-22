@@ -170,6 +170,9 @@ class Case(models.Model):
         result = True
 
         for action in self.current_phase.actions.all():
+            if not action.meets_conditions(self):
+                continue
+
             mod = import_module(action.key)
             cls = getattr(mod, 'Action')
             instance = cls()
@@ -274,13 +277,25 @@ class Field(models.Model):
 class Action(models.Model):
     phase = models.ForeignKey('Phase', on_delete=models.PROTECT, related_name='actions', verbose_name=_('fase'))
     key = models.CharField(max_length=255, choices=lazy(get_actions_from_apps, tuple)(), verbose_name=_('type'))
+    conditions = JSONField(default=dict, blank=True, verbose_name=('voorwaarden'))
     args = JSONField(default=dict, blank=True, verbose_name=_('instellingen'))
+
+    class Meta:
+        verbose_name = _('Actie')
 
     def __str__(self):
         return self.key
 
-    class Meta:
-        verbose_name = _('Actie')
+    def meets_conditions(self, case):
+        for key, condition in self.conditions.items():
+            if condition.get("is"):
+                if case.data.get(key) != condition.get("is"):
+                    return False
+            if condition.get("isNot"):
+                if case.data.get(key) == condition.get("is"):
+                    return False
+
+        return True
 
 
 def upload_to(instance, filename):
