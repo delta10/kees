@@ -9,6 +9,7 @@ DEBUG = (os.getenv('DEBUG') == 'True')
 ALLOWED_HOSTS = [os.getenv('ALLOWED_HOST')]
 
 SESSION_COOKIE_SECURE = (os.getenv('SESSION_COOKIE_SECURE') == 'True')
+CSRF_COOKIE_SECURE = (os.getenv('CSRF_COOKIE_SECURE') == 'True')
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases

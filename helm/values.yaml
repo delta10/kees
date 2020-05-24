@@ -9,6 +9,7 @@ imagePullSecrets: []
 secretKey: ""
 debug: "False"
 sessionCookieSecure: "False"
+csrfCookieSecure: "False"
 allowedHost: ""
 
 postgresUser: postgres

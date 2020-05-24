@@ -36,6 +36,8 @@ spec:
               value: "{{ .Values.allowedHost }}"
             - name: SESSION_COOKIE_SECURE
               value: "{{ .Values.sessionCookieSecure }}"
+            - name: CSRF_COOKIE_SECURE
+              value: "{{ .Values.csrfCookieSecure }}"
             - name: DB_HOST
               value: "{{ include "kees.prefix" . }}-postgres"
             - name: DB_USER
