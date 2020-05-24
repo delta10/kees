@@ -14,3 +14,13 @@ class CaseSerializer(serializers.ModelSerializer):
         fields = ['id', 'case_type', 'data']
         read_only_fields = ['name']
         create_only_fields = ['case_type']
+
+    def update(self, instance, validated_data):
+        for attr, value in validated_data.items():
+            if attr == 'data':
+                value = {**instance.data, **value}
+
+            setattr(instance, attr, value)
+
+        instance.save()
+        return instance

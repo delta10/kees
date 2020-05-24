@@ -6,8 +6,9 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import Alert from './components/Alert';
+import { mapState } from 'vuex'
+import { objectDiff } from './lib'
+import Alert from './components/Alert'
 
 export default {
   name: 'App',
@@ -42,7 +43,7 @@ export default {
       this.loading = true
 
       const body = {
-        data: this.case.data
+        data: objectDiff(this.case.initialData, this.case.data)
       }
 
       if (!this.case.id) {
