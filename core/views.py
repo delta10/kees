@@ -156,6 +156,7 @@ def view_case(request, case_id, phase_id=None):
         phase = case.case_type.phases.last()
 
     return render(request, 'cases/view.html', {
+        'page_title': case,
         'case': case,
         'selected_phase': phase,
         'templates': _render_templates(phase, case),
@@ -218,6 +219,7 @@ def delete_case(request, case_id):
         return redirect('cases')
 
     return render(request, 'cases/delete.html', {
+        'page_title': case,
         'case': case,
     })
 
@@ -321,6 +323,7 @@ def change_assignee(request, case_id):
         form = ChangeAssigneeForm(case, instance=case)
 
     return render(request, 'cases/change_assignee.html', {
+        'page_title': case,
         'case': case,
         'form': form
     })
@@ -346,6 +349,7 @@ def change_phase(request, case_id):
         form = ChangePhaseForm(case, instance=case)
 
     return render(request, 'cases/change_phase.html', {
+        'page_title': case,
         'case': case,
         'form': form
     })
@@ -354,6 +358,7 @@ def attachments(request, case_id):
     case = get_object_or_404(Case, pk=case_id)
 
     return render(request, 'cases/attachments.html', {
+        'page_title': case,
         'case': case,
         'in_attachments': True
     })
@@ -379,6 +384,7 @@ def create_attachment(request, case_id, attachment_type):
         form = AttachmentForm(attachment_type=attachment_type)
 
     return render(request, 'cases/create_attachment.html', {
+        'page_title': case,
         'case': case,
         'form': form,
     })
@@ -404,6 +410,7 @@ def delete_attachment(request, case_id, attachment_id):
         return redirect('attachments', case.id)
 
     return render(request, 'cases/delete_attachment.html', {
+        'page_title': case,
         'case': case,
     })
 
@@ -423,6 +430,7 @@ def logs(request, case_id):
     page_range = paginator.page_range[max(0, index - 5):(min(len(paginator.page_range), index + 5))]
 
     return render(request, 'cases/logs.html', {
+        'page_title': case,
         'case': case,
         'in_logs': True,
         'page_range': page_range,
