@@ -13,7 +13,9 @@ class CaseViewSet(viewsets.ModelViewSet): # pylint: disable=too-many-ancestors
     def perform_create(self, serializer):
         with reversion.create_revision():
             reversion.set_user(self.request.user)
-            return super().perform_create(serializer)
+
+            case = serializer.save()
+            case.logs.create(event='create_case', performer=self.request.user.to_dict())
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -26,7 +28,9 @@ class CaseViewSet(viewsets.ModelViewSet): # pylint: disable=too-many-ancestors
     def perform_update(self, serializer):
         with reversion.create_revision():
             reversion.set_user(self.request.user)
-            return super().perform_update(serializer)
+
+            case = serializer.save()
+            case.logs.create(event='update_case', performer=self.request.user.to_dict())
 
     def perform_destroy(self, instance):
         with reversion.create_revision():

@@ -234,6 +234,7 @@ class CaseLog(models.Model):
             'change_assignee': _('Behandelaar gewijzigd naar %s' % self.metadata.get('assignee_name', '-')),
             'claim_case': _('Zaak in behandeling genomen'),
             'create_case': _('Zaak aangemaakt'),
+            'update_case': _('Zaak bijgewerkt'),
             'closed_case': _('Zaak gesloten'),
             'mozard_request': _('Externe koppeling: Zaak aangemaakt op %s onder nummer %s' % (self.metadata.get('host'), self.metadata.get('mozard_case_id'))),
             'http_request': _('Externe koppeling: %s' % self.metadata.get('message', '-')),
