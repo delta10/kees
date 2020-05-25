@@ -19,6 +19,8 @@
 
         {{ filter_form.assignee|as_crispy_field }}
 
+        {{ filter_form.manager|as_crispy_field }}
+
         {{ filter_form.status|as_crispy_field }}
 
         {% if additional_filters %}
@@ -68,7 +70,7 @@
                                 <i class="fas fa-check-circle text-success"></i>
                             {% endif %}
                         </td>
-                        <td><a href="/cases/view/{{case.id}}">#{{ case.id }}</a></td>
+                        <td><a href="/cases/view/{{case.id}}">{{ case.id }}</a></td>
                         <td>
                             <a href="/cases/view/{{case.id}}">{{case.name}}</a>
                             &nbsp;

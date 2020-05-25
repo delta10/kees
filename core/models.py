@@ -119,7 +119,8 @@ class Case(models.Model):
     case_type = models.ForeignKey('CaseType', on_delete=models.PROTECT, verbose_name=_('zaaktype'))
     created_at = models.DateTimeField(default=timezone.now, db_index=True, verbose_name=_('aangemaakt op'))
     current_phase = models.ForeignKey('Phase', on_delete=models.PROTECT, null=True, blank=True, verbose_name=_('Huidige fase'))
-    assignee = models.ForeignKey('User', on_delete=models.PROTECT, null=True, blank=True, verbose_name=_('Behandelaar'))
+    assignee = models.ForeignKey('User', on_delete=models.PROTECT, null=True, blank=True, related_name='assigned_cases', verbose_name=_('Behandelaar'))
+    manager = models.ForeignKey('User', on_delete=models.PROTECT, null=True, blank=True, related_name='managed_cases', verbose_name=_('Coördinator'))
     data = JSONField(default=dict, blank=True)
 
     def save(self, *args, **kwargs):

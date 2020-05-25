@@ -19,7 +19,7 @@ class CaseFilter(django_filters.FilterSet):
 
     class Meta:
         model = Case
-        fields = ['name', 'case_type', 'current_phase', 'assignee']
+        fields = ['name', 'case_type', 'current_phase', 'assignee', 'manager']
 
     def __init__(self, *args, **kwargs):
         super(CaseFilter, self).__init__(*args, **kwargs)
@@ -27,6 +27,7 @@ class CaseFilter(django_filters.FilterSet):
         self.filters['case_type'].label = 'Zaaktype'
         self.filters['current_phase'].label = 'Huidige fase'
         self.filters['assignee'].label = 'Behandelaar'
+        self.filters['manager'].label = 'Coördinator'
 
     def filter_by_multiple_fields(self, queryset, name, value):
         return queryset.filter(

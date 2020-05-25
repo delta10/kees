@@ -42,6 +42,8 @@ urlpatterns = [
          views.claim_case, name='claim_case'),
     path('cases/view/<int:case_id>/change_assignee',
          views.change_assignee, name='change_assignee'),
+    path('cases/view/<int:case_id>/change_manager',
+         views.change_manager, name='change_manager'),
     path('cases/view/<int:case_id>/change_phase',
          views.change_phase, name='change_phase'),
     path('cases/view/<int:case_id>/next_phase',

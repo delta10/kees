@@ -12,7 +12,7 @@ from django.contrib import messages
 from constance import config
 import reversion
 from .models import CaseType, Case, Phase, Field, Attachment
-from .forms import ChangeAssigneeForm, ChangePhaseForm, AttachmentForm
+from .forms import ChangeAssigneeForm, ChangeManagerForm, ChangePhaseForm, AttachmentForm
 from .filters import CaseFilter
 
 def startpage(request):
@@ -323,6 +323,31 @@ def change_assignee(request, case_id):
         form = ChangeAssigneeForm(case, instance=case)
 
     return render(request, 'cases/change_assignee.html', {
+        'page_title': case,
+        'case': case,
+        'form': form
+    })
+
+@permission_required('core.can_manage_cases', raise_exception=True)
+def change_manager(request, case_id):
+    case = get_object_or_404(Case, pk=case_id)
+
+    if request.method == 'POST':
+        form = ChangeManagerForm(case, instance=case, data=request.POST)
+        if form.is_valid():
+            case.manager = form.cleaned_data['manager']
+            case.save()
+
+            case.logs.create(event='change_manager', performer=request.user.to_dict(), metadata={
+                'manager_name': str(case.manager) if case.manager else None
+            })
+
+            messages.add_message(request, messages.INFO, _('De coördinator is gewijzigd.'))
+            return redirect('view_case', case.id)
+    else:
+        form = ChangeManagerForm(case, instance=case)
+
+    return render(request, 'cases/change_manager.html', {
         'page_title': case,
         'case': case,
         'form': form

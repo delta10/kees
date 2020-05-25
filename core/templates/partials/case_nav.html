@@ -3,7 +3,7 @@
 <div class="jumbotron">
     <div class="container">
         <div class="d-flex flex-row justify-content-between">
-            <h2>#{{ case.id }}: {{ case.name }}</h2>
+            <h3>{{ case.id }} {{ case.name }}</h3>
             <div class="btn-group mt-auto mb-auto">
                 {% if perms.core.can_manage_cases %}
                     <div class="dropdown mr-1">
@@ -13,6 +13,7 @@
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item" href="{% url 'change_assignee' case.id %}">{% trans 'Behandelaar wijzigen' %}</a>
                             <a class="dropdown-item" href="{% url 'change_phase' case.id %}">{% trans 'Fase wijzigen' %}</a>
+                            <a class="dropdown-item" href="{% url 'change_manager' case.id %}">{% trans 'Coördinator wijzigen' %}</a>
                             <a class="dropdown-item" href="{% url 'delete_case' case.id %}">{% trans 'Verwijderen' %}</a>
                         </div>
                     </div>
@@ -33,16 +34,26 @@
             </div>
         </div>
 
-        <div class="d-flex flex-row justify-content-between mt-2 mb-4">
+        <div class="d-flex flex-row align-items-center mt-3 mb-4">
             {% if case.assignee %}
-                {% trans 'Behandelaar:' %} {{ case.assignee }}
+                <div class="mr-4">
+                    {% trans 'Behandelaar' %}: {{ case.assignee }}
+                </div>
             {% else %}
-                {% if case.current_phase == selected_phase %}
-                    <form method="POST" action="{% url 'claim_case' case.id %}">
-                        {% csrf_token %}
-                        <button class="btn btn-link" type="submit"><i class="fas fa-chevron-right"></i>&nbsp;&nbsp;{% trans 'In behandeling nemen' %}</button>
-                    </form>
-                {% endif %}
+                <div class="mr-4">
+                    {% if case.current_phase == selected_phase %}
+                        <form method="POST" action="{% url 'claim_case' case.id %}">
+                            {% csrf_token %}
+                            <button class="btn btn-link" type="submit"><i class="fas fa-chevron-right"></i>&nbsp;&nbsp;{% trans 'In behandeling nemen' %}</button>
+                        </form>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            {% if case.manager %}
+                <div>
+                    {% trans 'Coördinator' %}: {{ case.manager }}
+                </div>
             {% endif %}
         </div>
 
