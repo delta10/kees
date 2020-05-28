@@ -22,6 +22,9 @@ def dashboard(request):
     groups = request.user.groups.all()
     phases = Phase.objects.filter(assign_to__in=groups)
 
+    my_cases = Case.objects.filter(assignee=request.user)
+    my_cases_filter = CaseFilter(request.GET, queryset=my_cases, request=request)
+
     intake = Case.objects.filter(current_phase__in=phases, assignee=None)
     intake_paginator = Paginator(intake, 10)
 
@@ -36,10 +39,11 @@ def dashboard(request):
     intake_page_range = intake_paginator.page_range[max(0, index - 5):(min(len(intake_paginator.page_range), index + 5))]
 
     return render(request, 'dashboard.html', {
+        'my_cases': my_cases,
+        'my_cases_filtered': my_cases_filter.qs,
         'intake_paginator': intake_paginator,
         'intake_page_range': intake_page_range,
-        'intake_page': intake_page,
-        'my_cases': Case.objects.filter(assignee=request.user)
+        'intake_page': intake_page
     })
 
 @permission_required('core.can_manage_cases', raise_exception=True)
