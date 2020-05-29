@@ -85,6 +85,8 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 AUTH_USER_MODEL = 'core.User'
 
+SESSION_COOKIE_AGE = 3600*24*90 # sessions expire in 90 days
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
