@@ -30,7 +30,7 @@ class CaseFilter(django_filters.FilterSet):
 
     def filter_by_multiple_fields(self, queryset, name, value):
         return queryset.filter(
-            Q(id__icontains=value) | Q(name__icontains=value)
+            Q(id__icontains=value) | Q(name__icontains=value) | Q(data__icontains=value)
         )
 
     def filter_by_predefined(self, queryset, name, value):
