@@ -1,3 +1,0 @@
----
-docker_package_gpg_key_url: "https://download.docker.com/linux/debian/gpg"
-docker_package_repository: "deb [arch=amd64] https://download.docker.com/linux/debian stretch stable"
