@@ -58,8 +58,8 @@ spec:
               value: "{{ .Values.emailUseTLS }}"
             - name: EMAIL_USE_SSL
               value: "{{ .Values.emailUseSSL }}"
-            - name: EMAIL_FROM
-              value: "{{ .Values.emailFrom }}"
+            - name: DEFAULT_FROM_EMAIL
+              value: "{{ .Values.defaultFromEmail }}"
           ports:
             - name: http
               containerPort: 8000

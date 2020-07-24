@@ -21,4 +21,5 @@ EMAIL_HOST_USER = None
 EMAIL_HOST_PASSWORD = None
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = False
-EMAIL_FROM = 'noreply@test.com'
+
+DEFAULT_FROM_EMAIL = 'noreply@test.com'

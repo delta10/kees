@@ -23,7 +23,8 @@ emailUser: ""
 emailPassword: ""
 emailUseTLS: "False"
 emailUseSSL: "False"
-emailFrom: ""
+
+defaultFromEmail: ""
 
 mediaPvcName: "media-pvc"
 
