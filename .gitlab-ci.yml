@@ -2,6 +2,7 @@ stages:
   - Test
   - Build
   - Deploy
+  - Security
 
 Test:
   stage: Test
@@ -42,8 +43,8 @@ Build:
   before_script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
   script:
-    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA .
-    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
 
 Deploy:
   stage: Deploy
@@ -59,3 +60,20 @@ Deploy:
     - docker push $CI_REGISTRY_IMAGE:latest
   only:
     - master
+
+include:
+  - template: Container-Scanning.gitlab-ci.yml
+  - template: Dependency-Scanning.gitlab-ci.yml
+  - template: SAST.gitlab-ci.yml
+
+container_scanning:
+  stage: Security
+  variables:
+    CI_APPLICATION_REPOSITORY: $CI_REGISTRY_IMAGE
+    CI_APPLICATION_TAG: $CI_COMMIT_SHA
+
+dependency_scanning:
+  stage: Security
+
+sast:
+  stage: Security
