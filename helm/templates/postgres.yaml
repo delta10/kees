@@ -46,9 +46,11 @@ spec:
               port: postgres
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          {{- if .Values.postgres.persistence.enabled -}}
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: postgres-pvc
+          {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -61,10 +63,12 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
     {{- end }}
+    {{- if .Values.postgres.persistence.enabled -}}
       volumes:
         - name: postgres-pvc
           persistentVolumeClaim:
-            claimName: {{ .Values.postgresPvcName }}
+            claimName: {{ .Values.postgres.persistence.existingClaim }}
+    {{- end }}
 ---
 apiVersion: v1
 kind: Service
