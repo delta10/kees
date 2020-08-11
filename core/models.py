@@ -74,7 +74,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'username'
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
     def to_dict(self):
         return {
@@ -122,13 +122,13 @@ class Case(models.Model):
     assignee = models.ForeignKey('User', on_delete=models.PROTECT, null=True, blank=True, verbose_name=_('Behandelaar'))
     data = JSONField(default=dict, blank=True)
 
-    def save(self, *args, **kwargs):
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         self.name = html.unescape(Template(self.case_type.display_name).render(Context(self.data)))
 
         if not self.id:
             self.current_phase = self.case_type.phases.all()[1]
 
-        super(Case, self).save(*args, **kwargs)
+        super(Case, self).save(force_insert=force_insert, force_update=force_update, using=using, update_fields=update_fields)
 
     def close(self):
         self.current_phase = None
@@ -200,7 +200,7 @@ class CaseType(models.Model):
     display_name = models.CharField(_('weergavenaam van zaak'), max_length=255)
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
     class Meta:
         verbose_name = _('Zaaktype')
@@ -256,7 +256,7 @@ class Phase(models.Model):
         ordering = ['case_type', 'order']
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 
 class Field(models.Model):
@@ -289,7 +289,7 @@ class Field(models.Model):
         ordering = ['case_type', 'key']
 
     def __str__(self):
-        return self.label
+        return str(self.label)
 
     def toDict(self):
         return {
@@ -311,7 +311,7 @@ class Action(models.Model):
         verbose_name = _('Actie')
 
     def __str__(self):
-        return self.key
+        return str(self.key)
 
     def meets_conditions(self, case):
         for key, condition in self.conditions.items():
@@ -335,11 +335,11 @@ class Attachment(models.Model):
     file = models.FileField(upload_to=upload_to)
     created_at = models.DateTimeField(default=timezone.now, db_index=True)
 
-    def save(self, *args, **kwargs):
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         if not self.name:
             self.name = os.path.basename(self.file.name)
 
-        super(Attachment, self).save(*args, **kwargs)
+        super(Attachment, self).save(force_insert=force_insert, force_update=force_update, using=using, update_fields=update_fields)
 
     @property
     def display_name(self):
@@ -363,7 +363,7 @@ class PredefinedFilter(models.Model):
     args = JSONField(_('instellingen'), default=dict, blank=True)
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
     class Meta:
         verbose_name = _('Voorgedefinieerde filter')
