@@ -72,11 +72,11 @@ spec:
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          {{- if .Values.persistence.enabled -}}
+        {{- if .Values.persistence.enabled }}
           volumeMounts:
             - mountPath: /app/media
               name: media-pvc
-          {{- end }}
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -89,7 +89,7 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
     {{- end }}
-    {{- if .Values.persistence.enabled -}}
+    {{- if .Values.persistence.enabled }}
       volumes:
         - name: media-pvc
           persistentVolumeClaim:

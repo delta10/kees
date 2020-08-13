@@ -15,7 +15,6 @@ allowedHost: ""
 postgresUser: postgres
 postgresPassword: postgres
 postgresDb: kees
-postgresPvcName: "postgres-pvc"
 
 emailHost: localhost
 emailPort: "25"
