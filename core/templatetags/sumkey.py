@@ -5,4 +5,10 @@ register = template.Library()
 
 @register.filter(name='sumkey')
 def sumkey(values, key):
-    return sum([(int(item.get(key)) if item.get(key) else 0) for item in values])
+    return sum([to_float(item.get(key)) for item in values])
+
+def to_float(value):
+    try:
+        return float(value)
+    except (ValueError, TypeError, OverflowError):
+        return 0

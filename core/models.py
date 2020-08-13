@@ -1,7 +1,7 @@
 import os
 import html
 from importlib import import_module
-from django.contrib.postgres.fields import JSONField
+from django.db.models import JSONField
 from django.utils.crypto import get_random_string
 from django.utils import timezone
 from django.utils.functional import lazy

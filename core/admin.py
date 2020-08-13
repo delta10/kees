@@ -1,5 +1,5 @@
 from django.utils.translation import gettext_lazy as _
-from django.contrib.postgres.fields import JSONField
+from django.db.models import JSONField
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import Group
 from django.contrib import admin
