@@ -13,9 +13,9 @@ STATUS_CHOICES = (
 class CaseFilter(django_filters.FilterSet):
     name = django_filters.CharFilter(lookup_expr='icontains', label='Naam', method='filter_by_multiple_fields')
     predefined = django_filters.ModelChoiceFilter(label='', queryset=PredefinedFilter.objects, widget=RadioSelect,
-                                                  method='filter_by_predefined', empty_label='Alle zaken')
+                                                  method='filter_by_predefined', null_label='Alle zaken', null_value='')
     status = django_filters.ChoiceFilter(label='Status', choices=STATUS_CHOICES,
-                                         method='filter_status', empty_label=None, null_value='open')
+                                         method='filter_status', null_label=None, null_value='open')
 
     class Meta:
         model = Case
