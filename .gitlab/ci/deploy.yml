@@ -1,28 +1,22 @@
 Deploy Review App:
   stage: Deploy
   image: registry.gitlab.com/commonground/core/review-app-deployer:latest
-  before_script:
-    - mkdir -p ~/.kube
-    - echo $REVIEW_KUBECONFIG | base64 -d > ~/.kube/config
   script:
     - |
-      helm upgrade --install --create-namespace kees-$CI_ENVIRONMENT_SLUG ./helm \
-      --namespace kees-$CI_ENVIRONMENT_SLUG \
+      helm upgrade --install kees-$CI_ENVIRONMENT_SLUG ./helm \
       --set keesImage=$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA \
       --set allowedHost=kees-$CI_ENVIRONMENT_SLUG.$REVIEW_BASE_DOMAIN \
       --set secretKey=somethingsecret \
       --set persistence.enabled=false \
       --set postgres.persistence.enabled=false \
       --set ingress.enabled=true \
-      --set ingress.annotations."cert-manager\.io/cluster-issuer"=letsencrypt-prod \
       --set ingress.hosts[0].host=kees-$CI_ENVIRONMENT_SLUG.$REVIEW_BASE_DOMAIN \
-      --set ingress.hosts[0].paths[0]=/ \
-      --set ingress.tls[0].hosts[0]=kees-$CI_ENVIRONMENT_SLUG.$REVIEW_BASE_DOMAIN \
-      --set ingress.tls[0].secretName=kees-tls
+      --set ingress.hosts[0].paths[0]=/
   environment:
-    name: $CI_COMMIT_REF_NAME
+    name: review/$CI_COMMIT_REF_NAME
     url: https://kees-$CI_ENVIRONMENT_SLUG.$REVIEW_BASE_DOMAIN
     on_stop: Remove Review App
+    auto_stop_in: 1 week
   only:
     - branches@delta10/kees
   except:
@@ -33,28 +27,26 @@ Remove Review App:
   image: registry.gitlab.com/commonground/core/review-app-deployer:latest
   variables:
     GIT_STRATEGY: none
-  before_script:
-    - mkdir -p ~/.kube
-    - echo $REVIEW_KUBECONFIG | base64 -d > ~/.kube/config
   script:
-    - helm uninstall kees-$CI_ENVIRONMENT_SLUG --namespace kees-$CI_ENVIRONMENT_SLUG
-    - kubectl delete namespace kees-$CI_ENVIRONMENT_SLUG
+    - helm uninstall kees-$CI_ENVIRONMENT_SLUG
   when: manual
   environment:
-    name: $CI_COMMIT_REF_NAME
-    url: https://kees-$CI_ENVIRONMENT_SLUG.REVIEW_BASE_DOMAIN
+    name: review/$CI_COMMIT_REF_NAME
+    url: https://kees-$CI_ENVIRONMENT_SLUG.$REVIEW_BASE_DOMAIN
     action: stop
   only:
     - branches@delta10/kees
   except:
     - master
 
-Deploy:
+Deploy Docker latest tag:
   stage: Deploy
   image: docker:19.03.12
   services:
     - docker:19.03.12-dind
   variables:
+    # Use TLS https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#tls-enabled
+    DOCKER_HOST: tcp://docker:2376
     DOCKER_TLS_CERTDIR: "/certs"
   before_script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY

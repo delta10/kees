@@ -5,7 +5,7 @@ stages:
   - Security
 
 variables:
-  REVIEW_BASE_DOMAIN: review.k8s.delta10.nl
+  REVIEW_BASE_DOMAIN: delta10-review.nl
 
 include:
   - ".gitlab/ci/test.yml"
