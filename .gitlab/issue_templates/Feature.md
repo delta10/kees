@@ -22,5 +22,5 @@
 <!-- Maybe add later -->
 
 
-### Possible technical solution 
+### Possible technical solution
 <!-- Added later by developers -->

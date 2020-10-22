@@ -10,9 +10,9 @@
 
 ## Steps to reproduce the behavior
 
-1. 
-2. 
-3. 
+1.
+2.
+3.
 
 
 ## Context
@@ -26,17 +26,17 @@
 <!-- Remove things that are not applicable / does work -->
 
 - [ ] Happens everywhere
-- Browser: 
+- Browser:
   - [ ] Internet Explorer 11
-  - [ ] Firefox 
-  - [ ] Chrome 
-  - [ ] Safari 
+  - [ ] Firefox
+  - [ ] Chrome
+  - [ ] Safari
   - [ ] Standard mobile browser (version)
   - [ ] Other browser : _
-- Operating System: 
-  - [ ] Windows 
-  - [ ] Mac 
-  - [ ] IOS 
+- Operating System:
+  - [ ] Windows
+  - [ ] Mac
+  - [ ] IOS
   - [ ] Android) (version)
 - Screensize
   - [ ] Desktop

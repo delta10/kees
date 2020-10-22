@@ -1,12 +1,12 @@
 # Contributing
 
-We – [Stichting Delta10](https://www.delta10.nl/) and the maintainers of this project – know we can only build NLX together with you. Thus we appreciate your input, enjoy feedback and welcome improvements to this project and are very open to collaboration.
+We – [Delta10 B.V.](https://www.delta10.nl/) and the maintainers of this project – know we can only build together with you. Thus we appreciate your input, enjoy feedback and welcome improvements to this project and are very open to collaboration.
 
-We love issues and merge requests from everyone.
+By contributing to this project, you accept and agree the the terms and conditions as specified in the [Contributor Licence Agreement](CLA.md).
 
 ## Problems, suggestions and questions in Issues
 
-You don't need to change any of our code or documentation to be a contributor. Please help development by reporting problems, suggesting changes and asking questions. To do this, you can [create a GitHub Issue](https://help.github.com/articles/creating-an-issue/) for this project in the [GitLab Issues for NLX](https://gitlab.com/delta10/kees/issues).
+You don't need to change any of our code or documentation to be a contributor. Please help development by reporting problems, suggesting changes and asking questions. To do this, you can [create a GitLab Issue](https://docs.gitlab.com/ee/user/project/issues/index.html#issues) for this project in the [issues section](https://gitlab.com/delta10/project-template/issues).
 
 ## Documentation and code in Merge Requests
 
@@ -28,13 +28,13 @@ When submitting the Merge Request, please accompany it with a description of the
 
 All contributions have to be reviewed by someone.
 
-It could be that your contribution can be merged immediately by a maintainer. However, usually, a new Merge Request needs some improvements before it can be merged. Other contributors (or our automatic testing system Jenkins) might have feedback. If this is the case the reviewing maintainer will help you improve your documentation and code.
+It could be that your contribution can be merged immediately by a maintainer. However, usually, a new Merge Request needs some improvements before it can be merged. Other contributors (or our automatic testing system) might have feedback. If this is the case the reviewing maintainer will help you improve your documentation and code.
 
 If your documentation and code have passed human review and have passed the automated tests, it is merged.
 
 ### 4. Celebrate
 
-Your ideas, documentation and code have become an integral part of this project. You are the Open Source hero we need.
+Your ideas, documentation and code have become an integral part of this project.
 
 ---
 
