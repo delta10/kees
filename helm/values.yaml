@@ -73,5 +73,14 @@ affinity: {}
 
 postgres:
   persistence:
-    enabled: true
+    size: 1Gi
     existingClaim: "postgres-pvc"
+
+  resources:
+    requests:
+      cpu: "1m"
+      memory: "1Mi"
+
+  postgresqlDatabase: kees
+  postgresqlUsername: postgres
+  postgresqlPassword: postgres

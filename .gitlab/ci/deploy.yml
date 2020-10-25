@@ -56,3 +56,23 @@ Deploy Docker latest tag:
     - docker push $CI_REGISTRY_IMAGE:latest
   only:
     - master
+
+Deploy acceptance:
+  stage: Deploy
+  image: registry.gitlab.com/commonground/core/review-app-deployer:latest
+  script:
+    - |
+      helm upgrade --install kees-acc ./helm \
+      --set keesImage=$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA \
+      --set allowedHost=kees-acc.$REVIEW_BASE_DOMAIN \
+      --set secretKey=somethingsecret \
+      --set persistence.enabled=false \
+      --set postgres.persistence.enabled=false \
+      --set ingress.enabled=true \
+      --set ingress.hosts[0].host=kees-acc.$REVIEW_BASE_DOMAIN \
+      --set ingress.hosts[0].paths[0]=/
+  environment:
+    name: review/acc
+    url: https://kees-acc.$REVIEW_BASE_DOMAIN
+  only:
+    - master@delta10/kees
