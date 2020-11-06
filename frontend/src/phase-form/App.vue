@@ -1,7 +1,7 @@
 <template>
   <div>
     <Alert v-if="alert" :type="alert.type" :message="alert.message" />
-    <router-view @submitForm="submitForm"></router-view>
+    <router-view @submit-form="submitForm"></router-view>
   </div>
 </template>
 
