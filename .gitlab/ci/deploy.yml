@@ -20,6 +20,7 @@ Deploy Review App:
   only:
     - branches@delta10/kees
   except:
+    - renovate/*
     - master
 
 Remove Review App:
@@ -37,6 +38,7 @@ Remove Review App:
   only:
     - branches@delta10/kees
   except:
+    - renovate/*
     - master
 
 Deploy Docker latest tag:
