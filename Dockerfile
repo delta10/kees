@@ -11,7 +11,7 @@ COPY frontend /app/frontend
 RUN npm run build
 
 # API build container
-FROM python:3.8-slim AS api-build
+FROM python:3.9-slim AS api-build
 WORKDIR /app
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
@@ -23,7 +23,7 @@ COPY requirements.txt /app
 RUN /app/venv/bin/pip3 install -r requirements.txt
 
 # Final container
-FROM python:3.8-slim
+FROM python:3.9-slim
 WORKDIR /app
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
