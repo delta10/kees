@@ -17,11 +17,8 @@ Deploy Review App:
     url: https://kees-$CI_ENVIRONMENT_SLUG.$REVIEW_BASE_DOMAIN
     on_stop: Remove Review App
     auto_stop_in: 1 week
-  only:
-    - branches@delta10/kees
-  except:
-    - renovate/*
-    - master
+  rules:
+    - if: $CI_PROJECT_PATH == "delta10/kees" && $CI_COMMIT_BRANCH != "master" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME =~ /^renovate/
 
 Remove Review App:
   stage: Deploy
@@ -30,16 +27,13 @@ Remove Review App:
     GIT_STRATEGY: none
   script:
     - helm uninstall kees-$CI_ENVIRONMENT_SLUG
-  when: manual
   environment:
     name: review/$CI_COMMIT_REF_NAME
     url: https://kees-$CI_ENVIRONMENT_SLUG.$REVIEW_BASE_DOMAIN
     action: stop
-  only:
-    - branches@delta10/kees
-  except:
-    - renovate/*
-    - master
+  rules:
+    - if: $CI_PROJECT_PATH == "delta10/kees" && $CI_COMMIT_BRANCH != "master" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME =~ /^renovate/
+      when: manual
 
 Deploy Docker latest tag:
   stage: Deploy
@@ -56,8 +50,8 @@ Deploy Docker latest tag:
     - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
     - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE:latest
     - docker push $CI_REGISTRY_IMAGE:latest
-  only:
-    - master
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
 
 Deploy acceptance:
   stage: Deploy
@@ -76,5 +70,5 @@ Deploy acceptance:
   environment:
     name: review/acc
     url: https://kees-acc.$REVIEW_BASE_DOMAIN
-  only:
-    - master@delta10/kees
+  rules:
+    - if: $CI_PROJECT_PATH == "delta10/forms" && $CI_COMMIT_BRANCH == "master"
