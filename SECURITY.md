@@ -20,4 +20,5 @@ Password hashes are stored using PBKDF2.  SSL / TLS encryption is handled on Kub
 
 ## Backup policy
 
-For the hosted version there is no backup policy in place yet as the system is not into production. In production we will create a backup every four hours with a retention of 30 days.
+In production we will create a backup every four hours with a retention of 30 days.
+
