@@ -1,0 +1,27 @@
+version: "3"
+services:
+  forms:
+    image: kees
+    build:
+      context: .
+    environment:
+      - ALLOWED_HOST=localhost
+      - SECRET_KEY=change-to-something-secret
+      - DB_HOST=postgres
+      - DB_USER=kees
+      - DB_PASSWORD=kees
+      - DB_NAME=kees
+    ports:
+      - 8000:8000
+  postgres:
+    image: postgres:11.10-alpine
+    environment:
+      - POSTGRES_USER=kees
+      - POSTGRES_PASSWORD=kees
+      - POSTGRES_DB=kees
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+volumes:
+  postgres-data:
