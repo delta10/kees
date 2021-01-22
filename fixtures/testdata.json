@@ -1,5 +1,104 @@
 [
     {
+        "model": "core.case",
+        "pk": 1,
+        "fields": {
+            "name": "Teststraat 1, Testplaats",
+            "case_type": 1,
+            "created_at": "2020-07-05T17:19:46.994Z",
+            "current_phase": 3,
+            "assignee": null,
+            "data": {
+                "x": "1",
+                "y": "1",
+                "hvk": "",
+                "adres": "Teststraat 1",
+                "dlper": "",
+                "plaats": "Testplaats",
+                "aannemer": "",
+                "einddatum": "2020-01-02",
+                "kvp_keuze": "",
+                "opmerking": "",
+                "werkorder": "1234567890",
+                "soort_werk": "2. Regulier klein grondverzet kabels en leidingen etc.",
+                "startdatum": "2020-01-01",
+                "buitengebied": "Nee",
+                "werkregelaar": "",
+                "naam_aannemer": "",
+                "opdrachtgever": "Test",
+                "vooronderzoek": "1. Bestaand historisch- of bodemonderzoek",
+                "adres_aannemer": "Teststraat 1",
+                "bijzonderheden": "KWALIBO",
+                "plaats_aannemer": "Testplaats",
+                "soort_afwijking": [
+                    "Niet voorziene stoffen",
+                    "Afwijking gemeld bij bevoegd gezag (Omgevingsdienst)",
+                    "Werk stilgelegd",
+                    "Afwijking gemeld bij BOB",
+                    "Aantreffen asbest"
+                ],
+                "dagwerkzaamheden": [
+                    {
+                        "hvk": "",
+                        "datum": "2020-08-31",
+                        "dlper": "4",
+                        "kvp_keuze": "",
+                        "materieel": [
+                            "Niet van toepassing, handmatig gegraven",
+                            "Kraan met overdrukcabine",
+                            "Open kraan zonder overdrukcabine"
+                        ],
+                        "aanwezigen": [
+                            "asdf",
+                            "asdfasdfasdf",
+                            "asdfasd",
+                            "test",
+                            "test"
+                        ],
+                        "hvk-extern": "test",
+                        "bewolking_1": "Zonnig",
+                        "bezoekerslijst": [
+                            "a",
+                            "b",
+                            "c"
+                        ],
+                        "afvoeren_schoon1": "1",
+                        "werkomschrijving": "Test",
+                        "ontgraven_schoon1": "1",
+                        "instructeur_toolbox": "test",
+                        "terug_plaatsen_schoon1": "1",
+                        "afvoeren_verontreinigd1": "1",
+                        "ontgraven_verontreinigd1": "1",
+                        "materieel_ander_materieel": "",
+                        "terug_plaatsen_verontreinigd1": "1"
+                    }
+                ],
+                "werkomschrijving": "Test",
+                "postcode_aannemer": "1096AC",
+                "uitvoeringsscenario": [
+                    "Grondwater sterk verontreinigd",
+                    "Gescheiden ontgraven",
+                    "Funderingsmateriaal / puin"
+                ],
+                "afwijking_toelichting": "",
+                "'afwijking_toelichting": "",
+                "aantal_m3_te_ontgraven": "0-2 m3",
+                "contactpersoon_aannemer": "-",
+                "kwalibo_erkend_aannemer": "Ja",
+                "telefoonnummer_aannemer": "0900-9394",
+                "diepte_werkzaamheden_in_m": "1",
+                "organisatorische_aspecten": [
+                    "Sanitaire voorzieningen bestaan uit drietrap schoon-/vuil unit (SVU) (eventueel + buitendouche) op de grens tussen de verontreinigde zone en de schone zone."
+                ],
+                "melden_omgevingsdienst_kiwa": "Ja",
+                "omvang_grondwerk_lxbxd_in_m3": "1",
+                "klasse_toxiciteit_en_flammable": "Zwart vluchtig",
+                "duur_van_de_werkzaamheden_in_dagen": "1",
+                "werkzaamheden_onder_grondwaterspiegel": "Ja"
+            }
+        }
+    },
+    {
         "model": "core.casetype",
         "pk": 1,
         "fields": {
@@ -12,8 +111,27 @@
         "pk": 1,
         "fields": {
             "case_type": 1,
+            "order": 1,
             "name": "Registreren",
-            "order": 1
+            "fields": [
+                "bijzonderheden",
+                "klasse_toxiciteit_en_flammable",
+                "x",
+                "y",
+                "opdrachtgever",
+                "opmerking",
+                "adres",
+                "plaats",
+                "werkomschrijving",
+                "werkorder",
+                "diepte_werkzaamheden_in_m",
+                "duur_van_de_werkzaamheden_in_dagen",
+                "startdatum",
+                "omvang_grondwerk_lxbxd_in_m3",
+                "buitengebied",
+                "melden_omgevingsdienst_kiwa"
+            ],
+            "assign_to": null
         }
     },
     {
@@ -21,8 +139,31 @@
         "pk": 2,
         "fields": {
             "case_type": 1,
+            "order": 2,
             "name": "Inplannen",
-            "order": 2
+            "fields": [
+                "startdatum",
+                "einddatum",
+                "duur_van_de_werkzaamheden_in_dagen",
+                "diepte_werkzaamheden_in_m",
+                "klasse_toxiciteit_en_flammable",
+                "buitengebied",
+                "werkregelaar",
+                "kvp_keuze",
+                "kvp_vervanger",
+                "melden_omgevingsdienst_kiwa",
+                "soort_werk",
+                "vooronderzoek",
+                "aantal_m3_te_ontgraven",
+                "aannemer",
+                "naam_aannemer",
+                "adres_aannemer",
+                "postcode_aannemer",
+                "plaats_aannemer",
+                "telefoonnummer_aannemer",
+                "kwalibo_erkend_aannemer"
+            ],
+            "assign_to": null
         }
     },
     {
@@ -30,8 +171,14 @@
         "pk": 3,
         "fields": {
             "case_type": 1,
-            "name": "Co\u00f6rdineren",
-            "order": 3
+            "order": 3,
+            "name": "Coördineren",
+            "fields": [
+                "dlper",
+                "hvk",
+                "hvk-extern"
+            ],
+            "assign_to": null
         }
     },
     {
@@ -39,8 +186,19 @@
         "pk": 4,
         "fields": {
             "case_type": 1,
+            "order": 4,
             "name": "Uitvoeren",
-            "order": 4
+            "fields": [
+                "kop_organisatorische_aspecten",
+                "organisatorische_aspecten",
+                "uitvoeringsscenario",
+                "werkzaamheden_onder_grondwaterspiegel",
+                "kop_afwijkingen",
+                "soort_afwijking",
+                "afwijking_toelichting",
+                "dagwerkzaamheden"
+            ],
+            "assign_to": null
         }
     },
     {
@@ -48,492 +206,1001 @@
         "pk": 5,
         "fields": {
             "case_type": 1,
+            "order": 5,
             "name": "Afhandelen",
-            "order": 5
+            "fields": [
+                "samenvatting"
+            ],
+            "assign_to": null
         }
     },
     {
-        "model": "core.phasefield",
+        "model": "core.field",
         "pk": 1,
         "fields": {
-            "phase": 1,
+            "case_type": 1,
             "key": "aanvrager",
             "label": "Aanvrager",
-            "type": "CharField",
-            "widget": "TextInput",
+            "type": "TextField",
             "initial": null,
-            "args": {},
-            "order": 1
+            "args": {}
         }
     },
     {
-        "model": "core.phasefield",
+        "model": "core.field",
         "pk": 2,
         "fields": {
-            "phase": 1,
+            "case_type": 1,
             "key": "bijzonderheden",
             "label": "Bijzonderheden",
-            "type": "ChoiceField",
-            "widget": "RadioSelect",
+            "type": "RadioField",
             "initial": "KWALIBO",
             "args": {
                 "choices": [
-                    [
-                        "KWALIBO",
-                        "KWALIBO"
-                    ],
-                    [
-                        "Let op",
-                        "Let op"
-                    ],
-                    [
-                        "Calamiteit",
-                        "Calamiteit"
-                    ],
-                    [
-                        "Incident",
-                        "Incident"
-                    ],
-                    [
-                        "Calamiteit KWALIBO",
-                        "Calamiteit KWALIBO"
-                    ],
-                    [
-                        "Incident KWALIBO",
-                        "Incident KWALIBO"
-                    ]
+                    "KWALIBO",
+                    "Calamiteit",
+                    "Calamiteit KWALIBO"
                 ]
-            },
-            "order": 2
+            }
         }
     },
     {
-        "model": "core.phasefield",
+        "model": "core.field",
         "pk": 3,
         "fields": {
-            "phase": 1,
+            "case_type": 1,
             "key": "klasse_toxiciteit_en_flammable",
             "label": "Klasse Toxiciteit en Flammable",
-            "type": "ChoiceField",
-            "widget": "RadioSelect",
+            "type": "RadioField",
             "initial": null,
             "args": {
                 "choices": [
-                    [
-                        "1T/2T niet-vluchtig WN",
-                        "1T/2T niet-vluchtig WN"
-                    ],
-                    [
-                        "1T/2T vluchtig WN",
-                        "1T/2T vluchtig WN"
-                    ],
-                    [
-                        "3T niet-vluchtig WN",
-                        "3T niet-vluchtig WN"
-                    ],
-                    [
-                        "3T vluchtig WN",
-                        "3T vluchtig WN"
-                    ],
-                    [
-                        "3T(asbest) WN",
-                        "3T(asbest) WN"
-                    ],
-                    [
-                        "Basisklasse WN",
-                        "Basisklasse WN"
-                    ]
+                    "Zwart vluchtig",
+                    "Zwart niet-vluchtig",
+                    "Rood vluchtig",
+                    "Rood niet-vluchtig",
+                    "Oranje vluchtig",
+                    "Oranje niet-vluchtig",
+                    "Basishygiëne"
                 ]
-            },
-            "order": 3
+            }
         }
     },
     {
-        "model": "core.phasefield",
+        "model": "core.field",
         "pk": 4,
         "fields": {
-            "phase": 2,
+            "case_type": 1,
             "key": "startdatum",
             "label": "Startdatum",
-            "type": "CharField",
-            "widget": "DateInput",
+            "type": "DateField",
             "initial": null,
-            "args": {},
-            "order": 1
+            "args": {}
         }
     },
     {
-        "model": "core.phasefield",
+        "model": "core.field",
         "pk": 5,
         "fields": {
-            "phase": 2,
+            "case_type": 1,
             "key": "einddatum",
             "label": "Einddatum",
-            "type": "CharField",
-            "widget": "TextInput",
+            "type": "DateField",
             "initial": null,
-            "args": {},
-            "order": 2
+            "args": {}
         }
     },
     {
-        "model": "core.phasefield",
-        "pk": 6,
-        "fields": {
-            "phase": 2,
-            "key": "duur_van_de_werkzaamheden",
-            "label": "Duur van de werkzaamheden in uren",
-            "type": "IntegerField",
-            "widget": "NumberInput",
-            "initial": null,
-            "args": {},
-            "order": 3
-        }
-    },
-    {
-        "model": "core.phasefield",
+        "model": "core.field",
         "pk": 7,
         "fields": {
-            "phase": 3,
-            "key": "dlp",
-            "label": "Naam opdrachtnemer (DLP-er) WN of aannemer",
-            "type": "CharField",
-            "widget": "TextInput",
+            "case_type": 1,
+            "key": "dlper",
+            "label": "Naam opdrachtnemer (Ploegbaas / DLP) of aannemer",
+            "type": "TextField",
             "initial": null,
-            "args": {},
-            "order": 1
+            "args": {}
         }
     },
     {
-        "model": "core.phasefield",
+        "model": "core.field",
         "pk": 9,
         "fields": {
-            "phase": 3,
+            "case_type": 1,
             "key": "hvk-extern",
             "label": "HVK-er (extern)",
-            "type": "CharField",
-            "widget": "TextInput",
+            "type": "TextField",
             "initial": null,
-            "args": {},
-            "order": 3
+            "args": {
+                "required": false
+            }
         }
     },
     {
-        "model": "core.phasefield",
-        "pk": 12,
-        "fields": {
-            "phase": 2,
-            "key": "diepte_werkzaamheden_in_m",
-            "label": "Diepte werkzaamheden in m",
-            "type": "IntegerField",
-            "widget": "NumberInput",
-            "initial": null,
-            "args": {},
-            "order": 4
-        }
-    },
-    {
-        "model": "core.phasefield",
+        "model": "core.field",
         "pk": 13,
         "fields": {
-            "phase": 1,
+            "case_type": 1,
             "key": "x",
-            "label": "X-co\u00f6rdinaat",
-            "type": "IntegerField",
-            "widget": "NumberInput",
+            "label": "X-coördinaat",
+            "type": "NumberField",
             "initial": null,
-            "args": {},
-            "order": 4
+            "args": {}
         }
     },
     {
-        "model": "core.phasefield",
+        "model": "core.field",
         "pk": 14,
         "fields": {
-            "phase": 1,
+            "case_type": 1,
             "key": "y",
-            "label": "Y-co\u00f6rdinaat",
-            "type": "IntegerField",
-            "widget": "NumberInput",
+            "label": "Y-coördinaat",
+            "type": "NumberField",
             "initial": null,
-            "args": {},
-            "order": 5
+            "args": {}
         }
     },
     {
-        "model": "core.phasefield",
+        "model": "core.field",
         "pk": 15,
         "fields": {
-            "phase": 1,
+            "case_type": 1,
             "key": "opdrachtgever",
             "label": "Opdrachtgever",
-            "type": "CharField",
-            "widget": "TextInput",
+            "type": "TextField",
             "initial": null,
-            "args": {},
-            "order": 6
+            "args": {}
         }
     },
     {
-        "model": "core.phasefield",
+        "model": "core.field",
         "pk": 16,
         "fields": {
-            "phase": 1,
+            "case_type": 1,
             "key": "opmerking",
             "label": "Opmerking",
-            "type": "CharField",
-            "widget": "Textarea",
+            "type": "TextareaField",
             "initial": null,
-            "args": {},
-            "order": 7
+            "args": {}
         }
     },
     {
-        "model": "core.phasefield",
+        "model": "core.field",
         "pk": 17,
         "fields": {
-            "phase": 1,
+            "case_type": 1,
             "key": "adres",
             "label": "Adres",
-            "type": "CharField",
-            "widget": "TextInput",
+            "type": "TextField",
             "initial": null,
-            "args": {},
-            "order": 8
+            "args": {}
         }
     },
     {
-        "model": "core.phasefield",
+        "model": "core.field",
         "pk": 18,
         "fields": {
-            "phase": 1,
+            "case_type": 1,
             "key": "plaats",
             "label": "Plaats",
-            "type": "CharField",
-            "widget": "TextInput",
+            "type": "TextField",
             "initial": null,
-            "args": {},
-            "order": 9
+            "args": {}
         }
     },
     {
-        "model": "core.phasefield",
+        "model": "core.field",
         "pk": 19,
         "fields": {
-            "phase": 1,
+            "case_type": 1,
             "key": "werkomschrijving",
             "label": "Werkomschrijving",
-            "type": "CharField",
-            "widget": "TextInput",
+            "type": "TextField",
             "initial": null,
-            "args": {},
-            "order": 10
+            "args": {}
         }
     },
     {
-        "model": "core.phasefield",
+        "model": "core.field",
         "pk": 20,
         "fields": {
-            "phase": 1,
+            "case_type": 1,
             "key": "werkorder",
             "label": "Werkorder",
-            "type": "CharField",
-            "widget": "TextInput",
+            "type": "TextField",
             "initial": null,
-            "args": {},
-            "order": 11
+            "args": {}
         }
     },
     {
-        "model": "core.phasefield",
+        "model": "core.field",
         "pk": 21,
         "fields": {
-            "phase": 1,
+            "case_type": 1,
             "key": "diepte_werkzaamheden_in_m",
             "label": "Diepte werkzaamheden in m",
-            "type": "IntegerField",
-            "widget": "NumberInput",
+            "type": "NumberField",
             "initial": null,
-            "args": {},
-            "order": 12
+            "args": {}
         }
     },
     {
-        "model": "core.phasefield",
-        "pk": 22,
-        "fields": {
-            "phase": 1,
-            "key": "duur_van_de_werkzaamheden_in_dagen",
-            "label": "Duur van de werkzaamheden in uren",
-            "type": "IntegerField",
-            "widget": "NumberInput",
-            "initial": null,
-            "args": {},
-            "order": 13
-        }
-    },
-    {
-        "model": "core.phasefield",
-        "pk": 23,
-        "fields": {
-            "phase": 1,
-            "key": "startdatum",
-            "label": "Startdatum",
-            "type": "CharField",
-            "widget": "TextInput",
-            "initial": null,
-            "args": {},
-            "order": 14
-        }
-    },
-    {
-        "model": "core.phasefield",
+        "model": "core.field",
         "pk": 24,
         "fields": {
-            "phase": 1,
+            "case_type": 1,
             "key": "omvang_grondwerk_lxbxd_in_m3",
-            "label": "Gepland grondverzet",
-            "type": "IntegerField",
-            "widget": "NumberInput",
+            "label": "Gepland grondverzet in m3",
+            "type": "NumberField",
             "initial": null,
-            "args": {},
-            "order": 15
+            "args": {}
         }
     },
     {
-        "model": "core.phasefield",
+        "model": "core.field",
         "pk": 25,
         "fields": {
-            "phase": 1,
+            "case_type": 1,
             "key": "buitengebied",
             "label": "Buitengebied",
-            "type": "CharField",
-            "widget": "TextInput",
-            "initial": null,
-            "args": {},
-            "order": 16
+            "type": "RadioField",
+            "initial": "Nee",
+            "args": {
+                "choices": [
+                    "Nee",
+                    "Ja"
+                ]
+            }
         }
     },
     {
-        "model": "core.phasefield",
+        "model": "core.field",
         "pk": 34,
         "fields": {
-            "phase": 2,
+            "case_type": 1,
             "key": "naam_aannemer",
             "label": "Naam aannemer",
-            "type": "CharField",
-            "widget": "TextInput",
+            "type": "TextField",
             "initial": null,
-            "args": {},
-            "order": 13
+            "args": {}
         }
     },
     {
-        "model": "core.phasefield",
+        "model": "core.field",
         "pk": 35,
         "fields": {
-            "phase": 2,
+            "case_type": 1,
             "key": "contactpersoon_aannemer",
             "label": "Contactpersoon aannemer",
-            "type": "CharField",
-            "widget": "TextInput",
+            "type": "TextField",
             "initial": null,
-            "args": {},
-            "order": 14
+            "args": {}
         }
     },
     {
-        "model": "core.phasefield",
+        "model": "core.field",
         "pk": 36,
         "fields": {
-            "phase": 2,
+            "case_type": 1,
             "key": "adres_aannemer",
             "label": "Adres aannemer",
-            "type": "CharField",
-            "widget": "TextInput",
+            "type": "TextField",
             "initial": null,
-            "args": {},
-            "order": 15
+            "args": {}
         }
     },
     {
-        "model": "core.phasefield",
+        "model": "core.field",
         "pk": 37,
         "fields": {
-            "phase": 2,
+            "case_type": 1,
             "key": "postcode_aannemer",
             "label": "Postcode aannemer",
-            "type": "CharField",
-            "widget": "TextInput",
+            "type": "TextField",
             "initial": null,
-            "args": {},
-            "order": 16
+            "args": {}
         }
     },
     {
-        "model": "core.phasefield",
+        "model": "core.field",
         "pk": 38,
         "fields": {
-            "phase": 2,
+            "case_type": 1,
             "key": "plaats_aannemer",
             "label": "Plaats aannemer",
-            "type": "CharField",
-            "widget": "TextInput",
+            "type": "TextField",
             "initial": null,
-            "args": {},
-            "order": 17
+            "args": {}
         }
     },
     {
-        "model": "core.phasefield",
+        "model": "core.field",
         "pk": 39,
         "fields": {
-            "phase": 2,
+            "case_type": 1,
             "key": "telefoonnummer_aannemer",
             "label": "Telefoonnummer aannemer",
-            "type": "CharField",
-            "widget": "TextInput",
+            "type": "TextField",
             "initial": null,
-            "args": {},
-            "order": 18
+            "args": {}
         }
     },
     {
-        "model": "core.phasefield",
+        "model": "core.field",
         "pk": 43,
         "fields": {
-            "phase": 4,
+            "case_type": 1,
             "key": "afwijking_toelichting",
             "label": "Toelichting",
-            "type": "CharField",
-            "widget": "Textarea",
+            "type": "TextareaField",
             "initial": null,
-            "args": {},
-            "order": 5
+            "args": {
+                "required": false
+            }
         }
     },
     {
-        "model": "database.constance",
+        "model": "core.field",
+        "pk": 45,
+        "fields": {
+            "case_type": 1,
+            "key": "pbms",
+            "label": "PBM's",
+            "type": "TextField",
+            "initial": null,
+            "args": {
+                "required": false
+            }
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 47,
+        "fields": {
+            "case_type": 1,
+            "key": "duur_van_de_werkzaamheden_in_dagen",
+            "label": "Duur van de werkzaamheden in uren",
+            "type": "NumberField",
+            "initial": null,
+            "args": {}
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 50,
+        "fields": {
+            "case_type": 1,
+            "key": "werkregelaar",
+            "label": "Werkregelaar",
+            "type": "SelectField",
+            "initial": null,
+            "args": {
+                "choices": [
+                    "Test"
+                ]
+            }
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 51,
+        "fields": {
+            "case_type": 1,
+            "key": "kvp_keuze",
+            "label": "KVP-er",
+            "type": "SelectField",
+            "initial": null,
+            "args": {
+                "choices": [
+                    "Test"
+                ]
+            }
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 52,
+        "fields": {
+            "case_type": 1,
+            "key": "melden_omgevingsdienst_kiwa",
+            "label": "Melden bij de Omgevingsdienst en KIWA",
+            "type": "RadioField",
+            "initial": "Ja",
+            "args": {
+                "choices": [
+                    "Ja",
+                    "Nee"
+                ]
+            }
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 53,
+        "fields": {
+            "case_type": 1,
+            "key": "soort_werk",
+            "label": "Soort werk",
+            "type": "RadioField",
+            "initial": null,
+            "args": {
+                "choices": [
+                    "1. Spoedreparatie kabels en leidingen",
+                    "2. Regulier klein grondverzet kabels en leidingen etc."
+                ]
+            }
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 54,
+        "fields": {
+            "case_type": 1,
+            "key": "vooronderzoek",
+            "label": "Vooronderzoek",
+            "type": "RadioField",
+            "initial": null,
+            "args": {
+                "choices": [
+                    "1. Bestaand historisch- of bodemonderzoek",
+                    "2. Nieuw bodemonderzoek",
+                    "3. Spoedreparatie, geen gegevens bekend",
+                    "4. Onderzoek tijdens uitvoering van het grondverzet"
+                ]
+            }
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 55,
+        "fields": {
+            "case_type": 1,
+            "key": "aantal_m3_te_ontgraven",
+            "label": "Aantal m3 te ontgraven",
+            "type": "RadioField",
+            "initial": null,
+            "args": {
+                "choices": [
+                    "0-2 m3",
+                    "2-5 m3",
+                    "5-10 m3",
+                    "> 10 m3"
+                ]
+            }
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 56,
+        "fields": {
+            "case_type": 1,
+            "key": "aannemer",
+            "label": "Aannemer",
+            "type": "SelectField",
+            "initial": null,
+            "args": {
+                "choices": [
+                    "Test"
+                ],
+                "prefill": {
+                    "Test": {
+                        "naam_aannemer": "Test",
+                        "adres_aannemer": "Teststraat 1",
+                        "plaats_aannemer": "Test",
+                        "postcode_aannemer": "1234AB",
+                        "contactpersoon_aannemer": "Test",
+                        "kwalibo_erkend_aannemer": "Ja",
+                        "telefoonnummer_aannemer": "06-12345678"
+                    }
+                },
+                "required": false
+            }
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 57,
+        "fields": {
+            "case_type": 1,
+            "key": "kwalibo_erkend_aannemer",
+            "label": "KWALIBO erkend aannemer",
+            "type": "RadioField",
+            "initial": null,
+            "args": {
+                "choices": [
+                    "Ja",
+                    "Nee"
+                ]
+            }
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 58,
+        "fields": {
+            "case_type": 1,
+            "key": "hvk",
+            "label": "HVK-er",
+            "type": "SelectField",
+            "initial": null,
+            "args": {
+                "choices": [
+                    "Test"
+                ]
+            }
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 59,
+        "fields": {
+            "case_type": 1,
+            "key": "organisatorische_aspecten",
+            "label": "Start werkbespreking Projectspecifieke organisatorische aspecten",
+            "type": "CheckboxField",
+            "initial": null,
+            "args": {
+                "choices": [
+                    "Werken in verontreinigde bodem (CROW 400) verkorte procedure kleinschalig grondverzet",
+                    "De verontreinigde zone wordt buiten werktijd afgebakend door middel van een 2 meter hoog bouwhek met bebording (inclusief pictogrammen) in verband met de aanwezige bodemverontreiniging.",
+                    "Sanitaire voorzieningen bestaan uit drietrap schoon-/vuil unit (SVU) (eventueel + buitendouche) op de grens tussen de verontreinigde zone en de schone zone.",
+                    "Materieel voorzien van overdrukfilterinstallatie + klimaatbeheersing (overdruk 100-300 Pa, keuze filtertype MVK/HVK/AH)",
+                    "Persoonlijke beschermingsmiddelen pakket zwaar",
+                    "Meetstrategie uitvoeren bodemvochtmetingen minimaal 2x per uur",
+                    "Meetstrategie vluchtige stoffen vaststellen voor Hvk'er / AH"
+                ],
+                "required": false
+            }
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 60,
+        "fields": {
+            "case_type": 1,
+            "key": "uitvoeringsscenario",
+            "label": "Uitvoeringsscenario",
+            "type": "CheckboxField",
+            "initial": null,
+            "args": {
+                "choices": [
+                    "Funderingsmateriaal / puin",
+                    "Grondwater sterk verontreinigd",
+                    "Graven onder grondwaterniveau",
+                    "Gescheiden ontgraven"
+                ],
+                "required": false
+            }
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 61,
+        "fields": {
+            "case_type": 1,
+            "key": "werkzaamheden_onder_grondwaterspiegel",
+            "label": "Werkzaamheden onder grondwaterspiegel",
+            "type": "RadioField",
+            "initial": null,
+            "args": {
+                "choices": [
+                    "Nee",
+                    "Ja"
+                ]
+            }
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 62,
+        "fields": {
+            "case_type": 1,
+            "key": "soort_afwijking",
+            "label": "Soort afwijking",
+            "type": "CheckboxField",
+            "initial": null,
+            "args": {
+                "choices": [
+                    "Aantreffen asbest",
+                    "Waarneming vluchtige stoffen",
+                    "Niet voorziene stoffen",
+                    "Werk stilgelegd",
+                    "Afwijking gemeld bij BOB",
+                    "Afwijking gemeld bij bevoegd gezag (Omgevingsdienst)",
+                    "Veiligheidskundige AH / HVK aanwezig geweest"
+                ],
+                "required": false
+            }
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 63,
+        "fields": {
+            "case_type": 1,
+            "key": "dagwerkzaamheden",
+            "label": "Dagwerkzaamheden",
+            "type": "ArrayField",
+            "initial": null,
+            "args": {
+                "formItems": [
+                    "datum",
+                    "dlper",
+                    "kvp_keuze",
+                    "hvk",
+                    "hvk-extern",
+                    "instructeur_toolbox",
+                    "aanwezigen",
+                    "bezoekerslijst",
+                    "kop_weersomstandigheden",
+                    "bewolking_1",
+                    "vochtigheid_1",
+                    "temperatuur",
+                    "windkracht_1",
+                    "windrichting_1",
+                    "kop_werkomschrijving",
+                    "werkomschrijving",
+                    "kop_gebruikt_materieel",
+                    "materieel",
+                    "materieel_ander_materieel",
+                    "kop_grondverzet",
+                    "ontgraven_schoon1",
+                    "ontgraven_verontreinigd1",
+                    "terug_plaatsen_schoon1",
+                    "terug_plaatsen_verontreinigd1",
+                    "afvoeren_schoon1",
+                    "afvoeren_verontreinigd1"
+                ]
+            }
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 64,
+        "fields": {
+            "case_type": 1,
+            "key": "samenvatting",
+            "label": "Samenvatting",
+            "type": "Template",
+            "initial": null,
+            "args": {
+                "template": "\n{% load sumkey %}\n<p>De werkzaamheden hebben plaatsgevonden op '{{ case.data.adres }}, {{ case.data.plaats }}'.</p>\n<table class=\"table\">\n<thead>\n<tr><th scope=\"col\">Kenmerk</th><th scope=\"col\"></th></tr>\n</thead>\n<tbody>\n<tr><td scope=\"row\">Veiligheidsklasse</td><td>{{ case.data.klasse_toxiciteit_en_flammable }}</td></tr>\n<tr><td scope=\"row\">Ontgraven schoon (m3)</td><td>{{ case.data.dagwerkzaamheden|sumkey:\"ontgraven_schoon1\" }}</td></tr>\n<tr><td scope=\"row\">Ontgraven verontreinigd (m3)</td><td>{{ case.data.dagwerkzaamheden|sumkey:\"ontgraven_verontreinigd1\" }}</td></tr>\n<tr><td scope=\"row\">Terug plaatsen schoon (m3)</td><td>{{ case.data.dagwerkzaamheden|sumkey:\"terug_plaatsen_schoon1\" }}</td></tr>\n<tr><td scope=\"row\">Terug plaatsen verontreinigd (m3)</td><td>{{ case.data.dagwerkzaamheden|sumkey:\"terug_plaatsen_verontreinigd1\" }}</td></tr>\n<tr><td scope=\"row\">Afvoeren schoon (m3)</td><td>{{ case.data.dagwerkzaamheden|sumkey:\"afvoeren_schoon1\" }}</td></tr>\n<tr><td scope=\"row\">Afvoeren verontreinigd (m3)</td><td>{{ case.data.dagwerkzaamheden|sumkey:\"afvoeren_verontreinigd1\" }}</td></tr>\n<tr><td scope=\"row\">Afwijkingen</td><td>{{ case.data.soort_afwijking|join:\", \"|default:\"-\" }}</td></tr>\n<tr><td scope=\"row\">Toelichting afwijkingen</td><td>{{ case.data.afwijking_toelichting|default:\"-\" }}</td></tr>\n</tbody>\n</table>\n"
+            }
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 65,
+        "fields": {
+            "case_type": 1,
+            "key": "aanwezigen",
+            "label": "Aanwezigen (namen)",
+            "type": "ArrayTextField",
+            "initial": null,
+            "args": {}
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 66,
+        "fields": {
+            "case_type": 1,
+            "key": "afvoeren_schoon1",
+            "label": "Afvoeren schoon (m3)",
+            "type": "TextField",
+            "initial": null,
+            "args": {}
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 67,
+        "fields": {
+            "case_type": 1,
+            "key": "afvoeren_verontreinigd1",
+            "label": "Afvoeren verontreinigd (m3)",
+            "type": "TextField",
+            "initial": null,
+            "args": {}
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 68,
+        "fields": {
+            "case_type": 1,
+            "key": "bewolking_1",
+            "label": "Bewolking",
+            "type": "RadioField",
+            "initial": null,
+            "args": {
+                "choices": [
+                    "Zonnig",
+                    "Half bewolkt",
+                    "Zwaar bewolkt"
+                ]
+            }
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 69,
+        "fields": {
+            "case_type": 1,
+            "key": "bezoekerslijst",
+            "label": "Bezoekerslijst",
+            "type": "ArrayTextField",
+            "initial": null,
+            "args": {
+                "required": false
+            }
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 70,
+        "fields": {
+            "case_type": 1,
+            "key": "instructeur_toolbox",
+            "label": "Toolbox gegeven door",
+            "type": "TextField",
+            "initial": null,
+            "args": {}
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 71,
+        "fields": {
+            "case_type": 1,
+            "key": "materieel",
+            "label": "Gebruikt materieel",
+            "type": "CheckboxField",
+            "initial": null,
+            "args": {
+                "choices": [
+                    "Niet van toepassing, handmatig gegraven",
+                    "Kraan met overdrukcabine",
+                    "Open kraan zonder overdrukcabine"
+                ],
+                "required": false
+            }
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 72,
+        "fields": {
+            "case_type": 1,
+            "key": "materieel_ander_materieel",
+            "label": "Ander materieel",
+            "type": "TextField",
+            "initial": null,
+            "args": {
+                "required": false
+            }
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 73,
+        "fields": {
+            "case_type": 1,
+            "key": "ontgraven_schoon1",
+            "label": "Ontgraven schoon (m3)",
+            "type": "NumberField",
+            "initial": null,
+            "args": {}
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 74,
+        "fields": {
+            "case_type": 1,
+            "key": "ontgraven_verontreinigd1",
+            "label": "Ontgraven verontreinigd (m3)",
+            "type": "NumberField",
+            "initial": null,
+            "args": {}
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 75,
+        "fields": {
+            "case_type": 1,
+            "key": "temperatuur",
+            "label": "Temperatuur (graden)",
+            "type": "NumberField",
+            "initial": null,
+            "args": {}
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 76,
+        "fields": {
+            "case_type": 1,
+            "key": "terug_plaatsen_schoon1",
+            "label": "Terug plaatsen schoon (m3)",
+            "type": "NumberField",
+            "initial": null,
+            "args": {}
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 77,
+        "fields": {
+            "case_type": 1,
+            "key": "terug_plaatsen_verontreinigd1",
+            "label": "Terug plaatsen verontreinigd (m3)",
+            "type": "NumberField",
+            "initial": null,
+            "args": {}
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 78,
+        "fields": {
+            "case_type": 1,
+            "key": "vochtigheid_1",
+            "label": "Vochtigheid",
+            "type": "CheckboxField",
+            "initial": null,
+            "args": {
+                "choices": [
+                    "Mist",
+                    "Regen",
+                    "Droog"
+                ]
+            }
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 79,
+        "fields": {
+            "case_type": 1,
+            "key": "windkracht_1",
+            "label": "Windkracht",
+            "type": "NumberField",
+            "initial": null,
+            "args": {}
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 80,
+        "fields": {
+            "case_type": 1,
+            "key": "windrichting_1",
+            "label": "Windrichting",
+            "type": "CheckboxField",
+            "initial": null,
+            "args": {
+                "choices": [
+                    "Noord",
+                    "Oost",
+                    "Zuid",
+                    "West"
+                ]
+            }
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 81,
+        "fields": {
+            "case_type": 1,
+            "key": "datum",
+            "label": "Datum",
+            "type": "DateField",
+            "initial": null,
+            "args": {}
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 82,
+        "fields": {
+            "case_type": 1,
+            "key": "kvp_vervanger",
+            "label": "KVP-er wordt vervangen door",
+            "type": "SelectField",
+            "initial": null,
+            "args": {
+                "choices": [
+                    "Test"
+                ],
+                "required": false
+            }
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 83,
+        "fields": {
+            "case_type": 1,
+            "key": "kop_organisatorische_aspecten",
+            "label": "Projectspecifieke organisatorische aspecten",
+            "type": "Heading",
+            "initial": null,
+            "args": {}
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 85,
+        "fields": {
+            "case_type": 1,
+            "key": "kop_afwijkingen",
+            "label": "Afwijkingen",
+            "type": "Heading",
+            "initial": null,
+            "args": {}
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 87,
+        "fields": {
+            "case_type": 1,
+            "key": "kop_weersomstandigheden",
+            "label": "Weersomstandigheden",
+            "type": "Heading",
+            "initial": null,
+            "args": {}
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 88,
+        "fields": {
+            "case_type": 1,
+            "key": "kop_werkomschrijving",
+            "label": "Werkomschrijving",
+            "type": "Heading",
+            "initial": null,
+            "args": {}
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 89,
+        "fields": {
+            "case_type": 1,
+            "key": "kop_gebruikt_materieel",
+            "label": "Gebruikt materieel",
+            "type": "Heading",
+            "initial": null,
+            "args": {
+                "required": true
+            }
+        }
+    },
+    {
+        "model": "core.field",
+        "pk": 90,
+        "fields": {
+            "case_type": 1,
+            "key": "kop_grondverzet",
+            "label": "Grondverzet",
+            "type": "Heading",
+            "initial": null,
+            "args": {}
+        }
+    },
+    {
+        "model": "core.predefinedfilter",
         "pk": 1,
         "fields": {
-            "key": "COMPANY_NAME",
-            "value": "gAJYBwAAAERlbHRhMTBxAC4="
-        }
-    },
-    {
-        "model": "database.constance",
-        "pk": 2,
-        "fields": {
-            "key": "FAVICON_IMAGE",
-            "value": "gAJYEwAAAGRlZmF1bHQvZmF2aWNvbi5wbmdxAC4="
-        }
-    },
-    {
-        "model": "database.constance",
-        "pk": 3,
-        "fields": {
-            "key": "LOGO_IMAGE",
-            "value": "gAJYEAAAAGRlZmF1bHQvbG9nby5zdmdxAC4="
+            "name": "Melden bij OD en KIWA",
+            "args": {
+                "melden_omgevingsdienst_kiwa": "Ja"
+            }
         }
     }
 ]
